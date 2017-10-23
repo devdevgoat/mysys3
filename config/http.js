@@ -22,7 +22,27 @@ module.exports.http = {
   ****************************************************************************/
 
   middleware: {
-
+    //http://iliketomatoes.com/implement-passport-js-authentication-with-sails-js-0-10-2/
+    passportInit    : require('passport').initialize(),
+    passportSession : require('passport').session(),
+     order: [
+            'startRequestTimer',
+            'cookieParser',
+            'session',
+            'passportInit',     
+            'passportSession', 
+            'myRequestLogger',
+            'bodyParser',
+            'handleBodyParserError',
+            'compress',
+            'methodOverride',
+            'poweredBy',
+            'router',
+            'www',
+            'favicon',
+            '404',
+            '500'
+          ],
   /***************************************************************************
   *                                                                          *
   * The order in which middleware should be run for HTTP request. (the Sails *
