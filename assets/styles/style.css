@@ -1,0 +1,266 @@
+body {
+  overflow-x: hidden; }
+
+#left-sidebar {
+  background: #fff; }
+
+#profile-section {
+  text-align: center;
+  background: #fff; }
+  #profile-section .card {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background: #fff;
+    display: inline-block;
+    text-align: left; }
+  #profile-section .details {
+    margin-left: 17px;
+    margin-right: 17px;
+    padding-bottom: 10px; }
+    #profile-section .details h3 {
+      font-family: 'Roboto';
+      font-weight: bold;
+      font-size: 31px; }
+    #profile-section .details p {
+      font-family: 'Roboto';
+      font-size: 22px;
+      color: #cdced0; }
+    #profile-section .details .pow {
+      background: #f7fafc;
+      height: 10px;
+      border-radius: 40px;
+      border: 1px solid #d6dde1; }
+      #profile-section .details .pow .powfill {
+        background: black;
+        height: 10px;
+        width: 103px;
+        border-radius: 40px; }
+  #profile-section #profile-pic {
+    height: 260px;
+    width: 300px;
+    background: #fff;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.3); }
+    #profile-section #profile-pic .img-circle {
+      height: 200px;
+      width: 200px;
+      margin-top: 30px;
+      border-radius: 100px;
+      background: #aa22aa;
+      display: inline-block;
+      background-image: url("../images/img_avatar.png");
+      background-size: cover; }
+
+#players-section {
+  background: #fff;
+  text-align: center;
+  padding: 50px 10px 50px 20px;
+  height: 731px; }
+  #players-section .strip {
+    padding: 10px 30px 10px 30px;
+    margin: 10px 0px 10px 0px;
+    background: #fff;
+    display: inline-flex;
+    border-radius: 5px;
+    width: 356px;
+    box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.3); }
+    #players-section .strip .img-circle {
+      height: 70px;
+      width: 70px;
+      border-radius: 100px;
+      background: #aa22aa;
+      display: inline-block;
+      background-image: url("../images/img_avatar.png");
+      background-size: cover; }
+    #players-section .strip .details {
+      margin-left: 20px;
+      display: inline-block;
+      width: 200px;
+      text-align: left; }
+      #players-section .strip .details h3 {
+        font-family: 'Roboto';
+        font-weight: 300;
+        font-size: 22px; }
+      #players-section .strip .details .pow {
+        background: #d3d3d3;
+        height: 10px;
+        border-radius: 40px; }
+        #players-section .strip .details .pow .powfill {
+          background: black;
+          height: 10px;
+          width: 103px;
+          border-radius: 40px; }
+
+#right-sidebar {
+  background: #fff; }
+
+#equipments {
+  height: 400px;
+  background: #fff;
+  padding: 32px;
+  text-align: center; }
+  #equipments h4 {
+    text-align: left;
+    margin-left: 22px;
+    font-family: 'Roboto';
+    font-weight: bold;
+    font-size: 22px; }
+  #equipments .eqi-strip {
+    display: block; }
+    #equipments .eqi-strip .eqi-img {
+      width: 55px;
+      display: inline-block; }
+      #equipments .eqi-strip .eqi-img img {
+        margin-top: -32px; }
+    #equipments .eqi-strip .details {
+      margin-left: 10px;
+      display: inline-block; }
+      #equipments .eqi-strip .details h3 {
+        font-family: 'Roboto';
+        color: #cdced0;
+        font-weight: 400;
+        font-size: 22px; }
+      #equipments .eqi-strip .details h4 {
+        font-family: 'Roboto';
+        color: #cdced0;
+        font-size: 16px; }
+    #equipments .eqi-strip .info {
+      margin-left: 23px;
+      display: inline-block;
+      position: relative;
+      bottom: 36px; }
+      #equipments .eqi-strip .info .badge {
+        background: black;
+        padding: 7px; }
+        #equipments .eqi-strip .info .badge p {
+          margin-bottom: 0px; }
+      #equipments .eqi-strip .info .eqi-type-img {
+        margin-top: -20px;
+        margin-left: 42px;
+        display: inline-block; }
+        #equipments .eqi-strip .info .eqi-type-img img {
+          width: 23px; }
+
+#iteams {
+  height: 797px;
+  background: #fff;
+  padding: 22px;
+  text-align: center; }
+  #iteams h4 {
+    text-align: left;
+    margin-left: 22px;
+    font-family: 'Roboto';
+    font-weight: bold;
+    font-size: 22px; }
+  #iteams .iteam-strip {
+    display: block; }
+    #iteams .iteam-strip .iteam-img {
+      width: 65px;
+      display: inline-block; }
+      #iteams .iteam-strip .iteam-img img {
+        margin-top: -32px; }
+    #iteams .iteam-strip .details {
+      margin-left: 10px;
+      display: inline-block; }
+      #iteams .iteam-strip .details h3 {
+        font-family: 'Roboto';
+        color: #cdced0;
+        font-weight: 400;
+        font-size: 22px; }
+      #iteams .iteam-strip .details h4 {
+        font-family: 'Roboto';
+        color: #cdced0;
+        font-size: 16px; }
+    #iteams .iteam-strip .info {
+      margin-left: 43px;
+      display: inline-block;
+      position: relative;
+      bottom: 36px; }
+      #iteams .iteam-strip .info .badge {
+        background: black;
+        padding: 7px; }
+        #iteams .iteam-strip .info .badge p {
+          margin-bottom: 0px; }
+
+#top-section {
+  background: #f7fafc;
+  border: 1px solid #e2dada; }
+  #top-section .sec {
+    height: 100%;
+    text-align: center;
+    display: inline-block; }
+    #top-section .sec h1 {
+      font-size: 77px;
+      font-weight: 100;
+      font-family: 'Roboto';
+      display: inline-block;
+      margin-top: 52px;
+      position: relative;
+      top: 18px; }
+    #top-section .sec p {
+      margin-top: 20px;
+      font-size: 27px;
+      font-weight: 100;
+      font-family: 'Roboto'; }
+    #top-section .sec img {
+      width: 70px;
+      height: 70px; }
+  #top-section .sec-1 {
+    background: #f7fafc; }
+  #top-section .sec-2 {
+    background: #f7fafc; }
+  #top-section .sec-3 {
+    background: #f7fafc; }
+
+#modifiers {
+  background: #f7fafc; }
+
+#charts {
+  background: #fff; }
+
+#cards {
+  background: #f7fafc;
+  padding: 50px 20px 50px 20px;
+  text-align: center; }
+  #cards .card {
+    height: 250px;
+    width: 230px;
+    background: #fff;
+    display: inline-block;
+    text-align: center;
+    border-radius: 5px;
+    margin: 9px;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.31); }
+    #cards .card .img-circle {
+      height: 170px;
+      width: 170px;
+      margin-top: 30px;
+      background: #42c7d0;
+      display: inline-block; }
+    #cards .card p {
+      text-align: left;
+      margin-left: 20px;
+      font-size: 23px;
+      font-weight: 100;
+      font-family: 'Roboto'; }
+
+#notifications {
+  background: #f7fafc;
+  padding: 30px 50px 20px 50px; }
+  #notifications h2 {
+    margin-bottom: 10px;
+    font-size: 33px;
+    font-weight: 100;
+    font-family: 'Roboto'; }
+  #notifications .notification {
+    background: #fff;
+    padding: 1px 15px 6px 15px;
+    margin: 15px 0px;
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.31); }
+    #notifications .notification h2 {
+      font-size: 25px;
+      font-weight: 100;
+      font-family: 'Roboto'; }
+
+/*# sourceMappingURL=style.css.map */

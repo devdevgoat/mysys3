@@ -46,5 +46,8 @@ module.exports.routes = {
 
   'get /signup': {
     view: 'signup'
+  },
+  'get /charactersheet': {
+    view: 'charactersheet'
   }
 };

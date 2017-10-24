@@ -24,10 +24,29 @@ module.exports = {
   		user: {
   			model: 'user'
   		},
-  		items: {
-  			collection:'item',
-  			via: 'players'
-  		}//,spells: {collection:'spell'},weapons: {collection:'weapon'}
+  		inventory: {
+  			collection: 'inventory',
+  			via: 'player'
+  		},
+  		ailment : {
+  			type: 'string'
+  		},
+  		maxpe: {
+  			type: 'int'
+  		},
+  		maxse: {
+  			type: 'int'
+  		},
+  		maxme: {
+  			type: 'int'
+  		}, 
+  		stats: {
+  			model: 'stats'
+  		},
+  		game: {
+  			model: 'game',
+  			via: 'player'
+  		}
   }
 
 };

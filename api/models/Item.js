@@ -22,9 +22,9 @@ module.exports = {
   			defaultsTo: 'Restores 1 LE'
   		},
 
-  	ailments: {
-  			collection: 'ailment',
-  			via: 'items'
+  	ailment:{
+        type: 'string',
+        size: 255, //lengith
   		},
 
   	action: {
@@ -44,12 +44,7 @@ module.exports = {
   		type: 'integer',
   		required: true,
   		defaultsTo: 1
-  	},
-
-  	players: {
-  			collection: 'player',
-  			via: 'items'
-  		}
+  	}
 
   }
 };
