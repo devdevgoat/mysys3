@@ -1,0 +1,24 @@
+<style type="text/css">
+  .card { float: left; margin: 20px;}
+  .card-text {
+    min-height: 150px;
+  }
+</style>
+
+<div class="container">
+<h1>Welcome: <%=req.user.firstname%></h1>
+<a href=/createplayer>Create Player</a> | 
+<a href=/logout>Logout</a>
+
+<% _.each(players, function (player) { %>
+  <div class="card" style="width: 20rem;">
+    <img class="card-img-top" src="images/goblin.jpg" alt="Card image cap">
+    <div class="card-body">
+      <h4 class="card-title"><%=player.name%></h4>
+      <p class="card-text"><%=player.backstory%></p>
+      <a href="#" class="btn btn-primary">Choose Player</a>
+    </div>
+  </div>
+ <% }) %>
+
+</div>

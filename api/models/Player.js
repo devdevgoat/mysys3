@@ -13,17 +13,25 @@ module.exports = {
   			required: true,
   			defaultsTo: 'No Name Sam', //can use functions here
   		},
-  		backStory: {
+  		backstory: {
   			type: 'string',
   			size: 255, //lengith
-  		},
-  		isGm: {
-  			type:'boolean',
-  			defaultsTo: false
   		},
   		user: {
   			model: 'user'
   		},
+      maxpe: {
+        type: 'integer',
+        max: 99
+      },
+      maxme: {
+        type: 'integer',
+        max: 99
+      },
+      maxse: {
+        type: 'integer',
+        max: 99
+      },
   		items: {
   			collection:'item',
   			via: 'players'
