@@ -35,7 +35,11 @@ module.exports = {
   		items: {
   			collection:'item',
   			via: 'players'
-  		}//,spells: {collection:'spell'},weapons: {collection:'weapon'}
+  		},//,spells: {collection:'spell'},weapons: {collection:'weapon'}
+      game: {
+        model: 'game',
+        via: 'players'
+      }
   }
 
 };

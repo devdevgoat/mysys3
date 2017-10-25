@@ -12,9 +12,7 @@
 </script>
 
 <div class="container">
-<h1>Welcome: <%=req.user.firstname%></h1>
-<a href=/createplayer>Create Player</a> | 
-<a href=/logout>Logout</a>
+<h1>Choose your game:</h1>
 
 <% _.each(players, function (player) { %>
   <div class="card" style="width: 20rem;">

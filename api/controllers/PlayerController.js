@@ -45,6 +45,16 @@ module.exports = {
 
     createForm: function (req, res) {
     	res.view('createplayer');
+    },
+
+    select: function (req,res) {
+    	sails.log('player id:',req.param('playerId'));
+    	Player.find(req.param('playerId')).exec(function (err,player) {
+    		if(err){return res.serverError(err);}
+
+    		sails.log({player});
+    		res.view('charactersheet',{player:player});
+    	});
     }
 };
 

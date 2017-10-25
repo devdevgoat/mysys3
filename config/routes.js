@@ -50,6 +50,11 @@ module.exports.routes = {
   'post /signup': 'UserController.signup',
 
   'get /lobby': 'PlayerController.getPlayers',
+
   'get /createplayer': 'PlayerController.createForm',
-  'post /createplayer': 'PlayerController.createplayer'
+  'post /createplayer': 'PlayerController.createplayer',
+
+  'get /charactersheet/:playerId': 'PlayerController.select'
+
+
 };
