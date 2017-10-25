@@ -24,29 +24,25 @@ module.exports = {
   			collection: 'inventory',
   			via: 'player'
   		},
-      maxpe: {
-        type: 'integer',
-        max: 99
-      },
-      maxme: {
-        type: 'integer',
-        max: 99
-      },
-      maxse: {
-        type: 'integer',
-        max: 99
-      },
-  		items: {
-  			collection:'item',
-  			via: 'players'
-  		},//,spells: {collection:'spell'},weapons: {collection:'weapon'}
-      game: {
-        model: 'game',
-        via: 'players'
-      }
-  		ailment : {
-  			type: 'string'
-  		},
+		maxpe: {
+			type: 'integer',
+			max: 99
+		},
+			maxme: {
+			type: 'integer',
+			max: 99
+		},
+		maxse: {
+			type: 'integer',
+			max: 99
+		},
+		game: {
+			model: 'game',
+			via: 'players'
+		},
+		ailment : {
+			type: 'string'
+		},
   }
 
 };

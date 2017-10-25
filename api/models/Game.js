@@ -13,9 +13,13 @@ module.exports = {
   		unique: true,
   		required: true
   	},
-  	players : {
+  	players: {
   		collection: 'player',
   		via: 'game'
+  	},
+  	minlvl: {
+  		type: 'int',
+  		defaultsTo: 1
   	}
   }
 };

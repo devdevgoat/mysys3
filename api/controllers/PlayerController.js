@@ -12,6 +12,7 @@ module.exports = {
        		user: req.user.id
        	}
        }).exec(function (err, players) {
+          if(err){return res.serverError(err);} 
        		sails.log(players);
        		res.view('playerlist',{players:players});
        });

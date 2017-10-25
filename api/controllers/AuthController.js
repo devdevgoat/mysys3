@@ -31,7 +31,7 @@ module.exports = {
                 //     message: info.message,
                 //     user: user
                 // });
-                res.redirect('/lobby');
+                res.redirect('/readyplayer1');
             });
 
         })(req, res);

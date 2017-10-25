@@ -49,7 +49,8 @@ module.exports.routes = {
   },
   'post /signup': 'UserController.signup',
 
-  'get /lobby': 'PlayerController.getPlayers',
+  'get /readyplayer1': 'PlayerController.getPlayers',
+  'get /lobby/:playerId': 'Game.getGames',
 
   'get /createplayer': 'PlayerController.createForm',
   'post /createplayer': 'PlayerController.createplayer',
