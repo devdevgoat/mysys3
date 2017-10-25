@@ -19,11 +19,19 @@ module.exports = {
 
         passport.authenticate('local', function(err, user, info) {
             if ((err) || (!user)) {
-                res.redirect('/login');
+                // return res.send({
+                //     message: info.message,
+                //     user: user
+                // });
+                return res.view('/login');
             }
             req.logIn(user, function(err) {
                 if (err) res.send(err);
-                res.redirect('/charactersheet');
+                // return res.send({
+                //     message: info.message,
+                //     user: user
+                // });
+                res.redirect('/lobby');
             });
 
         })(req, res);

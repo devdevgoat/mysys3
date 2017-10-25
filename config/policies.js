@@ -26,11 +26,13 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
-  // step 9 http://iliketomatoes.com/implement-passport-js-authentication-with-sails-js-0-10-2/
-  //  'PostController': {
-  //   '*': 'isAuthenticated'
-  // },
+   '*': true,
+  // //step 9 http://iliketomatoes.com/implement-passport-js-authentication-with-sails-js-0-10-2/
+   'PlayerController': {
+     '*': 'isAuthenticated'
+   }
+  //  '*' :  'isAuthenticated'
+
 
 
   /***************************************************************************

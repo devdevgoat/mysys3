@@ -1,19 +1,13 @@
+
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Character Sheet</title>
-<link rel="shortcut icon"  href="/images/.png">
 
-<!-- live script --><!-- Latest compiled and minified CDN -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script> -->
-<!--/-->
-
+<title><%= player.name %></title>
+<link rel="shortcut icon"  href="//images/.png">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
-<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
-<script type="text/javascript">
 
-</script>
 <div id="wrapper">
+
 	<div class="row">
     <div class="col-md-3" id="left-sidebar">
         <div id="profile-section" class="row"> 
@@ -25,8 +19,8 @@
           		
           	</div>
           	<div class="details">
-          		<h3>Your Name</h3>
-          		<p>Xasdf asdf a</p>
+          		<h3><%= player[0].name %></h3>
+          		<p><%= player[0].backstory %></p>
               <div class="pow">
                 <div class="powfill"></div>
               </div>
@@ -34,15 +28,7 @@
         	</div>      	
         </div>
     	<div id="players-section" class="row"> 
-          <div class="strip">
-              <div class="img-circle"></div>
-              <div class="details">
-              <h3>Your Name</h3>
-              <div class="pow">
-                <div class="powfill"></div>
-              </div>
-            </div> 
-          </div>
+          
           <div class="strip">
               <div class="img-circle"></div>
               <div class="details">
@@ -82,25 +68,25 @@
       	<div id="modifiers" class="row"> 
           <div class="col-xs-4 sec sec-1">
               <h1>15</h1>
-              <img src="images/body-building.png">
+              <img src="/images/body-building.png">
 
-              <p>Physical</p>
+              <p>Physical Modifier</p>
           </div>
           <div class="col-xs-4 sec sec-2">
                <h1>4</h1>
-              <img src="images/management.png">
+              <img src="/images/management.png">
 
-              <p>Mental</p>
+              <p>Mentel</p>
           </div>
           <div class="col-xs-4 sec sec-3">
                <h1>2</h1>
-              <img src="images/hold.png">
+              <img src="/images/hold.png">
 
               <p>Super</p>
           </div>
       	</div>
       	<div id="charts" class="row">   
-             <img src="images/charts.png">   		
+             <img src="/images/charts.png">   		
       	</div>
 
 
@@ -129,7 +115,7 @@
             <h2>Notifications</h2> 
 
             <div id=newsfeed>
-            <div class="notification"><h2>Welcome</h2></div>
+              <div class="notification"><h2>Welcome...loading notifications</h2></div>
             </div>
 
 
@@ -140,7 +126,7 @@
           <h4>Equipments</h4>
             <div class="eqi-strip">
               <div class="eqi-img">
-                <img src="images/sword.svg">
+                <img src="/images/sword.svg">
               </div>
               <div class="details">
                 <h3>Item Name</h3>
@@ -151,14 +137,14 @@
                   <p>2p+</p>
                 </div>
                 <div class="eqi-type-img">
-                  <img src="images/body-building.png">
+                  <img src="/images/body-building.png">
                 </div>
             </div>
             </div>
 
              <div class="eqi-strip">
               <div class="eqi-img">
-                <img src="images/sword.svg">
+                <img src="/images/sword.svg">
               </div>
               <div class="details">
                 <h3>Item Name</h3>
@@ -169,14 +155,14 @@
                   <p>2p+</p>
                 </div>
                 <div class="eqi-type-img">
-                  <img src="images/body-building.png">
+                  <img src="/images/body-building.png">
                 </div>
             </div>
             </div>
 
              <div class="eqi-strip">
               <div class="eqi-img">
-                <img src="images/sword.svg">
+                <img src="/images/sword.svg">
               </div>
               <div class="details">
                 <h3>Item Name</h3>
@@ -187,7 +173,7 @@
                   <p>2p+</p>
                 </div>
                 <div class="eqi-type-img">
-                  <img src="images/body-building.png">
+                  <img src="/images/body-building.png">
                 </div>
             </div>
             </div>
@@ -202,7 +188,7 @@
       		
           <div class="iteam-strip">
               <div class="iteam-img">
-                <img src="images/sword.svg">
+                <img src="/images/sword.svg">
               </div>
               <div class="details">
                 <h3>Item Name</h3>
@@ -219,7 +205,7 @@
 
              <div class="iteam-strip">
               <div class="iteam-img">
-                <img src="images/sword.svg">
+                <img src="/images/sword.svg">
               </div>
               <div class="details">
                 <h3>Item Name</h3>
@@ -235,7 +221,7 @@
 
              <div class="iteam-strip">
               <div class="iteam-img">
-                <img src="images/sword.svg">
+                <img src="/images/sword.svg">
               </div>
               <div class="details">
                 <h3>Item Name</h3>
@@ -251,7 +237,7 @@
 
              <div class="iteam-strip">
               <div class="iteam-img">
-                <img src="images/sword.svg">
+                <img src="/images/sword.svg">
               </div>
               <div class="details">
                 <h3>Item Name</h3>
@@ -267,7 +253,7 @@
 
              <div class="iteam-strip">
               <div class="iteam-img">
-                <img src="images/sword.svg">
+                <img src="/images/sword.svg">
               </div>
               <div class="details">
                 <h3>Item Name</h3>

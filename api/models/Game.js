@@ -8,9 +8,14 @@
 module.exports = {
 
   attributes: {
-  	player: {
+  	title: {
+  		type: 'string',
+  		unique: true,
+  		required: true
+  	},
+  	players : {
   		collection: 'player',
-  		via:'game'
+  		via: 'game'
   	}
   }
 };

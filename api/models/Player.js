@@ -13,13 +13,9 @@ module.exports = {
   			required: true,
   			defaultsTo: 'No Name Sam', //can use functions here
   		},
-  		backStory: {
+  		backstory: {
   			type: 'string',
   			size: 255, //lengith
-  		},
-  		isGm: {
-  			type:'boolean',
-  			defaultsTo: false
   		},
   		user: {
   			model: 'user'
@@ -28,25 +24,29 @@ module.exports = {
   			collection: 'inventory',
   			via: 'player'
   		},
+      maxpe: {
+        type: 'integer',
+        max: 99
+      },
+      maxme: {
+        type: 'integer',
+        max: 99
+      },
+      maxse: {
+        type: 'integer',
+        max: 99
+      },
+  		items: {
+  			collection:'item',
+  			via: 'players'
+  		},//,spells: {collection:'spell'},weapons: {collection:'weapon'}
+      game: {
+        model: 'game',
+        via: 'players'
+      }
   		ailment : {
   			type: 'string'
   		},
-  		maxpe: {
-  			type: 'int'
-  		},
-  		maxse: {
-  			type: 'int'
-  		},
-  		maxme: {
-  			type: 'int'
-  		}, 
-  		stats: {
-  			model: 'stats'
-  		},
-  		game: {
-  			model: 'game',
-  			via: 'player'
-  		}
   }
 
 };

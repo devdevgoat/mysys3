@@ -33,7 +33,7 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'homepage'
+       view: 'login'
   },
 
   'get /login': {
@@ -47,7 +47,14 @@ module.exports.routes = {
   'get /signup': {
     view: 'signup'
   },
-  'get /charactersheet': {
-    view: 'charactersheet'
-  }
+  'post /signup': 'UserController.signup',
+
+  'get /lobby': 'PlayerController.getPlayers',
+
+  'get /createplayer': 'PlayerController.createForm',
+  'post /createplayer': 'PlayerController.createplayer',
+
+  'get /charactersheet/:playerId': 'PlayerController.select'
+
+
 };
