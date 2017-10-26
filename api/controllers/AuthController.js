@@ -27,10 +27,11 @@ module.exports = {
             }
             req.logIn(user, function(err) {
                 if (err) res.send(err);
-                // return res.send({
+                //req.session.userId = user.id;
+                // return res.ok({
                 //     message: info.message,
                 //     user: user
-                // });
+                // }, '/pathtoview');
                 res.redirect('/readyplayer1');
             });
 

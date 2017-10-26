@@ -13,6 +13,10 @@ module.exports = {
   			required: true,
   			defaultsTo: 'No Name Sam', //can use functions here
   		},
+  		lvl: {
+  			type: 'int',
+  			defaultsTo: 1
+  		},
   		backstory: {
   			type: 'string',
   			size: 255, //lengith

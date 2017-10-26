@@ -14,7 +14,8 @@ module.exports = {
        }).exec(function (err, players) {
           if(err){return res.serverError(err);} 
        		sails.log(players);
-       		res.view('playerlist',{players:players});
+          req.session.userId = req.user.id;
+       		return res.view('playerlist',{players:players});
        });
 
        
@@ -38,7 +39,7 @@ module.exports = {
 						if(err){return res.serverError(err);}
 						sails.log('New player create with id',newplayer.id);
 						newplayer.save();
-						return res.redirect('/lobby');
+						return res.redirect('/readyplayer1');
 					});
 			});
 

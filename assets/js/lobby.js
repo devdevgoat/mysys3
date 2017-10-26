@@ -1,9 +1,9 @@
 
 
-function addGame(name,about,id) {
+function addGame(name,about,id,img) {
 	let html = 
 	  '<div class="card" style="width: 20rem;">\
-	    <img class="card-img-top" src="images/#" alt="Card image cap">\
+	    <img class="card-img-top" src="images/'+ img +'" alt="Card image cap">\
 	    <div class="card-body">\
 	      <h4 class="card-title">'+ name +'</h4>\
 	      <p class="card-text">'+ about +'</p>\
@@ -16,18 +16,17 @@ function addGame(name,about,id) {
 
 var options = {
 	params : {
-		where : {
 			'minLvl': {
-				">=": '<%=player.lvl%>'
+				">=": ''//need to pass this from server...
 			}
-		}
 	}
 };
 
  io.socket.on('connect', function(){
 	io.socket.get('/game', function(resData, jwres) { //plug in options here
+		alert(JSON.stringify(resData));
 		$.each(resData, function (k,v) {
-			addGame(v.name,v.about,v.id);
+			addGame(v.title,v.about,v.id,v.img,v.players.length);
 		});
 	});
   });
