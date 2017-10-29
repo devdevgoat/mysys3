@@ -25,7 +25,9 @@ var cssFilesToInject = [
 // (uses Grunt-style wildcard/glob/splat expressions)
 var jsFilesToInject = [
 
-  // Load sails.io before everything else
+  // Load jquery before everything else
+  'js/dependencies/jquery.min.js',
+  // Load sails.io next
   'js/dependencies/sails.io.js',
 
   // Dependencies like jQuery, or Angular are brought in here

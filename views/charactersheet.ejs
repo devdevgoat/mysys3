@@ -5,29 +5,29 @@
 <title><%= player.name %></title>
 <link rel="shortcut icon"  href="//images/.png">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
-
+<h4>Welcome to game <%=game.id%>, <%=data.player.name%></h4>
 <div id="wrapper">
 
-	<div class="row">
+  <div class="row">
     <div class="col-md-3" id="left-sidebar">
         <div id="profile-section" class="row"> 
-        	<div class="card">
-          	<div id="profile-pic">
+          <div class="card">
+            <div id="profile-pic">
               <div class="img-circle">
 
               </div>
-          		
-          	</div>
-          	<div class="details">
-          		<h3><%= player[0].name %></h3>
-          		<p><%= player[0].backstory %></p>
+              
+            </div>
+            <div class="details">
+              <h3><%= player.name %></h3>
+              <p><%= player.backstory %></p>
               <div class="pow">
                 <div class="powfill"></div>
               </div>
-          	</div> 
-        	</div>      	
+            </div> 
+          </div>        
         </div>
-    	<div id="players-section" class="row"> 
+      <div id="players-section" class="row"> 
           
           <div class="strip">
               <div class="img-circle"></div>
@@ -62,10 +62,10 @@
 
             
         </div>
-        	
+          
     </div>
     <div class="col-md-6" id="top-section">
-      	<div id="modifiers" class="row"> 
+        <div id="modifiers" class="row"> 
           <div class="col-xs-4 sec sec-1">
               <h1>15</h1>
               <img src="/images/body-building.png">
@@ -84,13 +84,13 @@
 
               <p>Super</p>
           </div>
-      	</div>
-      	<div id="charts" class="row">   
-             <img src="/images/charts.png">   		
-      	</div>
+        </div>
+        <div id="charts" class="row">   
+             <img src="/images/charts.png">       
+        </div>
 
 
-      	<div id="cards" class="row"> 
+        <div id="cards" class="row"> 
                   <div class="card">
                       <div class="img-circle">
                       </div>
@@ -107,10 +107,10 @@
                       <p>Info</p>
                   </div> 
 
-      	</div>
+        </div>
 
 
-      	<div id="notifications" class="row"> 
+        <div id="notifications" class="row"> 
 
             <h2>Notifications</h2> 
 
@@ -119,10 +119,10 @@
             </div>
 
 
-      	</div>
+        </div>
     </div>
     <div class="col-md-3" id="right-sidebar">
-      	<div id="equipments" class="row">
+        <div id="equipments" class="row">
           <h4>Equipments</h4>
             <div class="eqi-strip">
               <div class="eqi-img">
@@ -181,11 +181,11 @@
 
 
           
-      		
-      	</div>
-      	<div id="iteams" class="row">
+          
+        </div>
+        <div id="iteams" class="row">
           <h4>Iteams</h4>
-      		
+          
           <div class="iteam-strip">
               <div class="iteam-img">
                 <img src="/images/sword.svg">
@@ -267,7 +267,7 @@
             </div>
 
 
-      	</div>
+        </div>
     </div>
   </div>
 

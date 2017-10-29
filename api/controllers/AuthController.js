@@ -27,7 +27,7 @@ module.exports = {
             }
             req.logIn(user, function(err) {
                 if (err) res.send(err);
-                //req.session.userId = user.id;
+                req.session.user = user;
                 // return res.ok({
                 //     message: info.message,
                 //     user: user

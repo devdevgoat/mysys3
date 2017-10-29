@@ -17,10 +17,20 @@ module.exports = {
   		collection: 'player',
   		via: 'game'
   	},
-  	minlvl: {
-  		type: 'int',
-  		defaultsTo: 1
-  	}
+    minlvl: {
+      type: 'int',
+      defaultsTo: 1
+    },
+    about: {
+      type: 'string',
+      size: 10000
+    },
+    img: {
+      type:'string'
+    },
+    gm: {
+      model: 'user'
+    }
   }
 };
 

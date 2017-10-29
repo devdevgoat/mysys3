@@ -3,6 +3,7 @@
  *
  * @description :: Server-side logic for managing players
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
+
  */
 
 module.exports = {
@@ -14,7 +15,6 @@ module.exports = {
        }).exec(function (err, players) {
           if(err){return res.serverError(err);} 
        		sails.log(players);
-          req.session.userId = req.user.id;
        		return res.view('playerlist',{players:players});
        });
 
@@ -25,6 +25,8 @@ module.exports = {
     	req.file('avatar').upload({
 			  dirname: require('path').resolve(sails.config.appPath, 'assets/images/playerimgs/')
 			},function (err, uploadedFiles) {
+				let filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
+				console.log(filename);
 				sails.log('**** ', uploadedFiles);
 			  	if (err) {return res.negotiate(err);}
 				Player.create({
@@ -33,7 +35,7 @@ module.exports = {
 					maxpe: req.param('pe'),
 					maxme: req.param('me'),
 					maxse: req.param('se'),
-					image: 'playerimgs/'+uploadedFiles.name,
+					image: '/images/playerimgs/'+filename,
 					user: req.user
 					}).exec(function (err, newplayer) {
 						if(err){return res.serverError(err);}
@@ -49,14 +51,5 @@ module.exports = {
     	res.view('createplayer');
     },
 
-    select: function (req,res) {
-    	sails.log('player id:',req.param('playerId'));
-    	Player.find(req.param('playerId')).exec(function (err,player) {
-    		if(err){return res.serverError(err);}
-
-    		sails.log({player});
-    		res.view('charactersheet',{player:player});
-    	});
-    }
 };
 

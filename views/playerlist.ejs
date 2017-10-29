@@ -3,20 +3,31 @@
   .card-text {
     min-height: 150px;
   }
+  .card-img-top {
+    width: 250px;
+  }
 </style>
+
+
+<script type="text/javascript">
+    function selectPlayer(playerId) {
+    window.location='/lobby/'+playerId;
+  }
+</script>
 
 <div class="container">
 <h1>Welcome: <%=req.user.firstname%></h1>
 <a href=/createplayer>Create Player</a> | 
+<a href=/creategame>Creaet Game</a>| 
 <a href=/logout>Logout</a>
 
 <% _.each(players, function (player) { %>
   <div class="card" style="width: 20rem;">
-    <img class="card-img-top" src="images/goblin.jpg" alt="Card image cap">
+    <img class="card-img-top" src="<%=player.image%>" alt="Card image cap">
     <div class="card-body">
       <h4 class="card-title"><%=player.name%></h4>
       <p class="card-text"><%=player.backstory%></p>
-      <a href="#" onclick="selectPlayer('<%=player.id%>')" class="btn btn-primary">Choose Player</a>
+      <a href=# onclick="selectPlayer('<%=player.id%>')" class="btn btn-primary">Choose Player</a>
     </div>
   </div>
  <% }) %>

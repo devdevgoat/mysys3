@@ -8,7 +8,6 @@
 module.exports = {
 	
 	signup: function (req, res) {
-		sails.log('got post',req);
     	User.create({
     		firstname: req.param('firstname'),
     		lastname: req.param('lastname'),
@@ -20,7 +19,7 @@ module.exports = {
     		}
     		sails.log('New player create with id',newuser.id);
     		newuser.save();
-    		return res.redirect('/lobby');
+    		return res.redirect('/readyplayer1');
     	});
     }
 };

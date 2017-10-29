@@ -55,7 +55,12 @@ module.exports.routes = {
   'get /createplayer': 'PlayerController.createForm',
   'post /createplayer': 'PlayerController.createplayer',
 
-  'get /charactersheet/:playerId': 'PlayerController.select'
+  'get /game/:gameId/charactersheet/:playerId' : 'GameController.joinGame',
+  // 'get /charactersheet/:playerId': 'PlayerController.select'
 
+  'get /creategame' : {
+    view: 'creategame'
+  },
+  'post /creategame' : 'GameController.createGame'
 
 };
