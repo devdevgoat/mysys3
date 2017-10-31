@@ -168,8 +168,8 @@
           <% if(game.streamlink) {%>
           <p>Spectator Link: <a href="<%=game.streamlink %>"</p>
           <% } %>
-          <a href="#" onclick="selectGame('<%=session.player.id%>','<%=game.id%>')" class="btn btn-primary">Join Game with <%=session.player.name%></a>
-          <p class="text-muted">GM'd By the amazing <a href="#"><%= game.gm %></a></p>          
+          <a href="/g/<%=game.id%>" class="btn btn-primary">Join Game with <%=session.player.name%></a>
+          <p class="text-muted">GM'd By the amazing <a href="#"><%= game.gm.firstname + ' ' + game.gm.lastname%></a></p>          
         </div>
       </div>
       <hr>

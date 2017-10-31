@@ -31,6 +31,9 @@ module.exports.policies = {
    'PlayerController': {
      '*': 'isAuthenticated'
    }
+   // ,'GameController': {
+   //   '*': 'isReadyToPlay'
+   // }
   //  '*' :  'isAuthenticated'
 
 

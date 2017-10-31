@@ -30,6 +30,10 @@ module.exports = {
     },
     gm: {
       model: 'user'
+    },
+    notifications: {
+      collection: 'notification',
+      via: 'game'
     }
   }
 };

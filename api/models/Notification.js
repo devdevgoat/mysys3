@@ -18,9 +18,14 @@ module.exports = {
   	from: {
   		model: 'player'
   	},
-  	to: {
-  		collection: 'player'
-  	}
+  	game: {
+  		model: 'game',
+      required: true
+  	},
+    created: {
+      type: 'datetime',
+      defaultsTo: Date.now
+    }
   }
 };
 

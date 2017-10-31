@@ -34,7 +34,8 @@ module.exports.routes = {
 
   '/': {
        view: 'login'
-  },
+  }, 
+  'get /g/:gameId': 'GameController.joinGame',
 
   'get /login': {
        view: 'login'
