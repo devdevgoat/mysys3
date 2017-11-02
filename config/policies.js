@@ -30,10 +30,23 @@ module.exports.policies = {
   // //step 9 http://iliketomatoes.com/implement-passport-js-authentication-with-sails-js-0-10-2/
    'PlayerController': {
      '*': 'isAuthenticated'
+   },'InventoryController': {
+     '*': 'isAuthenticated'
+   },'ItemController': {
+     '*': 'isAuthenticated'
+   },'NotificationController': {
+     '*': 'isAuthenticated'
+   },'PlayeritemController': {
+     '*': 'isAuthenticated'
+   },'StatsController': {
+     '*': 'isAuthenticated'
+   },
+   'GameController': {
+     'getGames': 'isAuthenticated',
+     'joinGame': ['storeGameId','isAuthenticated','isReadyToPlay'],
+     'createGame': ['isAuthenticated'],
+
    }
-   // ,'GameController': {
-   //   '*': 'isReadyToPlay'
-   // }
   //  '*' :  'isAuthenticated'
 
 

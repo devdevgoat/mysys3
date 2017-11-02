@@ -7,18 +7,6 @@
 
 module.exports = {
 	getGames: function (req, res) {
-		if(req.session.gameId){
-			sails.log('Storing game id.');
-			return res.redirect('/g/'+req.session.gameId);
-		}
-		if(!req.session.user){
-			sails.log('No user id in session, need to log in');
-			return res.redirect('/login');
-		}
-		if(!req.param('playerId')){
-			sails.log('No player selected');
-			return res.redirect('/readyplayer1');
-		}
 		sails.log(req.param('playerId'));
 		Player.find(req.param('playerId')).exec(function (err, player) {
 			if(err){return res.serverError(err);} 
@@ -39,28 +27,11 @@ module.exports = {
 	},
 
 	joinGame: function (req,res) {
-		req.session.gameId = req.param('gameId');
-		if(!req.session.user ) {
-			return res.redirect('/login');
-		}
-		if(!req.session.player){
-			return res.redirect('/readyplayer1');
-		}
-
-		sails.log('User ' + req.session.user.id + ' is joining game ' + req.session.gameId + ' with player ' + req.session.player.name);
+		sails.log('User ' + req.session.user.name + ' is joining game ' + req.session.gameId + ' with player ' + req.session.player.name);
     	Game.find(req.param('gameId')).populate('notifications').exec(function (err,game) {
     		if(err){return res.serverError(err);}
     		req.session.game= game[0];
-    		console.log(game);
-    		data = {
-    			game: game,
-    			player: req.session.player
-    		};
-    		console.log(data);
-    		return res.view('charactersheet',{
-    			game: game[0],
-    			player: req.session.player
-    		});
+    		return res.view('charactersheet');
     	});
     },
 

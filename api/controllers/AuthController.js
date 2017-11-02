@@ -23,6 +23,7 @@ module.exports = {
                 //     message: info.message,
                 //     user: user
                 // });
+                console.log('User not logged in, redirecting to login');
                 return res.view('/login');
             }
             req.logIn(user, function(err) {
@@ -39,7 +40,8 @@ module.exports = {
     },
 
     logout: function(req, res) {
-        req.logout();
-        res.redirect('/');
+        req.session.destroy(function (err) {
+            res.redirect('/'); //Inside a callback… bulletproof!
+          });
     }
 };

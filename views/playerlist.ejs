@@ -8,13 +8,6 @@
   }
 </style>
 
-
-<script type="text/javascript">
-    function selectPlayer(playerId) {
-    window.location='/lobby/'+playerId;
-  }
-</script>
-
 <div class="container">
 <h1>Welcome: <%=req.user.firstname%></h1>
 <a href=/createplayer>Create Player</a> | 
@@ -27,7 +20,7 @@
     <div class="card-body">
       <h4 class="card-title"><%=player.name%></h4>
       <p class="card-text"><%=player.backstory%></p>
-      <a href=# onclick="selectPlayer('<%=player.id%>')" class="btn btn-primary">Choose Player</a>
+      <a href="/lobby/<%=player.id%>" class="btn btn-primary">Choose Player</a>
     </div>
   </div>
  <% }) %>

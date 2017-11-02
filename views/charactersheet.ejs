@@ -1,13 +1,54 @@
+<style type="text/css">
+    svg {}
+.hexfield {
+  fill: transparent;
+  stroke: yellowgreen;
+  stroke-width: 1;
+}
+.hexfield:focus {
+  outline:none;
+}
+.hexfield:hover {
+  fill: green;
+}
+.hexfield:active {
+  fill: red;
+  outline: none;
+}
+.hexfield.clicked{
+  fill: black;
+}
+</style>
+
+<script src="hexgridwidget.js" ></script>
+<script type="text/javascript">
+  var rebuild = function () {
+  var
+    radius = 20, 
+    columns = 10, 
+    rows = 10, 
+    cssClass = 'hexfield';
+
+  $('#map').empty().hexGridWidget(radius, columns, rows, cssClass).on('hexclick', function (e) { 
+     $('#logger').text('clicked [' + e.column + ',' + e.row + '] hex with center at [' + e.center.x + ',' + e.center.y + '] px');
+  });
+  $('#map .hexfield').click(function () {
+    this.classList.toggle('clicked');
+  });
+};
+$('#rebuild').click(rebuild);
+rebuild();
+</script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-<title><%= player.name %></title>
+<title><%= session.player.name %></title>
 <link rel="shortcut icon"  href="//images/.png">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
-<h4>Welcome to game <%=game.id%>, <%=data.player.name%></h4>
+<h4>Welcome to <%=session.game.title%>, <%=session.player.name%></h4>
 <div id="wrapper">
-
+<div id=map></div>
   <div class="row">
     <div class="col-md-3" id="left-sidebar">
         <div id="profile-section" class="row"> 
@@ -19,8 +60,8 @@
               
             </div>
             <div class="details">
-              <h3><%= player.name %></h3>
-              <p><%= player.backstory %></p>
+              <h3><%= session.player.name %></h3>
+              <p><%= session.player.backstory %></p>
               <div class="pow">
                 <div class="powfill"></div>
               </div>

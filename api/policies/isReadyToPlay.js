@@ -1,11 +1,12 @@
 module.exports = function(req, res, next) {
   
-	if(!req.session.user){
-		sails.log('No user id in session, need to log in');
-		return res.redirect('/login');
-		//return next
+	if(!req.session.player){
+		sails.log('No player selected, redirecting to readyplayer1.');
+		return res.redirect('/readyplayer1');
+		//return next()
 	}
     else{
-        return res.redirect('/login');
+    	console.log('HAS PLAYER! -isReadyToPlay');
+        return next();
     }
 };
