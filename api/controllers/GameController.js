@@ -14,14 +14,17 @@ module.exports = {
 				sails.log('couldn\'t find player ' + req.param('playerId'));
 				return res.redirect('/createplayer'); 
 			}
-			//set the player in the session
 			req.session.player = player[0];
-			//sails.log('User ' + req.session.user.id + ' selected player ' + player[0].name);
-			sails.log('Choose from on of these game:');
+			//does the player already have a game they want to join (via a link)
+			if(req.session.gameId){
+				sails.log('Already has game id, redirecting to game '+req.session.gameId);
+				return res.redirect('/g/'+req.session.gameId);
+			} 
+			//if not, then let them choose one
 			Game.find().populate('gm').exec(function (err, games) {
 	       		if(err){return res.serverError(err);} 
 	       		sails.log(games);
-	       		res.view('games',{games:games});
+	       		return res.view('games',{games:games});
        		});
 		});
 	},
@@ -37,17 +40,21 @@ module.exports = {
 
 
     createGame: function (req, res) {
-    	req.file('image').upload({
+    		req.file('image').upload({
 			  dirname: require('path').resolve(sails.config.appPath, 'assets/images/gameimages/')
 			},function (err, uploadedFiles) {
-				let filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
-				console.log(filename);
-				sails.log('**** ', uploadedFiles);
 			  	if (err) {return res.negotiate(err);}
+			  	if(uploadedFiles[0]){
+			  		var filename = '/images/gameimages/'+ uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
+					console.log(filename);
+					sails.log('**** ', uploadedFiles);
+			  	} else {
+			  		var filename = '#';
+			  	}
 				Game.create({
 					title: req.param('title'),
 					about: req.param('about'),
-					image: '/images/gameimages/'+filename,
+					image: filename,
 					gm: req.user
 					}).exec(function (err, newgame) {
 						if(err){return res.serverError(err);}
@@ -56,8 +63,6 @@ module.exports = {
 						return res.redirect('/readyplayer1'); //should take you straigh to gm board really
 					});
 			});
-
-    },
-
+	 }
 };
 
