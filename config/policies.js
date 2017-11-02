@@ -42,8 +42,8 @@ module.exports.policies = {
      '*': 'isAuthenticated'
    },
    'GameController': {
-     'getGames': 'isAuthenticated',
-     'joinGame': ['storeGameId','isAuthenticated','isReadyToPlay'],
+     'getGames': ['isAuthenticated','isReadyToPlay'],
+     'joinGame': ['paramaterCheck','storeGameId','isAuthenticated','isReadyToPlay'],
      'createGame': ['isAuthenticated'],
 
    }

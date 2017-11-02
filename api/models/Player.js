@@ -7,27 +7,27 @@
 
 module.exports = {
   attributes: {
-  		name: {
-  			type: 'string',
-  			size: 255, //lengith
-  			required: true,
-  			defaultsTo: 'No Name Sam', //can use functions here
-  		},
-  		lvl: {
-  			type: 'int',
-  			defaultsTo: 1
-  		},
-  		backstory: {
-  			type: 'string',
-  			size: 255, //lengith
-  		},
-  		user: {
-  			model: 'user'
-  		},
-  		inventory: {
-  			collection: 'inventory',
-  			via: 'player'
-  		},
+		name: {
+			type: 'string',
+			size: 255, //lengith
+			required: true,
+			defaultsTo: 'No Name Sam', //can use functions here
+		},
+		lvl: {
+			type: 'int',
+			defaultsTo: 1
+		},
+		backstory: {
+			type: 'string',
+			size: 255, //lengith
+		},
+		user: {
+			model: 'user'
+		},
+		inventory: {
+			collection: 'inventory',
+			via: 'player'
+		},
 		maxpe: {
 			type: 'integer',
 			max: 99
@@ -47,6 +47,10 @@ module.exports = {
 		ailment : {
 			type: 'string'
 		},
+    currentstats: {
+      model: 'stats',
+      via: 'player'
+    }
   }
 
 };

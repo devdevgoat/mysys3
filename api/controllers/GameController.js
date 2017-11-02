@@ -7,14 +7,6 @@
 
 module.exports = {
 	getGames: function (req, res) {
-		sails.log(req.param('playerId'));
-		Player.find(req.param('playerId')).exec(function (err, player) {
-			if(err){return res.serverError(err);} 
-			if(!player){
-				sails.log('couldn\'t find player ' + req.param('playerId'));
-				return res.redirect('/createplayer'); 
-			}
-			req.session.player = player[0];
 			//does the player already have a game they want to join (via a link)
 			if(req.session.gameId){
 				sails.log('Already has game id, redirecting to game '+req.session.gameId);
@@ -23,10 +15,8 @@ module.exports = {
 			//if not, then let them choose one
 			Game.find().populate('gm').exec(function (err, games) {
 	       		if(err){return res.serverError(err);} 
-	       		sails.log(games);
 	       		return res.view('games',{games:games});
        		});
-		});
 	},
 
 	joinGame: function (req,res) {

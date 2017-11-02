@@ -20,13 +20,13 @@
 }
 </style>
 
-<script src="hexgridwidget.js" ></script>
+<script src="/js/hexgridwidget.js" ></script>
 <script type="text/javascript">
   var rebuild = function () {
   var
     radius = 20, 
     columns = 10, 
-    rows = 10, 
+    rows = 5, 
     cssClass = 'hexfield';
 
   $('#map').empty().hexGridWidget(radius, columns, rows, cssClass).on('hexclick', function (e) { 
@@ -37,18 +37,55 @@
   });
 };
 $('#rebuild').click(rebuild);
+
+</script>
+
+<script>
+window.onload = function () {
 rebuild();
+var chart = new CanvasJS.Chart("chart", {
+ axisY:{
+      gridThickness: 0, 
+      maximum: 100       
+    },
+  axisX:{       
+    },
+  dataPointMaxWidth: 200,
+  backgroundColor:' #f7fafc',
+  data: [{
+    type: "bar", 
+    yValueFormatString: "#,###",
+    dataPoints: [
+      { label: "PE", y: 77 },
+      { label: "ME", y: 12 },
+      { label: "SE", y: 1 },
+    ]
+  }]
+});
+
+function updateChart(newDataPoints) {
+  var dps = chart.options.data[0].dataPoints;
+  for (var i = 0; i < newDataPoints.length; i++) {
+    boilerColor = newDataPoints[i].y < 10 ? "#FF2500" : newDataPoints[i].y <= 65 ? "#FF6000" : newDataPoints[i].y > 65 ? "#6B8E23 " : null;
+    dps[i] = {label: newDataPoints[i].label , y: newDataPoints[i].y, color: boilerColor};
+  }
+  chart.options.data[0].dataPoints = dps; 
+  chart.render();
+};
+updateChart(chart.options.data[0]);
+
+
+}
 </script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 <title><%= session.player.name %></title>
-<link rel="shortcut icon"  href="//images/.png">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 <h4>Welcome to <%=session.game.title%>, <%=session.player.name%></h4>
+<a href=#>NEED A LEAVE GAME LINK HERE</a>
 <div id="wrapper">
-<div id=map></div>
   <div class="row">
     <div class="col-md-3" id="left-sidebar">
         <div id="profile-section" class="row"> 
@@ -126,10 +163,12 @@ rebuild();
               <p>Super</p>
           </div>
         </div>
-        <div id="charts" class="row">   
-             <img src="/images/charts.png">       
+        <div id="chart" class="row"  style="height: 200px; width: 49%;float:left;">   
+                   
         </div>
-
+        <div id="map" class="row"  style="height: 200px; width: 49%; float:right;">   
+                   
+        </div>
 
         <div id="cards" class="row"> 
                   <div class="card">
