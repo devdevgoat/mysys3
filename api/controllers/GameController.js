@@ -24,7 +24,16 @@ module.exports = {
     	Game.find(req.param('gameId')).populate('notifications').exec(function (err,game) {
     		if(err){return res.serverError(err);}
     		req.session.game= game[0];
-    		return res.view('charactersheet');
+    		Player.find(req.session.player).exec(function (err, player) {
+    			if(err){return res.serverError(err);}
+    			player.game.add(req.session.game.id);
+    			player.save(function(err){
+			      if (err) { return res.serverError(err); }
+	    			return res.view('charactersheet');
+			    });
+    		});
+	    		
+	    		
     	});
     },
 
