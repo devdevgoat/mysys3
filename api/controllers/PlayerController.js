@@ -55,7 +55,7 @@ module.exports = {
 						});
 
 						sails.log('Generating Inventory');
-						Stats.create({
+						Inventory.create({
 							player: newplayer
 						}).exec(function (err, currentstats) {
 							if(err){return res.serverError(err);}

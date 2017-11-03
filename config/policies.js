@@ -31,7 +31,7 @@ module.exports.policies = {
    'PlayerController': {
      '*': 'isAuthenticated'
    },'InventoryController': {
-     '*': 'isAuthenticated'
+     '*': true//'isAuthenticated'
    },'ItemController': {
      '*': 'isAuthenticated'
    },'NotificationController': {

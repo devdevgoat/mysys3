@@ -20,17 +20,17 @@ module.exports = {
 	},
 
 	joinGame: function (req,res) {
-		sails.log('User ' + req.session.user.name + ' is joining game ' + req.session.gameId + ' with player ' + req.session.player.name);
-    	Game.find(req.param('gameId')).populate('notifications').exec(function (err,game) {
+		sails.log('User ' + req.user.id + ' is joining game ' + req.session.gameId + ' with player ' + req.session.player.name);
+    	Game.find(req.param('gameId')).populate('notifications').exec(function (err,selGame) {
     		if(err){return res.serverError(err);}
-    		req.session.game= game[0];
-    		Player.find(req.session.player).exec(function (err, player) {
+    		req.session.game= selGame[0];
+    		Player.find(req.session.player.id).populate('game').exec(function (err, player) {
     			if(err){return res.serverError(err);}
-    			player.game.add(req.session.game.id);
-    			player.save(function(err){
-			      if (err) { return res.serverError(err); }
-	    			return res.view('charactersheet');
-			    });
+    			console.log('found player:');
+    			console.log(player);
+    			console.log('found game: ');
+    			console.log(selGame);
+    			player.add(selGame);
     		});
 	    		
 	    		

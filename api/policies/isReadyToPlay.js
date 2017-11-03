@@ -1,5 +1,7 @@
 module.exports = function(req, res, next) {
-  	if(req.param('playerId')){
+  	if(req.session.player){ //didn't get a player id, did the player already have sone selected?
+		return next()
+	} else if(req.param('playerId')){
 		sails.log('Received playerId looking up player');
   		Player.find(req.param('playerId')).populate('currentstats').exec(function (err, player) {
 			if(err){return res.serverError(err);} 
@@ -12,9 +14,7 @@ module.exports = function(req, res, next) {
 			console.log(req.session.player);
 			return next();
 		});
-  	} else if(req.session.player){ //didn't get a player id, did the player already have sone selected?
-		return next()
-	} 
+  	}
     else{
     	sails.log('No player in session and no id provided, redirecting to readyplayer1. Dumping session');
 		console.log(req.session);

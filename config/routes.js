@@ -53,6 +53,8 @@ module.exports.routes = {
   'post /creategame' : 'GameController.createGame',
 
   'get /createitem' : {view: 'createitem'},
-  'post /createitem' : 'ItemController.createitem'
+  'post /createitem' : 'ItemController.createitem',
+
+  'post /giveitem' : 'InventoryController.addToInventory'
 
 };

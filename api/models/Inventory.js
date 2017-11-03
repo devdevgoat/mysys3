@@ -13,12 +13,7 @@ module.exports = {
       unique: true
   	},
   	item: {
-  		model: 'item'
-  	},
-  	quantity: {
-  		type: 'int',
-  		minimum: 0,
-  		defaultsTo: 1
+  		collection: 'item'
   	}
   }
 };
