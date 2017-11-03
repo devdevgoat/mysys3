@@ -50,6 +50,9 @@ module.exports.routes = {
   'post /createplayer': 'PlayerController.createplayer',
 
   'get /creategame' : {view: 'creategame'},
-  'post /creategame' : 'GameController.createGame'
+  'post /creategame' : 'GameController.createGame',
+
+  'get /createitem' : {view: 'createitem'},
+  'post /createitem' : 'ItemController.createitem'
 
 };

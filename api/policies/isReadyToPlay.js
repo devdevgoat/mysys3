@@ -8,6 +8,8 @@ module.exports = function(req, res, next) {
 				return res.redirect('/createplayer'); 
 			}
 			req.session.player = player[0];
+			console.log('user selected player:');
+			console.log(req.session.player);
 			return next();
 		});
   	} else if(req.session.player){ //didn't get a player id, did the player already have sone selected?

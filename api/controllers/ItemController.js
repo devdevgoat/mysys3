@@ -26,6 +26,33 @@ module.exports = {
     // Do stuff with task array
     var playerId = req.param('playerId');
 
-  }
+  },
+      createItem: function (req, res) {
+        req.file('image').upload({
+        dirname: require('path').resolve(sails.config.appPath, 'assets/images/itemimages/')
+      },function (err, uploadedFiles) {
+          if (err) {return res.negotiate(err);}
+          if(uploadedFiles[0]){
+            var filename = '/images/itemimages/'+ uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
+          console.log(filename);
+          sails.log('**** ', uploadedFiles);
+          } else {
+            var filename = '#';
+          }
+        Item.create({
+          name: req.param('name'),
+          desc: req.param('desc'),
+          amount: req.param('amount'),
+          type: req.param('type'),
+          target: req.param('target'),
+          action: req.param('action'),
+          image: filename
+          }).exec(function (err, newgame) {
+            if(err){return res.serverError(err);}
+            sails.log('New item created with id',newgame.id);
+            res.view('/createitem'); //should take you straigh to gm board really
+          });
+      });
+   }
 };
 

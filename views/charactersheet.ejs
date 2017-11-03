@@ -21,6 +21,7 @@
 </style>
 <script type="text/javascript">
   let game = "<%=session.game.id%>";
+  let playerId = "<%=session.player.id%>"
 </script>
 <script type="text/javascript">
   var rebuild = function () {
@@ -57,9 +58,9 @@ var chart = new CanvasJS.Chart("chart", {
     type: "bar", 
     yValueFormatString: "#,###",
     dataPoints: [
-      { label: "PE", y: 77 },
-      { label: "ME", y: 12 },
-      { label: "SE", y: 1 },
+      { label: "PE", y: <%= session.player.currentstats[0].pe %> },
+      { label: "ME", y: <%= session.player.currentstats[0].me %> },
+      { label: "SE", y: <%= session.player.currentstats[0].se %> },
     ]
   }]
 });
@@ -101,7 +102,7 @@ updateChart(chart.options.data[0]);
               <h3><%= session.player.name %></h3>
               <p><%= session.player.backstory %></p>
               <div class="pow">
-                <progress id="health" value="<%= session.player.currentstats.le %>" max="100"></progress>\
+                <progress id="health" value="<%= session.player.currentstats[0].le %>" max="100" style="width:100%;"></progress>
               </div>
             </div> 
           </div>        
@@ -146,19 +147,19 @@ updateChart(chart.options.data[0]);
     <div class="col-md-6" id="top-section">
         <div id="modifiers" class="row"> 
           <div class="col-xs-4 sec sec-1">
-              <h1>15</h1>
+              <h1><%= session.player.currentstats[0].pm %></h1>
               <img src="/images/body-building.png">
 
-              <p>Physical Modifier</p>
+              <p>Physical</p>
           </div>
           <div class="col-xs-4 sec sec-2">
-               <h1>4</h1>
+               <h1><%= session.player.currentstats[0].mm %></h1>
               <img src="/images/management.png">
 
-              <p>Mentel</p>
+              <p>Mental</p>
           </div>
           <div class="col-xs-4 sec sec-3">
-               <h1>2</h1>
+               <h1><%= session.player.currentstats[0].sm %></h1>
               <img src="/images/hold.png">
 
               <p>Super</p>
@@ -204,24 +205,8 @@ updateChart(chart.options.data[0]);
     </div>
     <div class="col-md-3" id="right-sidebar">
         <div id="equipments" class="row">
-          <h4>Equipments</h4>
-            <div class="eqi-strip">
-              <div class="eqi-img">
-                <img src="/images/sword.svg">
-              </div>
-              <div class="details">
-                <h3>Item Name</h3>
-                <h4>info</h4>
-              </div>
-              <div class="info">
-                <div class="badge badge-default">
-                  <p>2p+</p>
-                </div>
-                <div class="eqi-type-img">
-                  <img src="/images/body-building.png">
-                </div>
-            </div>
-            </div>
+          <h4>Equipment</h4>
+            
 
              <div class="eqi-strip">
               <div class="eqi-img">

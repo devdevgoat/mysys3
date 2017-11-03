@@ -30,6 +30,13 @@ alert(where);
 			addNotification(v.text);
 		});
 	});
+	io.socket.get('/player/'+playerId, function(resData, jwres) {
+		var items = resData.inventory.item;
+		$.each(items, function (k,v) {
+			alert('has item: 'v.name)
+			addItem(v);
+		});
+	});
   });
 /*	
 	Event listeners, this gets our new/changed data
@@ -67,6 +74,30 @@ function addPartyMember(partyMember) {
 	          </div>';
 	$(html).prependTo('#players-section').hide().slideDown();
 }
+
+function addItem(item,qty) {
+	let html = 
+			'<div class="eqi-strip">\
+              <div class="eqi-img">\
+                <img src="/images/'+item.img+'">\
+              </div>\
+              <div class="details">\
+                <h3>'=item.name='</h3>\
+                <h4>'+item.desc+'</h4>\
+              </div>\
+              <div class="info">\
+                <div class="badge badge-default">\
+                  <p>+'+item.amount+item.target' x'+qty+'</p>\
+                </div>\
+                <div class="eqi-type-img">\
+                  <img src="/images/body-building.png">\
+                </div>\
+            </div>\
+            </div>';
+    $(html).prependTo('#'+item.type).hide().slideDown();
+}
+
+
 
 $(document).ready(function() {
 

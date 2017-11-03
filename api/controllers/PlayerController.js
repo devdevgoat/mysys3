@@ -38,7 +38,9 @@ module.exports = {
 					user: req.user
 					}).exec(function (err, newplayer) {
 						if(err){return res.serverError(err);}
+
 						sails.log('New player create with id',newplayer.id);
+						sails.log('Generating stats');
 						Stats.create({
 							player: newplayer,
 							pe: newplayer.maxpe,
@@ -49,6 +51,14 @@ module.exports = {
 							sm: 0,
 							le: 100
 						}).exec(function (err, currentstats) {
+							if(err){return res.serverError(err);}
+						});
+
+						sails.log('Generating Inventory');
+						Stats.create({
+							player: newplayer
+						}).exec(function (err, currentstats) {
+							if(err){return res.serverError(err);}
 						});
 						return res.redirect('/readyplayer1');
 					});

@@ -9,7 +9,8 @@ module.exports = {
 
   attributes: {
   	player: {
-  		model: 'player'
+  		model: 'player',
+      unique: true
   	},
   	item: {
   		model: 'item'
