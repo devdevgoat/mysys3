@@ -101,7 +101,7 @@ updateChart(chart.options.data[0]);
               <h3><%= session.player.name %></h3>
               <p><%= session.player.backstory %></p>
               <div class="pow">
-                <div class="powfill"></div>
+                <progress id="health" value="<%= session.player.currentstats.le %>" max="100"></progress>\
               </div>
             </div> 
           </div>        

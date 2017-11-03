@@ -39,7 +39,17 @@ module.exports = {
 					}).exec(function (err, newplayer) {
 						if(err){return res.serverError(err);}
 						sails.log('New player create with id',newplayer.id);
-						newplayer.save();
+						Stats.create({
+							player: newplayer,
+							pe: newplayer.maxpe,
+							se: newplayer.maxse,
+							me: newplayer.maxme,
+							pm: 0,
+							mm: 0,
+							sm: 0,
+							le: 100
+						}).exec(function (err, currentstats) {
+						});
 						return res.redirect('/readyplayer1');
 					});
 			});

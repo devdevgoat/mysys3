@@ -50,8 +50,8 @@ module.exports = {
 	ailment : {
 		type: 'string'
 	},
-    currentstats: {
-      model: 'stats',
+    currentstats: { //https://sailsjs.com/documentation/concepts/models-and-orm/associations/one-to-one
+      collection: 'stats', //collectoin -> model will result in automatic sync by creating the stats and tying the player to it
       via: 'player'
     },
     currenttile: {
