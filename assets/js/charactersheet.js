@@ -5,9 +5,16 @@ var d = new Date();
 d.setHours(d.getHours() - hoursBack);
 let dFormated = '"' + d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate() + //month starts a 0 bc stupid
 				'T' + ("0" + d.getHours()).slice(-2) + ':' + d.getMinutes() + ':' + d.getSeconds() + '.' + d.getMilliseconds	() + 'Z"';
-let since = '?where={"createdAt":{">":'+dFormated+'}}';
+
+let sub = {
+	createdAt: {
+		'>': dFormated
+	},
+	game: game
+}
+let where = '?where='+JSON.stringify(sub);
+alert(where);
 //needs to look like this //?where={"createdAt":{">":"2017-10-25T17:29:17.669Z"}}
-//alert('test with this:'+'/notification'+since);
 
 
 /*
@@ -18,7 +25,7 @@ let since = '?where={"createdAt":{">":'+dFormated+'}}';
 */
 
   io.socket.on('connect', function(){
-	io.socket.get('/notification'+since, function(resData, jwres) {
+	io.socket.get('/notification'+where, function(resData, jwres) {
 		$.each(resData, function (k,v) {
 			addNotification(v.text);
 		});
@@ -49,7 +56,7 @@ function addNotification(text) {
 	$(html).prependTo('#newsfeed').hide().slideDown();
 }
 
-function addPartyMembert(partyMember) {
+function addPartyMember(partyMember) {
 	let html ='<div class="strip">\
 	              <div class="img-circle"><img src='+ partyMember.img +'></div>\
 	              <div class="details">\

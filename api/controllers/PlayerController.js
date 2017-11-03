@@ -22,11 +22,10 @@ module.exports = {
     },
 
     createPlayer: function (req, res) {
-    	req.file('avatar').upload({
+    		req.file('avatar').upload({
 			  dirname: require('path').resolve(sails.config.appPath, 'assets/images/playerimgs/')
 			},function (err, uploadedFiles) {
 				let filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
-				console.log(filename);
 				sails.log('**** ', uploadedFiles);
 			  	if (err) {return res.negotiate(err);}
 				Player.create({
@@ -44,6 +43,8 @@ module.exports = {
 						return res.redirect('/readyplayer1');
 					});
 			});
+    	
+    	
 
     },
 
