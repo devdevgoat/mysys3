@@ -22,6 +22,7 @@
 <script type="text/javascript">
   let game = "<%=session.game.id%>";
   let playerId = "<%=session.player.id%>"
+  let inventoryId = "<%=session.inventoryId%>"
 </script>
 <script type="text/javascript">
   var rebuild = function () {
@@ -85,16 +86,16 @@ updateChart(chart.options.data[0]);
 
 <title><%= session.player.name %></title>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
-<h4>Welcome to <%=session.game.title%>, <%=session.player.name%></h4>
-<a href=#>NEED A LEAVE GAME LINK HERE</a>
+<!-- <h4>Welcome to <%=session.game.title%>, <%=session.player.name%></h4>
+<a href=#>NEED A LEAVE GAME LINK HERE</a> -->
 <div id="wrapper">
   <div class="row">
     <div class="col-md-3" id="left-sidebar">
         <div id="profile-section" class="row"> 
           <div class="card">
             <div id="profile-pic">
-              <div class="img-circle">
-
+              <div>
+                <img src='<%=session.player.image%>' class="img-circle" />
               </div>
               
             </div>
@@ -179,133 +180,11 @@ updateChart(chart.options.data[0]);
     <div class="col-md-3" id="right-sidebar">
         <div id="equipments" class="row">
           <h4>Equipment</h4>
-            
 
-             <div class="eqi-strip">
-              <div class="eqi-img">
-                <img src="/images/sword.svg">
-              </div>
-              <div class="details">
-                <h3>Item Name</h3>
-                <h4>info</h4>
-              </div>
-              <div class="info">
-                <div class="badge badge-default">
-                  <p>2p+</p>
-                </div>
-                <div class="eqi-type-img">
-                  <img src="/images/body-building.png">
-                </div>
-            </div>
-            </div>
-
-             <div class="eqi-strip">
-              <div class="eqi-img">
-                <img src="/images/sword.svg">
-              </div>
-              <div class="details">
-                <h3>Item Name</h3>
-                <h4>info</h4>
-              </div>
-              <div class="info">
-                <div class="badge badge-default">
-                  <p>2p+</p>
-                </div>
-                <div class="eqi-type-img">
-                  <img src="/images/body-building.png">
-                </div>
-            </div>
-            </div>
-
-
-
-          
-          
         </div>
         <div id="iteams" class="row">
-          <h4>Iteams</h4>
-          
-          <div class="iteam-strip">
-              <div class="iteam-img">
-                <img src="/images/sword.svg">
-              </div>
-              <div class="details">
-                <h3>Item Name</h3>
-                <h4>info</h4>
-              </div>
-              <div class="info">
-                <div class="badge badge-default">
-                  <p>2p+</p>
-                </div>
-            </div>
-            </div>
-
-
-
-             <div class="iteam-strip">
-              <div class="iteam-img">
-                <img src="/images/sword.svg">
-              </div>
-              <div class="details">
-                <h3>Item Name</h3>
-                <h4>info</h4>
-              </div>
-              <div class="info">
-                <div class="badge badge-default">
-                  <p>2p+</p>
-                </div>
-            </div>
-            </div>
-
-
-             <div class="iteam-strip">
-              <div class="iteam-img">
-                <img src="/images/sword.svg">
-              </div>
-              <div class="details">
-                <h3>Item Name</h3>
-                <h4>info</h4>
-              </div>
-              <div class="info">
-                <div class="badge badge-default">
-                  <p>2p+</p>
-                </div>
-            </div>
-            </div>
-
-
-             <div class="iteam-strip">
-              <div class="iteam-img">
-                <img src="/images/sword.svg">
-              </div>
-              <div class="details">
-                <h3>Item Name</h3>
-                <h4>info</h4>
-              </div>
-              <div class="info">
-                <div class="badge badge-default">
-                  <p>2p+</p>
-                </div>
-            </div>
-            </div>
-
-
-             <div class="iteam-strip">
-              <div class="iteam-img">
-                <img src="/images/sword.svg">
-              </div>
-              <div class="details">
-                <h3>Item Name</h3>
-                <h4>info</h4>
-              </div>
-              <div class="info">
-                <div class="badge badge-default">
-                  <p>2p+</p>
-                </div>
-            </div>
-            </div>
-
-
+          <h4>Items</h4>
+    
         </div>
     </div>
   </div>

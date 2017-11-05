@@ -1,0 +1,40 @@
+    <% _.each(inventory.item, function (item) { %>
+              <%if(item.type == 'equipment'){%>
+              
+               <div class="eqi-strip">
+                <div class="eqi-img">
+                    <img src="/images/sword.png" style="width: 50px;">
+                </div>
+                <div class="details">
+                  <h3><%=item.name%></h3>
+                  <h4><%=item.desc%></h4>
+                </div>
+                <div class="info">
+                    <div class="badge badge-default">
+                       <p>+<%=item.amount%><%=item.target%></p>
+                    </div>
+                    <div class="eqi-type-img">
+                        <img src="/images/body-building.png">
+                    </div>
+              </div> 
+              </div>
+          <% }}) %>
+
+
+             <% _.each(inventory.item, function (item) { %>
+              <%if(item.type == 'item'){%>
+              <div class="iteam-strip">
+              <div class="iteam-img">
+                <img src="/images/sword.png" style="width: 50px;">
+              </div>
+              <div class="details">
+                <h3><%=item.name%></h3>
+                <h4><%=item.desc%></h4>
+              </div>
+              <div class="info">
+                <div class="badge badge-default">
+                  <p>+<%=item.amount%><%=item.target%></p>
+                </div>
+            </div>
+            </div>
+          <% }}) %>

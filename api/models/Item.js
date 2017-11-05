@@ -14,32 +14,27 @@ module.exports = {
   			required: true,
   			defaultsTo: 'Potion of Life'
   		},
-
   	desc: {
   			type: 'string',
   			size: 255, //lengith
   			required: true,
   			defaultsTo: 'Restores 1 LE'
   		},
-
   	ailment:{
         type: 'string',
         size: 255, //lengith
   		},
-
   	action: {
   		type: 'string',
   		defaultsTo: 'cure',
   		enum: 'cure,inflict'
   	},
-
   	target: {
   		type: 'string',
   		required: true,
   		defaultsTo: 'LE',
   		enum: 'LE,SE,ME,PE'
   	},
-
   	amount: {
   		type: 'integer',
   		required: true,

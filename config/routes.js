@@ -55,6 +55,7 @@ module.exports.routes = {
   'get /createitem' : {view: 'createitem'},
   'post /createitem' : 'ItemController.createitem',
 
+  'get /giveitem' :  'Item.listItems',
   'post /giveitem' : 'InventoryController.addToInventory'
 
 };

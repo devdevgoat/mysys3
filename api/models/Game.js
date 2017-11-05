@@ -34,10 +34,6 @@ module.exports = {
     notifications: {
       collection: 'notification',
       via: 'game'
-    },
-    tile: {
-      collection: 'tile',
-      via: 'game'
     }
   }
 };

@@ -1,15 +1,13 @@
 module.exports = function(req, res, next) {
-  	if(req.session.player){ //didn't get a player id, did the player already have sone selected?
-		return next()
-	} else if(req.param('playerId')){
+  	if(req.param('playerId')){
 		sails.log('Received playerId looking up player');
-  		Player.find(req.param('playerId')).populate('currentstats').exec(function (err, player) {
+  		Player.findOne(req.param('playerId')).populate('currentstats').exec(function (err, player) {
 			if(err){return res.serverError(err);} 
 			if(!player){ //player exists right?
 				sails.log('couldn\'t find player ' + req.param('playerId'));
 				return res.redirect('/createplayer'); 
 			}
-			req.session.player = player[0];
+			req.session.player = player;
 			console.log('user selected player:');
 			console.log(req.session.player);
 			return next();

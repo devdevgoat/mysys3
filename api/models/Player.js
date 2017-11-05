@@ -7,6 +7,9 @@
 
 module.exports = {
   attributes: {
+	user: {
+		model: 'user'
+	},
 	name: {
 		type: 'string',
 		size: 255, //lengith
@@ -20,13 +23,7 @@ module.exports = {
 	backstory: {
 		type: 'string',
 		size: 255, //lengith
-	},
-	user: {
-		model: 'user'
-	},
-	inventory: {
-		collection: 'inventory',
-		via: 'player'
+		defaultsTo: 'A new player'
 	},
 	maxpe: {
 		type: 'integer',
@@ -47,18 +44,43 @@ module.exports = {
 		model: 'game',
 		via: 'players'
 	},
-	ailment : {
-		type: 'string'
+	inventory: {
+		collection: 'inventory',
+		via: 'player'
+	},
+	le: {
+		type: 'integer',
+		max: 100,
+		defaultsTo: 100,
+		min: 0
 	},
     currentstats: { //https://sailsjs.com/documentation/concepts/models-and-orm/associations/one-to-one
       collection: 'stats', //collectoin -> model will result in automatic sync by creating the stats and tying the player to it
       via: 'player'
-    },
-    currenttile: {
-    	model: 'tile',
-    	via: 'players',
-    	defaultsTo: '[0,0]'
     }
+  },
+
+  afterCreate: function (newlyInsertedRecord, cb) {
+  	sails.log('Generating stats');
+	Stats.create({
+		player: newlyInsertedRecord,
+		pe: newlyInsertedRecord.maxpe,
+		se: newlyInsertedRecord.maxse,
+		me: newlyInsertedRecord.maxme,
+		pm: 0,
+		mm: 0,
+		sm: 0,
+		le: 100
+	}).exec(function (err, currentstats) {
+		if(err) return cb(err);
+		sails.log('Generating Inventory');
+		Inventory.create({
+			player: newlyInsertedRecord
+		}).exec(function (err, inventory) {
+			if(err){return res.serverError(err);}
+			cb();
+		});
+	});
   }
 
 };

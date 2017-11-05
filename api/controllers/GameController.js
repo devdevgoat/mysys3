@@ -7,11 +7,7 @@
 
 module.exports = {
 	getGames: function (req, res) {
-			//does the player already have a game they want to join (via a link)
-			if(req.session.gameId){
-				sails.log('Already has game id, redirecting to game '+req.session.gameId);
-				return res.redirect('/g/'+req.session.gameId);
-			} 
+			
 			//if not, then let them choose one
 			Game.find().populate('gm').exec(function (err, games) {
 	       		if(err){return res.serverError(err);} 
@@ -21,16 +17,25 @@ module.exports = {
 
 	joinGame: function (req,res) {
 		sails.log('User ' + req.user.id + ' is joining game ' + req.session.gameId + ' with player ' + req.session.player.name);
-    	Game.find(req.param('gameId')).populate('notifications').exec(function (err,selGame) {
+    	Game.findOne(req.param('gameId')).populate('notifications').populate('players').exec(function (err,selGame) {
     		if(err){return res.serverError(err);}
-    		req.session.game= selGame[0];
-    		Player.find(req.session.player.id).populate('game').exec(function (err, player) {
-    			if(err){return res.serverError(err);}
-    			console.log('found player:');
-    			console.log(player);
-    			console.log('found game: ');
+    		req.session.game= selGame;
+    		Player.findOne(req.session.player.id).populate('inventory').exec(function (err, selPlayer) {
+    			console.log('joingame found this game:');
     			console.log(selGame);
-    			player.add(selGame);
+    			if(err){return res.serverError(err);}
+    			//Inventory.findOne(selPlayer.inventory[0].id).populate('item').exec(function (err,inv) {
+				// 	selGame.players.add(selPlayer);
+	   // 			selGame.save();
+	   //  			console.log('sending these items:');
+	   //  			console.log(inv.item);
+	   //  			return res.view('charactersheet',{inventory:inv});
+				// });
+				req.session.inventoryId = selPlayer.inventory[0].id;
+				console.log('req.session.inventoryId:'+req.session.inventoryId);
+				selGame.players.add(selPlayer);
+	    		selGame.save();
+	    		return res.view('charactersheet');
     		});
 	    		
 	    		

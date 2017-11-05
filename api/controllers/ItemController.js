@@ -27,7 +27,7 @@ module.exports = {
     var playerId = req.param('playerId');
 
   },
-      createItem: function (req, res) {
+    createItem: function (req, res) {
         req.file('image').upload({
         dirname: require('path').resolve(sails.config.appPath, 'assets/images/itemimages/')
       },function (err, uploadedFiles) {
@@ -50,9 +50,18 @@ module.exports = {
           }).exec(function (err, newgame) {
             if(err){return res.serverError(err);}
             sails.log('New item created with id',newgame.id);
-            res.view('/createitem'); //should take you straigh to gm board really
+            res.view('createitem'); //should take you straigh to gm board really
           });
       });
+   },
+   listItems: function (req, res) {
+     Item.find().exec(function (err,items) {
+      if(err){return res.serverError(err);}
+       Player.find().exec(function (err,players) { //will need a game filter {game:req.session.game.id}
+         if(err){return res.serverError(err);}
+         res.view('giveitem',{items:items, players:players});
+      });
+     });
    }
 };
 

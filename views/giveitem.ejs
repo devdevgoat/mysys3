@@ -1,0 +1,19 @@
+<div class=container>
+        <br/>
+        <form id="giveitem" enctype="multipart/form-data"  method="post" action="/giveitem">
+                <select name=itemId size=10>
+                    Item
+                     <% _.each(items, function (item) { %>
+                        <option value="<%=item.id %>"><%=item.name%></option>
+                    <% }) %>
+                </select>
+                <select  name=playerId size=10>
+                    Name
+                     <% _.each(players, function (player) { %>
+                        <option value="<%=player.id %>"><%=player.name%></option>
+                    <% }) %>
+                </select>
+                <br>
+                <input type="submit" value="Give" /> 
+        </form>
+</div>

@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
   	player: {
   		model: 'player',
-      unique: true
+      	unique: true
   	},
   	item: {
   		collection: 'item'
