@@ -56,6 +56,9 @@ module.exports.routes = {
   'post /createitem' : 'ItemController.createitem',
 
   'get /giveitem' :  'Item.listItems',
-  'post /giveitem' : 'InventoryController.addToInventory'
+  'post /giveitem' : 'InventoryController.addToInventory',
+
+  'get /editstats' :  'StatsController.listPlayersForGm',
+  'post /editstats' : 'StatsController.updateStats'
 
 };

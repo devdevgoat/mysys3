@@ -16,30 +16,26 @@ module.exports = {
 	},
 
 	joinGame: function (req,res) {
-		sails.log('User ' + req.user.id + ' is joining game ' + req.session.gameId + ' with player ' + req.session.player.name);
-    	Game.findOne(req.param('gameId')).populate('notifications').populate('players').exec(function (err,selGame) {
-    		if(err){return res.serverError(err);}
-    		req.session.game= selGame;
-    		Player.findOne(req.session.player.id).populate('inventory').exec(function (err, selPlayer) {
-    			console.log('joingame found this game:');
-    			console.log(selGame);
-    			if(err){return res.serverError(err);}
-    			//Inventory.findOne(selPlayer.inventory[0].id).populate('item').exec(function (err,inv) {
-				// 	selGame.players.add(selPlayer);
-	   // 			selGame.save();
-	   //  			console.log('sending these items:');
-	   //  			console.log(inv.item);
-	   //  			return res.view('charactersheet',{inventory:inv});
-				// });
-				req.session.inventoryId = selPlayer.inventory[0].id;
-				console.log('req.session.inventoryId:'+req.session.inventoryId);
-				selGame.players.add(selPlayer);
-	    		selGame.save();
-	    		return res.view('charactersheet');
-    		});
-	    		
-	    		
-    	});
+		if(req.session.player){
+		    	Game.findOne(req.param('gameId')).populate('notifications').populate('players').exec(function (err,selGame) {
+		    		if(err){return res.serverError(err);}
+		    		req.session.game= selGame;
+		    		Player.findOne(req.session.player.id).populate('inventory').exec(function (err, selPlayer) {
+		    			console.log('joingame found this game:');
+		    			console.log(selGame);
+		    			if(err){return res.serverError(err);}
+						req.session.inventoryId = selPlayer.inventory[0].id;
+						console.log('req.session.inventoryId:'+req.session.inventoryId);
+						selGame.players.add(selPlayer);
+			    		selGame.save();
+			    		return res.view('charactersheet');
+		    		});
+			    		
+			    		
+		    	});
+		    } else {
+		    	return res.redirect('/readyplayer1');
+		    }
     },
 
 

@@ -25,17 +25,19 @@ let where = '?where='+JSON.stringify(sub);
 */
 
  io.socket.on('connect', function(){
-	// io.socket.get('/notification'+where, function(resData, jwres) {
-	// 	$.each(resData, function (k,v) {
-	// 		addNotification(v.text);
-	// 	});
-	// });
+
+ 	io.socket.get('/player/'+playerId, function(resData, jwres) {
+ 		
+ 		
+	});
+
   	io.socket.get('/inventory/'+inventoryId, function(resData, jwres) {
 		let items = resData.item;
 		$.each(items, function (k,v) {
 			addItem(v);
 		});
 	});
+
     io.socket.get('/game/'+game, function(resData, jwres) {
 		let players = resData.players;
 		let notifications = resData.notifications;
@@ -47,7 +49,6 @@ let where = '?where='+JSON.stringify(sub);
 		$.each(notifications, function (k,v) {
 			addNotification(v.text);
 		});
-
 	});
   }); //end on connect
 
@@ -63,21 +64,54 @@ let where = '?where='+JSON.stringify(sub);
 		"id":"59efd3a0fa1cbbc8032a307f"},
 		"id":"59efd3a0fa1cbbc8032a307f"}
 */
-io.socket.on('notification', function (event) {//not sure why this is working
-		addNotification(event.data.text);
-});
+// io.socket.on('notification', function (event) {//not sure why this is working
+// 		addNotification(event.data.text);
+// });
 
 io.socket.on('inventory', function (event) {
 		addItem(event.added);
 });
 
 io.socket.on('player', function (event) {
-		addItem(event.added);
+	if(event.verb == 'updated'){
+		if (event.attribute == 'currentstats') {
+			switch (updated) {
+			    case 'pe':
+			      updateStat('0',updated.pe);
+			      break;
+			    case 'me':
+			      updateStat('1',updated.me);
+			      break;
+			    case 'se':
+			      updateStat('2',updated.se);
+			      break;
+			    default:
+			      console.warn('Unrecognized socket event (`%s`) from server:',event.verb, event);
+			  }
+	    }
+	}
 });
 
+
 io.socket.on('game', function (event) { //need to decifer between player adds and notifications?
-	alert(event);
-		addNotification(event.data.text);
+	// {"id":"59fdd1439aee4e031e61f91f",
+	// "verb":"addedTo",
+	//"attribute" :"notifications",
+	// "addedId":"59fef31ba264a60e2a88e5c1",
+	// "added":{"game":"59fdd1439aee4e031e61f91f",
+	// "text":"Finn woke up2000",
+	// "createdAt":"2017-11-05T11:16:43.488Z",
+	// "updatedAt":"2017-11-05T11:16:43.488Z",
+	// "id":"59fef31ba264a60e2a88e5c1"}}
+
+	if(event.verb == 'addedTo'){
+		if (event.attribute == 'notifications') {
+			addNotification(event.added.text);
+	    }	 	
+		if (event.attribute == 'players') {
+			addPartyMember(event.added);
+	    }
+	}
 });
 
 
@@ -125,6 +159,22 @@ function addItem(item) {
             </div>\
             </div>';
     $(html).appendTo('#'+div).hide().slideDown();
+}
+
+function updateStat(stat,value) {
+	  // var dps = chart.options.data[0].dataPoints;
+	  // for (var i = 0; i < newDataPoints.length; i++) {
+	  //   boilerColor = newDataPoints[i].y < 10 ? "#FF2500" : newDataPoints[i].y <= 65 ? "#FF6000" : newDataPoints[i].y > 65 ? "#6B8E23 " : null;
+	  //   dps[i] = {label: newDataPoints[i].label , y: newDataPoints[i].y, color: boilerColor};
+	  // }
+	  // chart.options.data[0].dataPoints = dps; 
+
+	// let barColor = value < 10 ? "#FF2500" : value <= 65 ? "#FF6000" : value > 65 ? "#6B8E23" : null;
+	// let dataPoint = {label: stat , y: value, color: barColor};
+	var data = chart.options.data[0].dataPoints[0];
+	data.lable[stat].y = value; 
+	data.lable[stat].color = barColor; 
+  	chart.render();
 }
 
 

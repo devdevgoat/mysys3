@@ -24,6 +24,11 @@ module.exports = {
   		model: 'game',
       required: true
   	}
+  },
+
+  afterCreate: function (newlyCreatedRecord, cb) {
+    Game.publishAdd(newlyCreatedRecord.game,'notifications',newlyCreatedRecord);
+    cb();
   }
 };
 

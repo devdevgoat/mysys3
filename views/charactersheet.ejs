@@ -21,8 +21,9 @@
 </style>
 <script type="text/javascript">
   let game = "<%=session.game.id%>";
-  let playerId = "<%=session.player.id%>"
-  let inventoryId = "<%=session.inventoryId%>"
+  let playerId = "<%=session.player.id%>";
+  let currentstats = "<%=session.player.currentstats[0].id%>";
+  let inventoryId = "<%=session.inventoryId%>";
 </script>
 <script type="text/javascript">
   var rebuild = function () {
@@ -45,37 +46,35 @@ $('#rebuild').click(rebuild);
 
 <script>
 window.onload = function () {
-rebuild();
-var chart = new CanvasJS.Chart("chart", {
- axisY:{
-      gridThickness: 0, 
-      maximum: 100       
-    },
-  axisX:{       
-    },
-  dataPointMaxWidth: 200,
-  backgroundColor:' #f7fafc',
-  data: [{
-    type: "bar", 
-    yValueFormatString: "#,###",
-    dataPoints: [
-      { label: "PE", y: <%= session.player.currentstats[0].pe %> },
-      { label: "ME", y: <%= session.player.currentstats[0].me %> },
-      { label: "SE", y: <%= session.player.currentstats[0].se %> },
-    ]
-  }]
-});
+  rebuild(); 
+//should switch to chart.js?
+//https://www.npmjs.com/package/chart.js
+  // var chart = new CanvasJS.Chart("chart", {
+  //    axisY:{
+  //         gridThickness: 0, 
+  //         maximum: 100       
+  //       },
+  //     axisX:{       
+  //       },
+  //     dataPointMaxWidth: 200,
+  //     backgroundColor:' #f7fafc',
+  //     data: [{
+  //       type: "bar", 
+  //       yValueFormatString: "#,###",
+  //       dataPoints: [
+  //         { label: "PE", y: <%= session.player.currentstats[0].pe %> },
+  //         { label: "ME", y: <%= session.player.currentstats[0].me %> },
+  //         { label: "SE", y: <%= session.player.currentstats[0].se %> },
+  //       ]
+  //     }]
+  //   });
+  // chart.render();
 
-function updateChart(newDataPoints) {
-  var dps = chart.options.data[0].dataPoints;
-  for (var i = 0; i < newDataPoints.length; i++) {
-    boilerColor = newDataPoints[i].y < 10 ? "#FF2500" : newDataPoints[i].y <= 65 ? "#FF6000" : newDataPoints[i].y > 65 ? "#6B8E23 " : null;
-    dps[i] = {label: newDataPoints[i].label , y: newDataPoints[i].y, color: boilerColor};
-  }
-  chart.options.data[0].dataPoints = dps; 
-  chart.render();
-};
-updateChart(chart.options.data[0]);
+// function updateChart(newDataPoints) {
+
+//   chart.render();
+// };
+// updateChart(chart.options.data[0]);
 
 
 }

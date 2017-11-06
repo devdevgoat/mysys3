@@ -1,0 +1,23 @@
+<div class=container>
+        <br/>
+        <form id="editstats" enctype="multipart/form-data"  method="post" action="/editstats">
+                <select  name=statsid size=10>
+                    Name
+                     <% _.each(players, function (player) { %>
+                        <option value="<%=player.currentstats[0].id %>"><%=player.name%></option>
+                    <% }) %>
+                </select>
+                <br>
+                <div>
+                    <input type="radio" name="stat" value="pe">PE
+                    <input type="radio" name="stat" value="se">SE
+                    <input type="radio" name="stat" value="me">ME
+                    <input type="radio" name="stat" value="pm">PM
+                    <input type="radio" name="stat" value="mm">MM
+                    <input type="radio" name="stat" value="sm">SM
+                </div>
+
+                    <input type="text" name="val" length=3 />
+                <input type="submit" value="Update" /> 
+        </form>
+</div>
