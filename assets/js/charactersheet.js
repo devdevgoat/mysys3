@@ -26,30 +26,44 @@ let where = '?where='+JSON.stringify(sub);
 
  io.socket.on('connect', function(){
 
- 	io.socket.get('/player/'+playerId, function(resData, jwres) {
- 		
- 		
-	});
+		io.socket.get('/player/'+playerId, function(resData, jwres) {
+			/*{"inventory":[{"player":"59fe6720ce5ea5d02791ae42","createdAt":"2017-11-05T01:19:28.114Z",
+			"updatedAt":"2017-11-05T01:21:06.651Z","id":"59fe6720ce5ea5d02791ae44"}],
+			"currentstats":[{"player":"59fe6720ce5ea5d02791ae42","pe":"32","se":"11","me":"12","pm":"0","mm":"0","sm":"0","le":"100",
+			"createdAt":"2017-11-05T01:19:28.112Z","updatedAt":"2017-11-07T01:35:48.999Z","id":"59fe6720ce5ea5d02791ae43"}],
+			"user":{"firstname":"Russell","lastname":"Lamb","email":"russell.w.lamb@gmail.com",
+			"createdAt":"2017-11-04T14:39:37.799Z","updatedAt":"2017-11-04T14:39:37.813Z","id":"59fdd1299aee4e031e61f91e"},
+			"game":{"title":"hive mind","about":"get to work","image":"#","gm":"59feea65ce5ea5d02791ae46","minlvl":"1",
+			"createdAt":"2017-11-05T10:40:19.762Z","updatedAt":"2017-11-07T01:36:24.931Z","id":"59feea93ce5ea5d02791ae4a"},
+			"name":"yuyu","backstory":"888","maxpe":8,"maxme":8,"maxse":8,"image":"/images/playerimgs/16660b27-e9c4-4215-9544-89c2e74fb2ce.JPG","lvl":"1","le":100,"createdAt":"2017-11-05T01:19:28.108Z","updatedAt":"2017-11-07T01:36:24.935Z","id":"59fe6720ce5ea5d02791ae42"}*/
 
-  	io.socket.get('/inventory/'+inventoryId, function(resData, jwres) {
-		let items = resData.item;
-		$.each(items, function (k,v) {
-			addItem(v);
 		});
-	});
 
-    io.socket.get('/game/'+game, function(resData, jwres) {
-		let players = resData.players;
-		let notifications = resData.notifications;
-		$.each(players, function (k,v) {
-			if(v.id!=playerId){
-				addPartyMember(v);
-			}
+			io.socket.get('/inventory/'+inventoryId, function(resData, jwres) {
+			let items = resData.item;
+			$.each(items, function (k,v) {
+				addItem(v);
+			});
 		});
-		$.each(notifications, function (k,v) {
-			addNotification(v.text);
+
+			io.socket.get('/game/'+game, function(resData, jwres) {
+			let players = resData.players;
+			let notifications = resData.notifications;
+			let npcs = resData.npcs;
+			$.each(players, function (k,v) {
+				if(v.id!=playerId){
+					addPartyMember(v);
+				}
+			});
+			$.each(notifications, function (k,v) {
+				addNotification(v.text);
+			});
+			$.each(npcs, function (k,v) {
+				if(v.id!=playerId){
+					addNPC(v);
+				}
+			});
 		});
-	});
   }); //end on connect
 
 
@@ -71,25 +85,15 @@ let where = '?where='+JSON.stringify(sub);
 io.socket.on('inventory', function (event) {
 		addItem(event.added);
 });
+/*
+{"verb":"updated","data":{"pe":"32"},"id":"59fe6720ce5ea5d02791ae43"}
+*/
+io.socket.on('stats', function (event) {
+	$.each(event.data, function (k,v) {
+		updateStat(k,v);
+	});
+	
 
-io.socket.on('player', function (event) {
-	if(event.verb == 'updated'){
-		if (event.attribute == 'currentstats') {
-			switch (updated) {
-			    case 'pe':
-			      updateStat('0',updated.pe);
-			      break;
-			    case 'me':
-			      updateStat('1',updated.me);
-			      break;
-			    case 'se':
-			      updateStat('2',updated.se);
-			      break;
-			    default:
-			      console.warn('Unrecognized socket event (`%s`) from server:',event.verb, event);
-			  }
-	    }
-	}
 });
 
 
@@ -162,22 +166,18 @@ function addItem(item) {
 }
 
 function updateStat(stat,value) {
-	  // var dps = chart.options.data[0].dataPoints;
-	  // for (var i = 0; i < newDataPoints.length; i++) {
-	  //   boilerColor = newDataPoints[i].y < 10 ? "#FF2500" : newDataPoints[i].y <= 65 ? "#FF6000" : newDataPoints[i].y > 65 ? "#6B8E23 " : null;
-	  //   dps[i] = {label: newDataPoints[i].label , y: newDataPoints[i].y, color: boilerColor};
-	  // }
-	  // chart.options.data[0].dataPoints = dps; 
 
-	// let barColor = value < 10 ? "#FF2500" : value <= 65 ? "#FF6000" : value > 65 ? "#6B8E23" : null;
-	// let dataPoint = {label: stat , y: value, color: barColor};
-	var data = chart.options.data[0].dataPoints[0];
-	data.lable[stat].y = value; 
-	data.lable[stat].color = barColor; 
-  	chart.render();
+	 $('#'+stat).html(value);
 }
 
-
+function	addNPC(npc){
+	let html = 
+	'<div class="card">\
+		<img  src="https://vignette2.wikia.nocookie.net/finalfantasy/images/5/50/Hedgehogpie-FFIX.jpg/revision/latest?cb=20111127215513">\
+		<p>Monster Name</p>\
+	</div> ';
+	$(html).appendTo('#cards');
+}
 
 $(document).ready(function() {
 

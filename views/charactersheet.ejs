@@ -29,7 +29,7 @@
   var rebuild = function () {
   var
     radius = 20, 
-    columns = 10, 
+    columns = 20, 
     rows = 5, 
     cssClass = 'hexfield';
 
@@ -47,36 +47,6 @@ $('#rebuild').click(rebuild);
 <script>
 window.onload = function () {
   rebuild(); 
-//should switch to chart.js?
-//https://www.npmjs.com/package/chart.js
-  // var chart = new CanvasJS.Chart("chart", {
-  //    axisY:{
-  //         gridThickness: 0, 
-  //         maximum: 100       
-  //       },
-  //     axisX:{       
-  //       },
-  //     dataPointMaxWidth: 200,
-  //     backgroundColor:' #f7fafc',
-  //     data: [{
-  //       type: "bar", 
-  //       yValueFormatString: "#,###",
-  //       dataPoints: [
-  //         { label: "PE", y: <%= session.player.currentstats[0].pe %> },
-  //         { label: "ME", y: <%= session.player.currentstats[0].me %> },
-  //         { label: "SE", y: <%= session.player.currentstats[0].se %> },
-  //       ]
-  //     }]
-  //   });
-  // chart.render();
-
-// function updateChart(newDataPoints) {
-
-//   chart.render();
-// };
-// updateChart(chart.options.data[0]);
-
-
 }
 </script>
 
@@ -120,47 +90,31 @@ window.onload = function () {
     <div class="col-md-6" id="top-section">
         <div id="modifiers" class="row"> 
           <div class="col-xs-4 sec sec-1">
-              <h1><%= session.player.currentstats[0].pm %></h1>
+              <h1 id=pe ><%= session.player.currentstats[0].pm %></h1>
               <img src="/images/body-building.png">
 
               <p>Physical</p>
           </div>
           <div class="col-xs-4 sec sec-2">
-               <h1><%= session.player.currentstats[0].mm %></h1>
+               <h1 id=me ><%= session.player.currentstats[0].mm %></h1>
               <img src="/images/management.png">
 
               <p>Mental</p>
           </div>
           <div class="col-xs-4 sec sec-3">
-               <h1><%= session.player.currentstats[0].sm %></h1>
+               <h1 d=se ><%= session.player.currentstats[0].sm %></h1>
               <img src="/images/hold.png">
 
               <p>Super</p>
           </div>
         </div>
-        <div id="chart" class="row"  style="height: 200px; width: 49%;float:left;">   
-                   
-        </div>
-        <div id="map" class="row"  style="height: 200px; width: 49%; float:right;">   
+        <div id="map" class="row"  style="height: 200px; width: 100%; float:right;">   
                    
         </div>
 
         <div id="cards" class="row"> 
-                  <div class="card">
-                      <div class="img-circle">
-                      </div>
-                      <p>Info</p>
-                  </div> 
-                    <div class="card">
-                      <div class="img-circle">
-                      </div>
-                      <p>Info</p>
-                  </div> 
-                    <div class="card">
-                      <div class="img-circle">
-                      </div>
-                      <p>Info</p>
-                  </div> 
+                 
+                    
 
         </div>
 
