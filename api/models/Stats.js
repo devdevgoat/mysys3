@@ -40,6 +40,19 @@ module.exports = {
   		type: 'int',
   		min: 0
   	}
+  },
+  beforeUpdate: function (toUpdate, cb) {
+    console.log(toUpdate);
+  },
+  afterUpdate: function (values,cb){
+    newStats = {
+      id: values.id,
+      pe: values.pe+values.pm,
+      se: values.se+values.sm,
+      me: values.me+values.mm
+    }
+    Stats.publishUpdate(values.id, newStats);
+    cb();
   }
 };
 

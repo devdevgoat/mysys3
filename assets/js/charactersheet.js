@@ -6,12 +6,13 @@ d.setHours(d.getHours() - hoursBack);
 let dFormated = '"' + d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate() + //month starts a 0 bc stupid
 				'T' + ("0" + d.getHours()).slice(-2) + ':' + d.getMinutes() + ':' + d.getSeconds() + '.' + d.getMilliseconds	() + 'Z"';
 
-let sub = {
-	createdAt: {
-		'>': dFormated
-	},
-	game: game
-}
+let sub = 
+						{
+							createdAt: {
+								'>': dFormated
+							},
+							game: game
+						}
 let where = '?where='+JSON.stringify(sub);
 //alert(where);
 //needs to look like this //?where={"createdAt":{">":"2017-10-25T17:29:17.669Z"}}
@@ -36,7 +37,14 @@ let where = '?where='+JSON.stringify(sub);
 			"game":{"title":"hive mind","about":"get to work","image":"#","gm":"59feea65ce5ea5d02791ae46","minlvl":"1",
 			"createdAt":"2017-11-05T10:40:19.762Z","updatedAt":"2017-11-07T01:36:24.931Z","id":"59feea93ce5ea5d02791ae4a"},
 			"name":"yuyu","backstory":"888","maxpe":8,"maxme":8,"maxse":8,"image":"/images/playerimgs/16660b27-e9c4-4215-9544-89c2e74fb2ce.JPG","lvl":"1","le":100,"createdAt":"2017-11-05T01:19:28.108Z","updatedAt":"2017-11-07T01:36:24.935Z","id":"59fe6720ce5ea5d02791ae42"}*/
-
+			let stats = resData.currentstats;
+			alert(JSON.stringify(stats));
+			let statData = {
+				pe: stats.pe+stats.pm,
+				se: stats.se+stats.sm,
+				me: stats.me+stats.mm
+			}
+			updateStat(statData);
 		});
 
 			io.socket.get('/inventory/'+inventoryId, function(resData, jwres) {
@@ -89,11 +97,9 @@ io.socket.on('inventory', function (event) {
 {"verb":"updated","data":{"pe":"32"},"id":"59fe6720ce5ea5d02791ae43"}
 */
 io.socket.on('stats', function (event) {
-	$.each(event.data, function (k,v) {
-		updateStat(k,v);
-	});
-	
-
+	if(event.verb == 'updated'){
+		updateStat(event.data);
+	}
 });
 
 
@@ -165,16 +171,17 @@ function addItem(item) {
     $(html).appendTo('#'+div).hide().slideDown();
 }
 
-function updateStat(stat,value) {
-
-	 $('#'+stat).html(value);
+function updateStat(data) {
+	$.each(data, function (k,v) {
+		$('#'+k).html(v);
+	} )
 }
 
 function	addNPC(npc){
 	let html = 
 	'<div class="card">\
-		<img  src="https://vignette2.wikia.nocookie.net/finalfantasy/images/5/50/Hedgehogpie-FFIX.jpg/revision/latest?cb=20111127215513">\
-		<p>Monster Name</p>\
+		<img  src="/images/npcs/"'+npc.img+'>\
+		<p>'+npc.name+'</p>\
 	</div> ';
 	$(html).appendTo('#cards');
 }

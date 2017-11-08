@@ -8,16 +8,19 @@
 
 module.exports = {
 	 getPlayers: function(req, res) {
-       var players = Player.find({
-       	where: {
-       		user: req.user.id
-       	}
-       }).exec(function (err, players) {
-          if(err){return res.serverError(err);} 
-       		sails.log(players);
-       		return res.view('playerlist',{players:players});
-       });
-
+		if(req.user){
+			var players = Player.find({
+				where: {
+					user: req.user.id
+				}
+			}).exec(function (err, players) {
+				if(err){return res.serverError(err);} 
+					sails.log(players);
+					return res.view('playerlist',{players:players});
+			});
+		} else {
+			return res.redirect('/login');
+		}
        
     },
 

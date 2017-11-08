@@ -18,6 +18,17 @@
 .hexfield.clicked{
   fill: black;
 }
+#newsfeed {
+  height: 500px;
+  overflow-y: scroll;
+  padding: 0 2px 0 2px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
 </style>
 <script type="text/javascript">
   let game = "<%=session.game.id%>";
@@ -71,9 +82,7 @@ window.onload = function () {
             <div class="details">
               <h3><%= session.player.name %></h3>
               <p><%= session.player.backstory %></p>
-              <div class="pow">
                 <progress id="health" value="<%= session.player.currentstats[0].le %>" max="100" style="width:100%;"></progress>
-              </div>
             </div> 
           </div>        
         </div>
