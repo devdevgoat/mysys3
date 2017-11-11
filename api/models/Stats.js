@@ -41,15 +41,13 @@ module.exports = {
   		min: 0
   	}
   },
-  beforeUpdate: function (toUpdate, cb) {
-    console.log(toUpdate);
-  },
+  
   afterUpdate: function (values,cb){
     newStats = {
       id: values.id,
-      pe: values.pe+values.pm,
-      se: values.se+values.sm,
-      me: values.me+values.mm
+      pe: parseInt(values.pe)+parseInt(values.pm),
+      se: parseInt(values.se)+parseInt(values.sm),
+      me: parseInt(values.me)+parseInt(values.mm)
     };
     console.log('sending new stats');
     console.log(newStats);

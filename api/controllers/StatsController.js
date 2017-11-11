@@ -16,12 +16,16 @@ module.exports = {
 		console.log('searching for '+statsid);
 		Stats.findOne(statsid).exec(function (err, currStats) {
 			if (err) return res.serverError(err);
-			updateTo[stat] = parseInt(currStats[stat]) + parseInt(val);
-			console.log(updateTo);
-			Stats.update(statsid, {updateTo}).exec(function (err, updated) {
+			let newVal = parseInt(currStats[stat]) + parseInt(val);
+			updateTo[stat] = newVal.toString();
+			console.log('found stats: ');
+			console.log(currStats);
+			Stats.update(statsid, updateTo).exec(function (err, updated) {
 				if (err) return res.serverError(err);
 				//Stats.publishUpdate(statsid, updateTo);
-				Stats.save();
+
+			console.log('Updated stats');
+			console.log(updated);
 			});
 		});
 
