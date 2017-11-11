@@ -50,7 +50,9 @@ module.exports = {
       pe: values.pe+values.pm,
       se: values.se+values.sm,
       me: values.me+values.mm
-    }
+    };
+    console.log('sending new stats');
+    console.log(newStats);
     Stats.publishUpdate(values.id, newStats);
     cb();
   }

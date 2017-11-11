@@ -12,53 +12,25 @@ module.exports = {
    		let stat = req.param('stat');
    		let val = req.param('val');
    		let updateTo = {};
-   		updateTo[stat]=req.param('val');
-		switch(stat){ //gotta be a better way to do this...
-			case 'pe':
-				Stats.update(statsid,{pe:val}).exec(function (err, updated) {
-   					if(err) return res.serverError(err);
-   					Stats.publishUpdate(statsid,{pe:val});
-   				});
-			break;
-			case 'me':
-				Stats.update(statsid,{me:val}).exec(function (err, updated) {
-   					if(err) return res.serverError(err);
-   					Stats.publishUpdate(statsid,{me:val});
-   				});
+		
+		console.log('searching for '+statsid);
+		Stats.findOne(statsid).exec(function (err, currStats) {
+			if (err) return res.serverError(err);
+			updateTo[stat] = parseInt(currStats[stat]) + parseInt(val);
+			console.log(updateTo);
+			Stats.update(statsid, {updateTo}).exec(function (err, updated) {
+				if (err) return res.serverError(err);
+				//Stats.publishUpdate(statsid, updateTo);
+				Stats.save();
+			});
+		});
 
-			break;
-			case 'se':
-				Stats.update(statsid,{se:val}).exec(function (err, updated) {
-   					if(err) return res.serverError(err);
-   					Stats.publishUpdate(statsid,{se:val});
-   				});
-			break;
-			case 'pm':
-				Stats.update(statsid,{pm:val}).exec(function (err, updated) {
-   					if(err) return res.serverError(err);
-   					Stats.publishUpdate(statsid,{pm:val});
-   				});
-			break;
-			case 'mm':
-				Stats.update(statsid,{mm:val}).exec(function (err, updated) {
-   					if(err) return res.serverError(err);
-   					Stats.publishUpdate(statsid,{mm:val});
-   				});
-			break;
-			case 'sm':
-				Stats.update(statsid,{sm:val}).exec(function (err, updated) {
-   					if(err) return res.serverError(err);
-   					Stats.publishUpdate(statsid,{sm:val});
-   				});
-			break;
-			default:
-		}
-   			
-   			return res.redirect('/editstats');
+		return res.redirect('/editstats');
    },
 
    listPlayersForGm: function (req,res) {
-	   	Player.find().populate('currentstats').exec(function (err,players) { //will need a game filter {game:req.session.game.id}
+		   Player.find().populate('currentstats').exec(function (err,players) { //will need a game filter {game:req.session.game.id}
+
 	         if(err){return res.serverError(err);}
 	         res.view('editstat',{players:players});
 	      });

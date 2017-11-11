@@ -37,13 +37,13 @@ let where = '?where='+JSON.stringify(sub);
 			"game":{"title":"hive mind","about":"get to work","image":"#","gm":"59feea65ce5ea5d02791ae46","minlvl":"1",
 			"createdAt":"2017-11-05T10:40:19.762Z","updatedAt":"2017-11-07T01:36:24.931Z","id":"59feea93ce5ea5d02791ae4a"},
 			"name":"yuyu","backstory":"888","maxpe":8,"maxme":8,"maxse":8,"image":"/images/playerimgs/16660b27-e9c4-4215-9544-89c2e74fb2ce.JPG","lvl":"1","le":100,"createdAt":"2017-11-05T01:19:28.108Z","updatedAt":"2017-11-07T01:36:24.935Z","id":"59fe6720ce5ea5d02791ae42"}*/
-			let stats = resData.currentstats;
-			alert(JSON.stringify(stats));
+			let stats = resData.currentstats[0];
 			let statData = {
-				pe: stats.pe+stats.pm,
-				se: stats.se+stats.sm,
-				me: stats.me+stats.mm
+				pe: parseInt(stats.pe) + parseInt(stats.pm),
+				me: parseInt(stats.me) + parseInt(stats.mm),
+				se: parseInt(stats.se) + parseInt(stats.sm)
 			}
+
 			updateStat(statData);
 		});
 

@@ -1,11 +1,12 @@
 <div class=container>
         <br/>
-        <form id="editstats" enctype="multipart/form-data"  method="post" action="/editstats">
+        <form id="editstats" enctype="multipart/form-data"  method="post" action="/editstats" onsubmit="return validateForm()">
                 <select  name=statsid size=10>
                     Name
-                     <% _.each(players, function (player) { %>
-                        <option value="<%=player.currentstats[0].id %>"><%=player.name%></option>
-                    <% }) %>
+                     <% _.each(players, function (player) { 
+                        if(player.currentstats[0]){%>
+                             <option value="<%=player.currentstats[0].id %>"><%=player.name%></option>
+                        <%}}) %>
                 </select>
                 <br>
                 <div>
@@ -21,3 +22,11 @@
                 <input type="submit" value="Update" /> 
         </form>
 </div>
+
+<script>
+    function validateForm() {
+            var x = document.forms["editstats"]["val"].value;
+                var er = /^-?[0-9]+$/;
+                return er.test(x);
+    }
+</script>

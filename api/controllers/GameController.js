@@ -24,7 +24,7 @@ module.exports = {
 		    			console.log('joingame found this game:');
 		    			console.log(selGame);
 		    			if(err){return res.serverError(err);}
-						req.session.inventoryId = selPlayer.inventory[0].id;
+						req.session.inventoryId = selPlayer.inventory.id;
 						console.log('req.session.inventoryId:'+req.session.inventoryId);
 						selGame.players.add(selPlayer);
 			    		selGame.save();
