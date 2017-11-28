@@ -16,26 +16,45 @@ module.exports = {
 	},
 
 	joinGame: function (req,res) {
+		let gameId = req.param('gameId');
+		let npcId = req.param('npcId');
+		let entranceText = (typeof req.param('entranceText') === 'undefined') ? ' joined the party!' : req.param('entranceText');
+		
 		if(req.session.player){
-		    	Game.findOne(req.param('gameId')).populate('notifications').populate('players').exec(function (err,selGame) {
+		    	Game.findOne(gameId).populate('notifications').populate('players').exec(function (err,selGame) {
 		    		if(err){return res.serverError(err);}
 		    		req.session.game= selGame;
 		    		Player.findOne(req.session.player.id).populate('inventory').exec(function (err, selPlayer) {
-		    			console.log('joingame found this game:');
-		    			console.log(selGame);
-		    			if(err){return res.serverError(err);}
-						req.session.inventoryId = selPlayer.inventory.id;
-						console.log('req.session.inventoryId:'+req.session.inventoryId);
 						selGame.players.add(selPlayer);
 			    		selGame.save();
+						Game.publishAdd(gameId,'players',selPlayer);
+						Notification.create({game: gameId, text:selPlayer.name + entranceText}).exec(function (err,records) {
+							if (err) { return res.serverError(err); }
+						});
 			    		return res.view('charactersheet');
 		    		});
-			    		
-			    		
 		    	});
 		    } else {
 		    	return res.redirect('/readyplayer1');
 		    }
+	},
+	
+	addNpc: function (req,res) {
+		let gameId = req.param('gameId');
+		let npcId = req.param('npcId');
+		let entranceText = (typeof req.param('entranceText') === 'undefined') ? ' joined the party!' : req.param('entranceText');
+		Game.findOne(gameId).exec(function (err,selGame) {
+			if(err){return res.serverError(err);}
+			Player.findOne(npcId).populate('inventory').exec(function (err, selPlayer) {
+				selGame.players.add(selPlayer);
+				selGame.save();
+				Game.publishAdd(gameId,'players',selPlayer);
+				Notification.create({game:gameId, text: selPlayer.name + ' ' +entranceText}).exec(function (err,records) {
+					if (err) { return res.serverError(err); }
+				});
+				return res.view('addnpc');
+			});
+		});
     },
 
 

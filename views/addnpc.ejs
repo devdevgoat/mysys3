@@ -1,0 +1,39 @@
+<h3>Add NPC</h3>
+<div class=container>
+        <br/>
+        <form id="addnpc" enctype="multipart/form-data"  method="post" action="/addnpc">
+                <select id='npclist' name=npcId size=10>
+                    Npcs
+                </select>
+                <select id=gamelist name=gameId size=10>
+                    Name
+                </select>
+                <br>
+                <input type='text' name='entranceText' size=20 />
+                <input type="submit" value="Add" /> 
+                
+        </form>
+</div>
+<script src="/js/dependencies/sails.io.js"></script>
+<script type="text/javascript">
+io.socket.on('connect', function(){
+    let where = {
+        user:  '<%=session.user.id%>',
+        type:  'npc'
+    };
+		io.socket.get('/player?where='+JSON.stringify(where), function(resData, jwres) {
+            $.each(resData, function (k,v) {
+                    let option = '<option value="'+ v.id +'">'+v.name+'</option>';
+                    $(option).appendTo('#npclist');
+			});
+		});
+	
+		io.socket.get('/game?populate=title&where={user:'+JSON.stringify(where['user'])+'}', function(resData, jwres) {
+            $.each(resData, function (k,v) {
+                let option = '<option value="'+ v.id +'">'+v.title+'</option>';
+                $(option).appendTo('#gamelist');
+            });
+		});
+  }); //end on connect
+</script>
+<div id=log></div>

@@ -34,7 +34,8 @@ module.exports.policies = {
    },'InventoryController': {
      '*': true//'isAuthenticated'
    },'ItemController': {
-     '*': 'isAuthenticated'
+     '*': 'isAuthenticated',
+     'useItem': true
    },'NotificationController': {
      '*': true //allowing bc request made by io doesn't seem to be allowed through
    },'PlayeritemController': {

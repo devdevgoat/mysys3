@@ -16,6 +16,11 @@ module.exports = {
 		required: true,
 		defaultsTo: 'No Name Sam', //can use functions here
 	},
+	type: {
+		type: 'string',
+		enum: 'npc, pc',
+		defaultsTo: 'pc' //can use functions here
+	},
 	lvl: {
 		type: 'int',
 		defaultsTo: 1

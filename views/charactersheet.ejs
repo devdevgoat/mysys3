@@ -31,10 +31,9 @@
 
 </style>
 <script type="text/javascript">
-  let game = "<%=session.game.id%>";
+  let gameId = "<%=session.game.id%>";
   let playerId = "<%=session.player.id%>";
-  let currentstats = "<%=session.player.currentstats[0].id%>";
-  let inventoryId = "<%=session.inventoryId%>";
+  var inventoryId = '';
 </script>
 <script type="text/javascript">
   var rebuild = function () {
@@ -57,7 +56,7 @@ $('#rebuild').click(rebuild);
 
 <script>
 window.onload = function () {
-  rebuild(); 
+  //rebuild(); 
 }
 </script>
 
@@ -82,7 +81,7 @@ window.onload = function () {
             <div class="details">
               <h3><%= session.player.name %></h3>
               <p><%= session.player.backstory %></p>
-                <progress id="health" value="<%= session.player.currentstats[0].le %>" max="100" style="width:100%;"></progress>
+                <progress id="health" value="0" max="100" style="width:100%;"></progress>
             </div> 
           </div>        
         </div>
@@ -99,32 +98,28 @@ window.onload = function () {
     <div class="col-md-6" id="top-section">
         <div id="modifiers" class="row"> 
           <div class="col-xs-4 sec sec-1">
-              <h1 id=pe ><%= session.player.currentstats[0].pm %></h1>
+              <h1 id=pe >-1</h1>
               <img src="/images/body-building.png">
 
               <p>Physical</p>
           </div>
           <div class="col-xs-4 sec sec-2">
-               <h1 id=me ><%= session.player.currentstats[0].mm %></h1>
+               <h1 id=me >-1</h1>
               <img src="/images/management.png">
 
               <p>Mental</p>
           </div>
           <div class="col-xs-4 sec sec-3">
-               <h1 id=se ><%= session.player.currentstats[0].sm %></h1>
+               <h1 id=se >-1</h1>
               <img src="/images/hold.png">
 
               <p>Super</p>
           </div>
         </div>
-        <div id="map" class="row"  style="height: 200px; width: 100%; float:right;">   
-                   
-        </div>
+
+<!-- <div id="map" class="row"  style="height: 200px; width: 100%; float:right;"></div> -->
 
         <div id="cards" class="row"> 
-                 
-                    
-
         </div>
 
 
@@ -140,11 +135,11 @@ window.onload = function () {
         </div>
     </div>
     <div class="col-md-3" id="right-sidebar">
-        <div id="equipments" class="row">
+        <div id="equipment" class="row">
           <h4>Equipment</h4>
-
+      
         </div>
-        <div id="iteams" class="row">
+        <div id="items" class="row">
           <h4>Items</h4>
     
         </div>

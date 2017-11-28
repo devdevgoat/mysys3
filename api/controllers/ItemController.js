@@ -7,24 +7,35 @@
 
 module.exports = {
 	  useItem: function (req,res) { 
-    /*To use this function, provide the users in a array like so
-    *     var targets = [1,2,3,4,5,6,7,...,200];
-    *     submit({task: JSON.stringify(task)}
-    */
+
     //using an item will result in an update to a players stats
     //to use an item you must have at least one target player
-    if(!req.param("task")) return res.send(400, "Task is required.");
-    var task = req.param("task");
-    if(typeof task === "string"){
-      try{
-        task = JSON.parse(task);
-      }catch(err){
-        return res.send(400, "Error parsing tasks!");
+
+    let targets = req.param('targets'); //will be an array
+    let inventoryId = req.param('inventoryId');
+    let itemId = req.param('itemId');
+    let gameId = req.param('gameId');
+    let playerId = req.param('playerId');
+    // don't drive uses off item keys, use use keys to lookup item ids from the inventorylet item = req.param('itemId'); //will be a string of item id
+    
+    //search the inventory, despite the item id being given to preven false calls
+    Inventory.findOne(inventoryId).populate('item', itemId).exec(function(err, inventory){
+      if (err) {return res.negotiate(err);}
+      if(inventory.item[0]){
+        //apply the affects to the target player stats
+
+        //lookup target player
+        //lookup source player name... 
+        //lookup 
+        //post notification
+        let note = playerId + ' used ' + inventory.item[0].name + ' on ' +targets;
+        Notification.create({game:gameId,text:note}).exec(function (err,records) {
+          if (err) { return res.serverError(err); }
+        });
+      } else {
+        console.log('That item is not in your inventory... hmmm, what are you trying to do, exactly? I\'m just going to log that...');
       }
-    }
-    // task value is [1,2,3,4,5,6,7,..., 200]
-    // Do stuff with task array
-    var playerId = req.param('playerId');
+    });
 
   },
     createItem: function (req, res) {

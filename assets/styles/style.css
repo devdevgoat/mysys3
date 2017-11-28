@@ -49,7 +49,7 @@ body {
       border-radius: 100px;
       background: #aa22aa;
       display: inline-block;
-      /*background-image: url("../images/img_avatar.png");*/
+      background-image: url("../images/img_avatar.png");
       background-size: cover; }
 
 #players-section {
@@ -71,7 +71,7 @@ body {
       border-radius: 100px;
       background: #aa22aa;
       display: inline-block;
-      /*background-image: url("../images/img_avatar.png");*/
+      background-image: url("../images/img_avatar.png");
       background-size: cover; }
     #players-section .strip .details {
       margin-left: 20px;
@@ -94,95 +94,205 @@ body {
 
 #right-sidebar {
   background: #fff; }
-
-#equipments {
-  height: 400px;
-  background: #fff;
-  padding: 32px;
-  text-align: center; }
-  #equipments h4 {
-    text-align: left;
-    margin-left: 22px;
-    font-family: 'Roboto';
-    font-weight: bold;
-    font-size: 22px; }
-  #equipments .eqi-strip {
-    display: block; }
-    #equipments .eqi-strip .eqi-img {
-      width: 55px;
-      display: inline-block; }
-      #equipments .eqi-strip .eqi-img img {
-        margin-top: -32px; }
-    #equipments .eqi-strip .details {
-      margin-left: 10px;
-      display: inline-block; }
-      #equipments .eqi-strip .details h3 {
-        font-family: 'Roboto';
-        color: #cdced0;
-        font-weight: 400;
-        font-size: 22px; }
-      #equipments .eqi-strip .details h4 {
-        font-family: 'Roboto';
-        color: #cdced0;
-        font-size: 16px; }
-    #equipments .eqi-strip .info {
-      margin-left: 23px;
-      display: inline-block;
-      position: relative;
-      bottom: 36px; }
-      #equipments .eqi-strip .info .badge {
-        background: black;
-        padding: 7px; }
-        #equipments .eqi-strip .info .badge p {
-          margin-bottom: 0px; }
-      #equipments .eqi-strip .info .eqi-type-img {
-        margin-top: -20px;
-        margin-left: 42px;
+  #equipment {
+    height: 400px;
+    background: #fff;
+    padding: 22px;
+    text-align: center; }
+    #equipment h4 {
+      text-align: left;
+      margin-left: 22px;
+      font-family: 'Roboto';
+      font-weight: bold;
+      font-size: 22px; }
+    #equipment .equipment-strip {
+      display: block; }
+      #equipment .equipment-strip .equipment-img {
+        width: 65px;
         display: inline-block; }
-        #equipments .eqi-strip .info .eqi-type-img img {
-          width: 23px; }
-
-#iteams {
-  height: 797px;
-  background: #fff;
-  padding: 22px;
-  text-align: center; }
-  #iteams h4 {
-    text-align: left;
-    margin-left: 22px;
-    font-family: 'Roboto';
-    font-weight: bold;
-    font-size: 22px; }
-  #iteams .iteam-strip {
-    display: block; }
-    #iteams .iteam-strip .iteam-img {
-      width: 65px;
-      display: inline-block; }
-      #iteams .iteam-strip .iteam-img img {
-        margin-top: -32px; }
-    #iteams .iteam-strip .details {
-      margin-left: 10px;
-      display: inline-block; }
-      #iteams .iteam-strip .details h3 {
-        font-family: 'Roboto';
-        color: #cdced0;
-        font-weight: 400;
-        font-size: 22px; }
-      #iteams .iteam-strip .details h4 {
-        font-family: 'Roboto';
-        color: #cdced0;
-        font-size: 16px; }
-    #iteams .iteam-strip .info {
-      margin-left: 43px;
-      display: inline-block;
-      position: relative;
-      bottom: 36px; }
-      #iteams .iteam-strip .info .badge {
-        background: black;
-        padding: 7px; }
-        #iteams .iteam-strip .info .badge p {
-          margin-bottom: 0px; }
-
+        #equipment .equipment-strip .equipment-img img {
+          margin-top: -32px; }
+      #equipment .equipment-strip .details {
+        margin-left: 10px;
+        display: inline-block; }
+        #equipment .equipment-strip .details h3 {
+          font-family: 'Roboto';
+          color: #000000;
+          font-weight: 400;
+          font-size: 22px; }
+        #equipment .equipment-strip .details h4 {
+          font-family: 'Roboto';
+          color: #cdced0;
+          font-size: 16px; }
+      #equipment .equipment-strip .info {
+        margin-left: 43px;
+        display: inline-block;
+        position: relative;
+        bottom: 36px; }
+        #equipment .equipment-strip .info .badge {
+          background: black;
+          padding: 7px; }
+          #equipment .equipment-strip .info .badge p {
+            margin-bottom: 0px; }
+            #equipment .feature {
+              display: none;
+              width: 262px;
+              height: 100%;
+              position: absolute;
+              background: #2980b9;
+              top: 0px;
+              right: 0px;
+              z-index: 23;
+              padding-top: 11px; }
+              #equipment .feature .img-circle {
+                height: 60px;
+                width: 60px;
+                border-radius: 100px;
+                background: #fff;
+                display: inline-block;
+                background-size: cover;
+                padding: 10px;
+                margin-left: 6px; }
+                #equipment .feature .img-circle img {
+                  width: 35px; }
+            #equipment .selectbox {
+              display: none;
+              width: 262px;
+              height: 230px;
+              position: absolute;
+              background: #fff;
+              top: 0px;
+              right: 0px;
+              z-index: 43;
+              padding: 11px;
+              box-shadow: 0px 0px 17px rgba(0, 0, 0, 0.15); }
+              #equipment .selectbox .img-circle {
+                border-radius: 100px;
+                background: #fff;
+                display: inline-block;
+                background-size: cover; }
+                #equipment .selectbox .img-circle img {
+                  width: 60px;
+                  height: 60px; }
+              #equipment .selectbox .tick {
+                position: absolute;
+                bottom: 10px;
+                right: 77px; }
+                #equipment .selectbox .tick img {
+                  background-color: #2ecc71;
+                  padding: 11px;
+                  color: white;
+                  fill: white; }
+              #equipment .selectbox .cross {
+                position: absolute;
+                bottom: 10px; }
+                #equipment .selectbox .cross img {
+                  background-color: #e74c3c;
+                  padding: 11px;
+                  color: white; }
+              #equipment .selectbox .selected {
+                border: 3px solid rgba(0, 0, 0, 0.72);
+                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.39); }
+  #items {
+    height: 797px;
+    background: #fff;
+    padding: 22px;
+    text-align: center; }
+    #items h4 {
+      text-align: left;
+      margin-left: 22px;
+      font-family: 'Roboto';
+      font-weight: bold;
+      font-size: 22px; }
+    #items .item-strip {
+      display: block; }
+      #items .item-strip .item-img {
+        width: 65px;
+        display: inline-block; }
+        #items .item-strip .item-img img {
+          margin-top: -32px; }
+      #items .item-strip .details {
+        margin-left: 10px;
+        display: inline-block; }
+        #items .item-strip .details h3 {
+          font-family: 'Roboto';
+          color: #000000;
+          font-weight: 400;
+          font-size: 22px; }
+        #items .item-strip .details h4 {
+          font-family: 'Roboto';
+          color: #cdced0;
+          font-size: 16px; }
+      #items .item-strip .info {
+        margin-left: 43px;
+        display: inline-block;
+        position: relative;
+        bottom: 36px; }
+        #items .item-strip .info .badge {
+          background: black;
+          padding: 7px; }
+          #items .item-strip .info .badge p {
+            margin-bottom: 0px; }
+            #items .feature {
+              display: none;
+              width: 262px;
+              height: 100%;
+              position: absolute;
+              background: #2980b9;
+              top: 0px;
+              right: 0px;
+              z-index: 23;
+              padding-top: 11px; }
+              #items .feature .img-circle {
+                height: 60px;
+                width: 60px;
+                border-radius: 100px;
+                background: #fff;
+                display: inline-block;
+                background-size: cover;
+                padding: 10px;
+                margin-left: 6px; }
+                #items .feature .img-circle img {
+                  width: 35px; }
+            #items .selectbox {
+              display: none;
+              width: 262px;
+              height: 230px;
+              position: absolute;
+              background: #fff;
+              top: 0px;
+              right: 0px;
+              z-index: 43;
+              padding: 11px;
+              box-shadow: 0px 0px 17px rgba(0, 0, 0, 0.15); }
+              #items .selectbox .img-circle {
+                border-radius: 100px;
+                background: #fff;
+                display: inline-block;
+                background-size: cover; }
+                #items .selectbox .img-circle img {
+                  width: 60px;
+                  height: 60px; }
+              #items .selectbox .tick {
+                position: absolute;
+                bottom: 10px;
+                right: 77px; }
+                #items .selectbox .tick img {
+                  background-color: #2ecc71;
+                  padding: 11px;
+                  color: white;
+                  fill: white; }
+              #items .selectbox .cross {
+                position: absolute;
+                bottom: 10px; }
+                #items .selectbox .cross img {
+                  background-color: #e74c3c;
+                  padding: 11px;
+                  color: white; }
+              #items .selectbox .selected {
+                border: 3px solid rgba(0, 0, 0, 0.72);
+                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.39); }
+          
 #top-section {
   background: #f7fafc;
   border: 1px solid #e2dada; }
@@ -233,6 +343,7 @@ body {
     margin: 9px;
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.31); }
     #cards .card .img-circle {
+      border-radius: 5px;
       height: 170px;
       width: 170px;
       margin-top: 30px;
@@ -262,5 +373,18 @@ body {
       font-size: 25px;
       font-weight: 100;
       font-family: 'Roboto'; }
+
+.itembutts { 
+}
+
+.itembutts img {
+  max-width:40px;
+  display: inline-flex;
+  float: right;
+}
+
+.items .equipment{
+  overflow:auto;
+}
 
 /*# sourceMappingURL=style.css.map */

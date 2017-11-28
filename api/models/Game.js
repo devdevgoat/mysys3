@@ -34,7 +34,17 @@ module.exports = {
     notifications: {
       collection: 'notification',
       via: 'game'
+    },
+    rooms: {
+      collection: 'room',
+      via: 'game'
     }
+  },
+  afterCreate: function (createdRecords, cb) {
+    Room.create({'game':createdRecords.id}).exec(function (err, created) {
+      console.log('Created a room:'+created.id);
+    });
+    cb();
   }
 };
 

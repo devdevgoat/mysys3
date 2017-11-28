@@ -48,7 +48,7 @@ module.exports = {
       enum: 'equipment,item',
       required: true,
       defaultsTo: 'item'
-    }
+		}
 
   }
 };

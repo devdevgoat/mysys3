@@ -49,16 +49,25 @@ module.exports.routes = {
   'get /createplayer': 'PlayerController.createForm',
   'post /createplayer': 'PlayerController.createplayer',
 
+  'get /createnpc': 'PlayerController.createNpcForm',
+  'get /addnpc': {view: 'addnpc'},
+  'post /addnpc': 'GameController.addNpc',
+
   'get /creategame' : {view: 'creategame'},
   'post /creategame' : 'GameController.createGame',
 
   'get /createitem' : {view: 'createitem'},
-  'post /createitem' : 'ItemController.createitem',
+  'post /createitem' : 'ItemController.createItem',
+  'post /useitem' : 'ItemController.useItem',
 
   'get /giveitem' :  'Item.listItems',
   'post /giveitem' : 'InventoryController.addToInventory',
 
   'get /editstats' :  'StatsController.listPlayersForGm',
-  'post /editstats' : 'StatsController.updateStats'
+  'post /editstats' : 'StatsController.updateStats',
+
+
+
+  'get /gm': {view:'gm'}
 
 };

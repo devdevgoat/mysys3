@@ -41,16 +41,13 @@ module.exports = {
   		min: 0
   	}
   },
-  
   afterUpdate: function (values,cb){
     newStats = {
       id: values.id,
-      pe: parseInt(values.pe)+parseInt(values.pm),
-      se: parseInt(values.se)+parseInt(values.sm),
-      me: parseInt(values.me)+parseInt(values.mm)
+      pe: parseInt(values.pe) + parseInt(values.pm),
+      se: parseInt(values.se) + parseInt(values.sm),
+      me: parseInt( values.me) + parseInt(values.mm),
     };
-    console.log('sending new stats');
-    console.log(newStats);
     Stats.publishUpdate(values.id, newStats);
     cb();
   }

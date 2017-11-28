@@ -25,20 +25,18 @@ module.exports = {
       required: true
   	}
   },
-
   afterCreate: function (newlyCreatedRecord, cb) {
 		Game.publishAdd(newlyCreatedRecord.game,'notifications',newlyCreatedRecord);
-			//cleanup old records
+		//cleanup old records
 		Notification.count({game:newlyCreatedRecord.game}, function (err, count) {
 			if(count>15){
 				Notification.findOne({game:newlyCreatedRecord.game}).sort('createdAt ASC').exec(function (err, toBeDeleted) {
 						console.log('Found:');
 						console.log(toBeDeleted);
 						if(toBeDeleted){
-							console.log('Deleting '+ toBeDeleted.text+' becuase it was created at '+toBeDeleted.createdAt);
 							Notification.destroy(toBeDeleted).exec(function (err) {
 								if(err){return res.serverError(err);} 
-								console.log('Deleted');
+								Notification.publishDestroy(toBeDeleted.id);
 								});
 						}
 				});

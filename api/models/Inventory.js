@@ -14,7 +14,7 @@ module.exports = {
   	},
   	item: {
   		collection: 'item'
-  	}
+	}
   }
 };
 

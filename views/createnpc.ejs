@@ -1,0 +1,17 @@
+<h3>Create NPC</h3>
+<div class=container>
+    <br/>
+    <form id="createplayer" enctype="multipart/form-data"  method="post" action="/createplayer">
+            <input type="text" name="playername" size="20"> Name<br />
+            <div id=stats>
+                    <input type="text" name="pe" size="20"> PE<br />
+                    <input type="text" name="me" size="20"> ME<br />
+                    <input type="text" name="se" size="20"> SE<br />
+            </div>
+            <label>Player Backstory (2000 characters): </label><br/>
+            <input type=hidden name=type value=npc />
+            <textarea form="createplayer" name="backstory"></textarea><br/>
+             <input type="file" name="avatar" /><br/>
+            <input type="submit" value="Create" /> 
+    </form>
+</div>
