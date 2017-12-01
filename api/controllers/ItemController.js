@@ -11,27 +11,50 @@ module.exports = {
     //using an item will result in an update to a players stats
     //to use an item you must have at least one target player
 
-    let targets = req.param('targets'); //will be an array
+    let targets = req.param('targets'); //will be an array eventaully.. would need to loop trhough in the Player.findONe
     let inventoryId = req.param('inventoryId');
     let itemId = req.param('itemId');
     let gameId = req.param('gameId');
     let playerId = req.param('playerId');
-    // don't drive uses off item keys, use use keys to lookup item ids from the inventorylet item = req.param('itemId'); //will be a string of item id
     
-    //search the inventory, despite the item id being given to preven false calls
-    Inventory.findOne(inventoryId).populate('item', itemId).exec(function(err, inventory){
+    //search the inventory, despite the item id being given to prevent false calls
+    Inventory.findOne(inventoryId).populate('player').populate('item', itemId).exec(function(err, inv){
       if (err) {return res.negotiate(err);}
-      if(inventory.item[0]){
+      if(inv.item[0]){
+        let val = inv.item[0].amount;
+        let stat = inv.item[0].target;
+        let desc1 = ' used ';
+        let desc2 = ' on ';
+        let oneTimeUse = true;
         //apply the affects to the target player stats
-
-        //lookup target player
+        if(inv.item[0].action == 'inflict'){
+          val = val * -1;
+        }
+        if(inv.item[0].type=='equipment'){
+          stat = 'LE';
+          desc1 = ' hit ';
+          desc2 = ' with ';
+          oneTimeUse = false;
+        }
+        //lookup target player statsid
+        Stats.findOne({player:targets}).populate('player').exec(function(err, stats){
+          if (err) {return res.negotiate(err);}
+          //remove the used item from the players inventory
+            if(oneTimeUse){
+              inv.item.remove(itemId);
+              Inventory.publishRemove(inv.id,'item',itemId);
+              inv.save();
+            }
+            sails.controllers.stats.updateStats(stats.id, stat, val);
+            let note = inv.player.name + desc1 + stats.player.name + desc2 + inv.item[0].name;
+            Notification.create({game:gameId,text:note}).exec(function (err,records) {
+              if (err) { return res.serverError(err); }
+            });
+          });
         //lookup source player name... 
         //lookup 
         //post notification
-        let note = playerId + ' used ' + inventory.item[0].name + ' on ' +targets;
-        Notification.create({game:gameId,text:note}).exec(function (err,records) {
-          if (err) { return res.serverError(err); }
-        });
+       
       } else {
         console.log('That item is not in your inventory... hmmm, what are you trying to do, exactly? I\'m just going to log that...');
       }
