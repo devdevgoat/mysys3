@@ -117,6 +117,4 @@ nbproject
 .idea
 .node_history
 
-*.svg
-
-*.png
+playerimgs/*
