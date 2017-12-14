@@ -1,5 +1,9 @@
+html, body{
+  min-height: 100%;
+}
 body {
-  overflow-x: hidden; }
+  overflow-x: hidden; 
+  position: relative;}
 
 #left-sidebar {
   background: #fff; }
@@ -24,6 +28,7 @@ body {
     #profile-section .details p {
       font-family: 'Roboto';
       font-size: 22px;
+      padding:10px;
       color: #cdced0; }
     #profile-section .details .pow {
       background: #f7fafc;
@@ -36,17 +41,17 @@ body {
         width: 103px;
         border-radius: 40px; }
   #profile-section #profile-pic {
-    height: 260px;
-    width: 300px;
+    height: 400px;
+    width: 98%;
     background: #fff;
     display: inline-block;
     text-align: center;
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.3); }
     #profile-section #profile-pic .img-circle {
-      height: 200px;
-      width: 200px;
-      margin-top: 30px;
-      border-radius: 100px;
+      height: 380px;
+      width: 380px;
+      margin-top: 10px;
+      border-radius: 200px;
       background: #aa22aa;
       display: inline-block;
       background-image: url("../images/img_avatar.png");
@@ -97,8 +102,7 @@ body {
   #equipment {
     height: 400px;
     background: #fff;
-    padding: 22px;
-    text-align: center; }
+    padding: 10px;}
     #equipment h4 {
       text-align: left;
       margin-left: 22px;
@@ -106,29 +110,24 @@ body {
       font-weight: bold;
       font-size: 22px; }
     #equipment .equipment-strip {
-      display: block; }
-      #equipment .equipment-strip .equipment-img {
-        width: 65px;
-        display: inline-block; }
-        #equipment .equipment-strip .equipment-img img {
-          margin-top: -32px; }
+      display: block; position:relative;}
       #equipment .equipment-strip .details {
-        margin-left: 10px;
-        display: inline-block; }
+        display: inline-block; 
+        }
         #equipment .equipment-strip .details h3 {
           font-family: 'Roboto';
           color: #000000;
           font-weight: 400;
-          font-size: 22px; }
+          font-size: 22px; 
+          text-align: left;}
         #equipment .equipment-strip .details h4 {
           font-family: 'Roboto';
           color: #cdced0;
           font-size: 16px; }
       #equipment .equipment-strip .info {
-        margin-left: 43px;
+        margin-left: 10px;
         display: inline-block;
-        position: relative;
-        bottom: 36px; }
+        position: relative; }
         #equipment .equipment-strip .info .badge {
           background: black;
           padding: 7px; }
@@ -196,8 +195,8 @@ body {
   #items {
     height: 797px;
     background: #fff;
-    padding: 22px;
-    text-align: center; }
+    padding: 10px; 
+  }
     #items h4 {
       text-align: left;
       margin-left: 22px;
@@ -205,12 +204,9 @@ body {
       font-weight: bold;
       font-size: 22px; }
     #items .item-strip {
-      display: block; }
-      #items .item-strip .item-img {
-        width: 65px;
-        display: inline-block; }
-        #items .item-strip .item-img img {
-          margin-top: -32px; }
+      display: block;
+      position:relative; }
+      
       #items .item-strip .details {
         margin-left: 10px;
         display: inline-block; }
@@ -224,11 +220,11 @@ body {
           color: #cdced0;
           font-size: 16px; }
       #items .item-strip .info {
-        margin-left: 43px;
+        margin-left: 10px;
         display: inline-block;
-        position: relative;
-        bottom: 36px; }
+        position: relative; }
         #items .item-strip .info .badge {
+          float:left;
           background: black;
           padding: 7px; }
           #items .item-strip .info .badge p {
@@ -374,17 +370,98 @@ body {
       font-weight: 100;
       font-family: 'Roboto'; }
 
-.itembutts { 
-}
-
-.itembutts img {
-  max-width:40px;
-  display: inline-flex;
-  float: right;
-}
-
 .items .equipment{
   overflow:auto;
 }
 
+.remove {
+  display: block;
+  position:absolute;
+  color: black;
+  font-size: 18pt;
+  right:8px;
+  top:-5px;
+}
+.remove:hover {
+  cursor:pointer;
+}
+
+#dead-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5);
+}
+
+#frozen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background-color: rgba(0, 255, 242, 0.383);
+}
+#blind-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background-color: rgb(0, 0, 0);
+}
 /*# sourceMappingURL=style.css.map */
+#dead-alert {
+  width: 300px;
+  height: 200px;
+  line-height: 200px;
+  position: fixed;
+  top: 50%; 
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -150px;
+  background-color: #ff4343;
+  color: white;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 21pt;
+  z-index: 11; /* 1px higher than the overlay layer */
+}
+
+#frozen-alert {
+  width: 300px;
+  height: 200px;
+  line-height: 200px;
+  position: fixed;
+  top: 50%; 
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -150px;
+  background-color: #055cff;
+  color: white;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 21pt;
+  z-index: 11; /* 1px higher than the overlay layer */
+}
+
+#blind-alert {
+  width: 300px;
+  height: 200px;
+  line-height: 200px;
+  position: fixed;
+  top: 50%; 
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -150px;
+  background-color: #000000;
+  color: white;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 21pt;
+  z-index: 11; /* 1px higher than the overlay layer */
+}

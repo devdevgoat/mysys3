@@ -35,6 +35,7 @@ module.exports.routes = {
   '/': 'PlayerController.getPlayers',
   'get /readyplayer1': 'PlayerController.getPlayers',
   'get /g/:gameId': 'GameController.joinGame',
+  'get /gm/:gameId': 'GameController.gmGame',
 
   'get /login': {view: 'login'},
   'post /login': 'AuthController.login',
@@ -45,11 +46,14 @@ module.exports.routes = {
   'post /signup': 'UserController.signup',
 
   'get /lobby/:playerId': 'Game.getGames',
+  'get /lobby-gm': 'Game.getGmGames',
 
   'get /createplayer': 'PlayerController.createForm',
   'post /createplayer': 'PlayerController.createplayer',
 
-  'get /createnpc': 'PlayerController.createNpcForm',
+
+  'post /removeNpc': 'GameController.removeNpc',
+
   'get /addnpc': {view: 'addnpc'},
   'post /addnpc': 'GameController.addNpc',
 
@@ -66,8 +70,5 @@ module.exports.routes = {
   'get /editstats' :  'StatsController.listPlayersForGm',
   'post /editstats' : 'StatsController.updateStats',
 
-
-
-  'get /gm': {view:'gm'}
 
 };

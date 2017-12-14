@@ -26,12 +26,8 @@ module.exports = {
         let desc1 = ' used ';
         let desc2 = ' on ';
         let oneTimeUse = true;
-        //apply the affects to the target player stats
-        if(inv.item[0].action == 'inflict'){
-          val = val * -1;
-        }
+
         if(inv.item[0].type=='equipment'){
-          stat = 'LE';
           desc1 = ' hit ';
           desc2 = ' with ';
           oneTimeUse = false;
@@ -42,18 +38,15 @@ module.exports = {
           //remove the used item from the players inventory
             if(oneTimeUse){
               inv.item.remove(itemId);
-              Inventory.publishRemove(inv.id,'item',itemId);
               inv.save();
+              Inventory.publishRemove(inv.id,'item',itemId);
             }
-            sails.controllers.stats.updateStats(stats.id, stat, val);
+            sails.controllers.stats.updateStatsAuto(stats.id, inv.item[0].action,stat, val);
             let note = inv.player.name + desc1 + stats.player.name + desc2 + inv.item[0].name;
             Notification.create({game:gameId,text:note}).exec(function (err,records) {
               if (err) { return res.serverError(err); }
             });
           });
-        //lookup source player name... 
-        //lookup 
-        //post notification
        
       } else {
         console.log('That item is not in your inventory... hmmm, what are you trying to do, exactly? I\'m just going to log that...');
@@ -62,17 +55,17 @@ module.exports = {
 
   },
     createItem: function (req, res) {
-        req.file('image').upload({
-        dirname: require('path').resolve(sails.config.appPath, 'assets/images/itemimages/')
-      },function (err, uploadedFiles) {
-          if (err) {return res.negotiate(err);}
-          if(uploadedFiles[0]){
-            var filename = '/images/itemimages/'+ uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
-          console.log(filename);
-          sails.log('**** ', uploadedFiles);
-          } else {
-            var filename = '#';
-          }
+      //   req.file('image').upload({
+      //   dirname: require('path').resolve(sails.config.appPath, 'assets/images/itemimages/')
+      // },function (err, uploadedFiles) {
+      //     if (err) {return res.negotiate(err);}
+      //     if(uploadedFiles[0]){
+      //       var filename = '/images/itemimages/'+ uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
+      //     console.log(filename);
+      //     sails.log('**** ', uploadedFiles);
+      //     } else {
+      //       var filename = '#';
+      //     }
         Item.create({
           name: req.param('name'),
           desc: req.param('desc'),
@@ -80,20 +73,21 @@ module.exports = {
           type: req.param('type'),
           target: req.param('target'),
           action: req.param('action'),
-          image: filename
-          }).exec(function (err, newgame) {
+          image: ''//filename
+          }).exec(function (err, newitem) {
             if(err){return res.serverError(err);}
-            sails.log('New item created with id',newgame.id);
-            res.view('createitem'); //should take you straigh to gm board really
+            sails.log('New item created with id',newitem.id);
+            //res.view('createitem'); //should take you straigh to gm board really
+            res.json(newitem);
           });
-      });
    },
    listItems: function (req, res) {
      Item.find().exec(function (err,items) {
       if(err){return res.serverError(err);}
        Player.find().exec(function (err,players) { //will need a game filter {game:req.session.game.id}
          if(err){return res.serverError(err);}
-         res.view('giveitem',{items:items, players:players});
+         //res.view('giveitem',{items:items, players:players});
+         res.ok();
       });
      });
    }

@@ -33,7 +33,7 @@ module.exports = {
   		type: 'string',
   		required: true,
   		defaultsTo: 'LE',
-  		enum: 'LE,SE,ME,PE'
+  		enum: 'LE,SE,ME,PE,AIL,le,se,me,pe,ail'
   	},
   	amount: {
   		type: 'integer',
@@ -48,8 +48,11 @@ module.exports = {
       enum: 'equipment,item',
       required: true,
       defaultsTo: 'item'
-		}
+		},
+	createdBy: {
+		string: ''
+	}
 
-  }
+	}
 };
 

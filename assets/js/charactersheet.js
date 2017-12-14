@@ -46,9 +46,42 @@ function drop_handler(ev) {
 	//alert(JSON.stringify(data));
    }
 
+   function applyAilmentOverlay(ail) {
+	
+	let html = '';
+	switch (ail) {
+		case  'dead':
+		html = '<div id="'+ail+'-overlay"> <div id="'+ail+'-alert">\
+		You Are Dead! ☠️\
+		</div></div>';
+			break;
+		case  'frozen':
+		html='<div id="'+ail+'-overlay"> <div id="'+ail+'-alert">\
+		You are frozen! ☃️\
+		</div></div>';
+			break;
+		case  'blind':
+		html = '<div id="'+ail+'-overlay"> <div id="'+ail+'-alert">\
+		You are blind! 🚫🔦\
+		</div></div>';
+			break;
+		html = '';
+		default:
+			break;
+	}
+	$("body").append(html);
+   }
+
+   function removeAilmentOverlay(ail){
+	   $('#'+ail+'-overlay').remove();
+   }
+
  io.socket.on('connect', function(){
 
 		io.socket.get('/player/'+playerId, function(resData, jwres) {
+			if(resData.state=='dead'){
+				applyAilmentOverlay(resData.state);
+			}
 			/*{"inventory":
 				[{"player":"59fe6720ce5ea5d02791ae42","createdAt":"2017-11-05T01:19:28.114Z","updatedAt":"2017-11-05T01:21:06.651Z","id":"59fe6720ce5ea5d02791ae44"}],
 			"currentstats":
@@ -91,7 +124,6 @@ function drop_handler(ev) {
 				addNotification(v.id,v.text);
 			});
 		});
-  }); //end on connect
 
 
 
@@ -171,7 +203,7 @@ io.socket.on('game', function (event) { //need to decifer between player adds an
 					//addNotification(event.added.text);
 				break;
 				case 'players':
-					//addPartyMember(event.added);
+					removePartyMember(event.removedId);
 				break;
 				default:
 				console.warn('Unrecognized socket event (`%s`) from server:',event.verb, event);
@@ -182,6 +214,7 @@ io.socket.on('game', function (event) { //need to decifer between player adds an
 	  }
 });
 
+}); //end on connect
 
 
 /*
@@ -238,26 +271,25 @@ function addItem(item) {
 	}
 	let html = 
 			'<div id="'+item.id+'" class="'+classType+'-strip">\
-              <!--<div class="'+classType+'-img">\
-                <img src="/images/'+item.img+'">\
-			  </div>-->\
+			<div class="info">\
+			<div class="badge badge-default">\
+			  <p>+'+item.amount+''+item.target+'</p>\
+			</div></div>\
               <div  id="'+item.id+'"  class="details" draggable="true" ondragstart="dragstart_handler(event);">\
-                <h3 id="'+item.id+'" >'+item.name+'</h3>\
-				<h4 id="'+item.id+'" >'+item.desc+'</h4>\
-				<div class=itembutts >\
-				<img src="/images/gift.svg"> <img src="/images/finger-moving-activating-an-arrow.svg"><img src="/images/recycle-bin.svg" onclick="drop(\''+item.id+'\');">\
-				</div>\
+                <h3 id="'+item.id+'" >'+item.name+'</h3>'+
+				//<h4 id="'+item.id+'" >'+item.desc+'</h4>\
+				'<div class=remove onclick="drop(\''+item.id+'\');"\
+				\');">x</div>\
               </div>\
-              <div class="info">\
-                <div class="badge badge-default">\
-                  <p>+'+item.amount+''+item.target+'</p>\
-                </div>\
             </div>';
     $(html).appendTo('#'+div).hide().slideDown();
 }
 
 function removeItem(itemId) {
 	$('#'+itemId).slideUp();
+}
+function removePartyMember(playerId) {
+	$('#'+playerId).fadeOut();
 }
 
 function updateStat(data) {
@@ -290,7 +322,7 @@ function pickup(noteId,dropKey) {
 		noteId: noteId
 	};
 	io.socket.post('/Stuff/pickup/',data,function (resData,jwres) {
-		
+		//alert(JSON.stringify(resData));
 	});
 }
 
@@ -298,3 +330,4 @@ function pickup(noteId,dropKey) {
 $(document).ready(function() {
 
 });
+

@@ -1,0 +1,365 @@
+<!doctype html>
+<html>
+        <script type="text/javascript">
+            let gameId = "<%=game.id%>";
+            let user =  "<%=session.user.id%>";
+
+            
+        </script>
+        <script type="text/javascript" src="/js/dependencies/jquery.min.js"></script>
+        <script type="text/javascript">
+        
+
+        $('#createPlayerForm').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) { 
+                e.preventDefault();
+                return false;
+            }
+            });
+            $('#createItemForm').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) { 
+                e.preventDefault();
+                return false;
+            }
+            });
+            $('#editstats').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) { 
+                e.preventDefault();
+                return false;
+            }
+            });
+        </script>
+        <script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+        <script type="text/javascript" src="/js/gmsheet.js"></script>
+        <script type="text/javascript" src="/js/tingle.js"></script>
+        <script type="text/javascript">
+        function serializeFormJSON (form) {
+                    var o = {};
+                    var a = form.serializeArray();
+                    $.each(a, function () {
+                        if (o[this.name]) {
+                            if (!o[this.name].push) {
+                                o[this.name] = [o[this.name]];
+                            }
+                            o[this.name].push(this.value || '');
+                        } else {
+                            o[this.name] = this.value || '';
+                        }
+                    });
+                    return o;
+                };
+            var createNPCModal = new tingle.modal({
+                footer: true,
+                stickyFooter: false,
+                closeMethods: ['overlay', 'button', 'escape'],
+                closeLabel: "Close",
+                cssClass: ['form-modal'],
+                onOpen: function() {
+                },
+                onClose: function() {
+                },
+                beforeClose: function() {
+                    // here's goes some logic
+                    // e.g. save content before closing the modal
+                    return true; // close the modal
+                    return false; // nothing happens
+                }
+            });
+            createNPCModal.addFooterBtn('Create NPC', 'tingle-btn tingle-btn--primary', function() {
+                document.getElementById("createPlayerForm").submit();
+                //$.post('/createplayer', $('#createPlayerForm').serialize()); //doesn't upload the image
+                createNPCModal.close();
+            });
+            createNPCModal.setContent(
+                '<form id="createPlayerForm" enctype="multipart/form-data" method="post" action="/createplayer">\
+                    <label for="playername">Name</label>\
+                    <input class="form-control" type="text" name="playername"><br/>\
+                    <label for="stats">Stats</label>\
+                    <div id=stats>\
+                            <input class="form-control" type="text" name="pe" size="20"> PE<br />\
+                            <input class="form-control" type="text" name="me" size="20"> ME<br />\
+                            <input class="form-control" type="text" name="se" size="20"> SE<br />\
+                    </div><br />\
+                    <label for=backstory >Player Backstory (2000 characters): </label><br/>\
+                    <input type=hidden name=type value=npc />\
+                    <input type=hidden name=gameId value='+gameId+' />\
+                    <textarea class="form-control" form="createplayer" name="backstory"></textarea><br/>\
+                    <input type="file" name="avatar" /><br/>\
+                </form>');
+            
+            var createNoteModal = new tingle.modal({
+                footer: true,
+                stickyFooter: false,
+                closeMethods: ['overlay', 'button', 'escape'],
+                closeLabel: "Close",
+                cssClass: ['form-modal'],
+                onOpen: function() {
+                },
+                onClose: function() {
+                },
+                beforeClose: function() {
+                    // here's goes some logic
+                    // e.g. save content before closing the modal
+                    return true; // close the modal
+                    return false; // nothing happens
+                }
+            });
+            createNoteModal.addFooterBtn('Create Note', 'tingle-btn tingle-btn--primary', function() {
+                //$('#createNote').val()
+                createNote($('#createNote').val());
+                createNoteModal.close();
+            });
+            createNoteModal.setContent(
+                    '<label for="notification">Notification</label>\
+                    <input class="form-control" type="text" name="createNote" id=createNote><br/>');
+           
+            var createItemModal = new tingle.modal({
+                footer: true,
+                stickyFooter: false,
+                closeMethods: ['overlay', 'button', 'escape'],
+                closeLabel: "Close",
+                cssClass: ['form-modal'],
+                onOpen: function() {
+                },
+                onClose: function() {
+                },
+                beforeClose: function() {
+                    // here's goes some logic
+                    // e.g. save content before closing the modal
+                    return true; // close the modal
+                    return false; // nothing happens
+                }
+            });
+            createItemModal.addFooterBtn('Create Item', 'tingle-btn tingle-btn--primary', function() {
+                let data = serializeFormJSON($("#createItemForm"));
+                createItem(data);
+                createItemModal.close();
+            });
+            createItemModal.setContent('<form class="form-box" id="createItemForm" enctype="multipart/form-data"  method="post" action="/createitem">\
+                Name <input class="form-control" type="text" name="name" size="20">\
+                Desc <input class="form-control" type="text" name="desc" size="20">\
+                Amount <input class="form-control" type="text" name="amount" size="20" value="10">\
+                <input type="radio" name="type" value="item">Item /\
+                <input type="radio" name="type" value="equipment">Equipment<br />\
+                <hr class="featurette-divider">\
+                <div>\
+                <input type="radio" name="target" value="le">LE/\
+                <input type="radio" name="target" value="pe">PE/\
+                <input type="radio" name="target" value="se">SE/\
+                <input type="radio" name="target" value="me">ME \
+                <input type="radio" name="target" value="ail">AIL \
+                </div> \
+                <input type="hidden" name="createdBy" value="<%=session.user.id%>">\
+                <input type="radio" name="action" value="inflict">Inflict /\
+                <input type="radio" name="action" value="cure">Cure<br />\
+                <hr class="featurette-divider">\
+                Effect <input class="form-control" type="text" name="ailment" value="none">\
+                % Chance of Effect<input class="form-control" type="text" name="chance" value="0"> \
+                 <input type="hidden" name="image" /><br/>\
+            </form>');
+
+            var editStatsModal = new tingle.modal({
+                footer: true,
+                stickyFooter: false,
+                closeMethods: ['overlay', 'button', 'escape'],
+                closeLabel: "Close",
+                cssClass: ['form-modal'],
+                onOpen: function() {
+                },
+                onClose: function() {
+                },
+                beforeClose: function() {
+                    // here's goes some logic
+                    // e.g. save content before closing the modal
+                    return true; // close the modal
+                    return false; // nothing happens
+                }
+            });
+            editStatsModal.addFooterBtn('Edit Stats', 'tingle-btn tingle-btn--primary', function() {
+                let data = serializeFormJSON($("#editstats"));
+                editStats(data);
+                editStatsModal.close();
+            });
+            editStatsModal.setContent(
+                '<form id="editstats" name="editstats" enctype="multipart/form-data"  method="post" action="/editstats">\
+                    <select id="statsid" name=statsid size=10>\
+                        Name\
+                    </select>\
+                    <br>\
+                    <div>\
+                        <input type="radio" name="stat" value="gold">$\
+                        <input type="radio" name="stat" value="le">LE\
+                        <input type="radio" name="stat" value="pe">PE\
+                        <input type="radio" name="stat" value="se">SE\
+                        <input type="radio" name="stat" value="me">ME\
+                        <input type="radio" name="stat" value="pm">PM\
+                        <input type="radio" name="stat" value="mm">MM\
+                        <input type="radio" name="stat" value="sm">SM\
+                    </div>\
+                        <input class="form-control" type="text" name="val" length=3 />\
+                </form>'
+               );
+
+            function createNote(text) {
+                let data = {
+                    game: gameId,
+                    text: text
+                }
+                io.socket.post('/notification/create',data,function (resData,jwres) {
+                    
+                });
+            }
+          </script>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>GM Screen</title>
+    <link rel="shortcut icon" href="..//images/.png">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+
+    <!--/-->
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <div class="row">
+            <div class="col-md-3" id="left-sidebar">
+                <h1>Players</h1>
+                <div id="players-section" class="row">
+
+                    <!-- <div class="strip">
+                        <div class="img-circle"></div>
+                        <div class="details">
+                            <h3>Your Name</h3>
+                            <div>
+                                <img src="/images/like.png" alt="">
+                                <div class="pow">
+                                    <div class="powfill"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <img src="/images/body-building.png" alt="">
+                                <div class="pow">
+                                    <div class="powfill"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <img src="/images/management.png" alt="">
+                                <div class="pow">
+                                    <div class="powfill"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <img src="/images/hold.png" alt="">
+                                <div class="pow">
+                                    <div class="powfill"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div> -->
+
+                </div>
+
+            </div>
+            <div class="col-md-6" id="top-section">
+                    <div id="cards-gm" class="row">
+                        <div class="card-gm">
+                                <iframe frameborder="0"
+                                        scrolling="no"
+                                        id="<channel>"
+                                        src="http://www.twitch.tv/embed/glacier_chaser/chat"
+                                        height="395"
+                                        width="100%">
+                                </iframe>
+                        </div>
+                        <div class="card-gm">
+                            <div id="items-gm">
+                                <h4>Stuff</h4>
+                                <div class="item-strip-gm">
+                                    <ul id="stuff-list">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <div id="cards-gm" class="row">
+                        <div class="card-gm">
+                                <div id="items-gm">
+                                        <h4>NPCs</h4>
+                                        <div class="item-strip-gm">
+                                            <ul id="npc-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                        </div>
+                        <div class="card-gm">
+                            <div id="items-gm">
+                                <h4>Misc</h4>
+                                <button type="button" class="btn btn-primary" onclick="createNPCModal.open();">Create NPC</button>
+                                <button type="button" class="btn btn-primary" onclick="createItemModal.open();">Create Item</button>
+                                <button type="button" class="btn btn-primary" onclick="createNoteModal.open();">Create Note</button>
+                                <button type="button" class="btn btn-primary" onclick="editStatsModal.open();">Edit Stats</button>
+                                <br/><br/>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>Notifications</h3>
+                <div id=newsfeed>
+                        <div id="notifications" class="row">
+                                
+                                <div class="notification">
+                                    <h2>Welcome</h2>
+                                </div>
+                            </div>
+                </div>
+                
+            </div>
+            <div class="col-md-3" id="right-sidebar">
+                <h1>NPC's</h1>
+                <div id="players-section" class="row">
+                    <!-- <div class="strip">
+                        <div class="img-circle"></div>
+                        <div class="details">
+                            <h3>Your Name</h3>
+                            <div id=npc-stats>
+                                <div>
+                                    <img src="/images/like.png" alt=""> 33
+                                </div>
+                                <div>
+                                    <img src="/images/body-building.png" alt=""> 23
+                                </div>
+                                <div>
+                                    <img src="/images/management.png" alt=""> 53
+                                </div>
+                                <div>
+                                    <img src="/images/hold.png" alt=""> 25
+                                </div>
+                            </div>
+                            <div id=npc-inventory>
+                                    <ul>
+                                            <li>Item Name</li>
+                                    </ul>
+                                </div>
+                        </div>
+                       
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+        
+
+    </div>
+</body>
+
+</html>
+

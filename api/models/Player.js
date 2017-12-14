@@ -59,6 +59,11 @@ module.exports = {
 		defaultsTo: 100,
 		min: 0
 	},
+	state: {
+		type: 'string',
+		size: 255, //lengith
+		defaultsTo: 'alive'
+	}, 
     currentstats: { //https://sailsjs.com/documentation/concepts/models-and-orm/associations/one-to-one
       collection: 'stats', //collectoin -> model will result in automatic sync by creating the stats and tying the player to it
       via: 'player'

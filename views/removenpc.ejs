@@ -1,13 +1,11 @@
-<h3>Add NPC</h3>
+<h3>Remove NPC</h3>
 <div class=container>
         <br/>
-        <form id="giveitem" enctype="multipart/form-data"  method="post" action="/giveitem">
+        <form id="removenpc" enctype="multipart/form-data"  method="post" action="/removenpc">
                 <select id='npclist' name=npcid size=10>
                     Npcs
                 </select>
-                <select id=gamelist name=game size=10>
-                    Name
-                </select>
+                
                 <br>
                 <input type="submit" value="Add" /> 
         </form>
@@ -27,7 +25,7 @@ io.socket.on('connect', function(){
 			});
 		});
 	
-		io.socket.get('/game?populate=title&where={user:'+JSON.stringify(where['user'])+'}', function(resData, jwres) {
+		io.socket.get('/game?populate=players&where={user:'+JSON.stringify(where['user'])+'}', function(resData, jwres) {
             $.each(resData, function (k,v) {
                 let option = '<option value="'+ v.id +'">'+v.title+'</option>';
                 $(option).appendTo('#gamelist');

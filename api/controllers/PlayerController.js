@@ -25,6 +25,7 @@ module.exports = {
     },
 
     createPlayer: function (req, res) {
+		let gameId = (typeof req.param('gameId') === 'undefined') ? '' : req.param('gameId');
 		let type = (typeof req.param('type') === 'undefined') ? 'pc' : req.param('type');
     		req.file('avatar').upload({
 			  dirname: require('path').resolve(sails.config.appPath, 'assets/images/playerimgs/')
@@ -52,7 +53,7 @@ module.exports = {
 						} 
 						if(type =='npc'){
 							Player.publishCreate(newplayer);
-							return res.view('createnpc');
+							return res.redirect('/gm/'+gameId);
 						}
 						
 					});
@@ -61,13 +62,41 @@ module.exports = {
 	},
 	
 
-    createNpcForm: function (req, res) {
-    	res.view('createnpc');
-    },
-
     createForm: function (req, res) {
     	res.view('createplayer');
-    },
+	},
+	
+	killPlayer: function (player) {
+		//drop all their shit
+		Inventory.find().populate('player',player.id).populate('item').limit(1).exec(function(err, inv){
+		console.log(inv);
+			if (err) { console.log('failed to find Inventory:'+ err); }
+			//not working
+		   inv[0].item.forEach(function(item){
+			console.log('dropping item:');
+			console.log(item.id);
+			sails.controllers.inventory.autoDrop(item.id, player.id, '0.0');
+		   }); //end for loop
+		  });
+
+		//change their status to dead
+		Player.update(player.id,{state:'dead'}).exec(function (err, updated) {
+            if (err) { console.log('failed updating player state:'+ err); }
+            console.log('Player state updated to dead');
+		  });
+		//remove from game
+		Game.findOne(player.game).exec(function(err, game){
+			if (err) {return res.negotiate(err);}
+			game.players.remove(player.id);
+			game.save();
+			Game.publishRemove(game.id,'players',player.id);
+		});
+		
+		//post the note
+		Notification.create({game:player.game,text:player.name+' died!'}).exec(function (err,records) {
+			if (err) { console.log('failed creating note:'+ err); }
+			});
+	}
 
 };
 

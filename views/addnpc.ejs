@@ -1,4 +1,10 @@
-<h3>Add NPC</h3>
+<script type="text/javascript">
+    let gameId = "";
+    let playerId = "";
+    var inventoryId = '';
+  </script>
+  
+  <h3>Add NPC</h3>
 <div class=container>
         <br/>
         <form id="addnpc" enctype="multipart/form-data"  method="post" action="/addnpc">
@@ -21,7 +27,9 @@ io.socket.on('connect', function(){
         user:  '<%=session.user.id%>',
         type:  'npc'
     };
+                    
 		io.socket.get('/player?where='+JSON.stringify(where), function(resData, jwres) {
+            console.log(JSON.stringify(resData));
             $.each(resData, function (k,v) {
                     let option = '<option value="'+ v.id +'">'+v.name+'</option>';
                     $(option).appendTo('#npclist');
@@ -36,4 +44,3 @@ io.socket.on('connect', function(){
 		});
   }); //end on connect
 </script>
-<div id=log></div>

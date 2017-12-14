@@ -16,10 +16,12 @@ module.exports = {
 				inv.save();
 				//have to lookup the item to send it to the player
 				Item.findOne(itemId).exec(function (err, item) {
+					//tacking on player info to item for gm purposes
+					item['player'] = player;
 					//if equipment, add the modifier to the stats
 					if(item.type =='equipment'){
 						let updateTo = {};
-						let stat = item.target.toLowerCase();
+						let stat = item.target.toLowerCase().replace('e','m'); 
 						updateTo[stat] = parseInt(player.currentstats[0][stat]) + parseInt(item.amount);
 						Stats.update(player.currentstats[0].id,updateTo).exec(function (err, updated) {
 							console.log('Player stats increased by '+parseInt(item.amount));
@@ -27,7 +29,8 @@ module.exports = {
 					}
 					Inventory.publishAdd(inv.id,'item',item);
 				});
-				return res.redirect('/giveitem');
+				//return res.redirect('/giveitem');
+				return res.ok();
 			});
 		})
 		

@@ -8,10 +8,12 @@
 module.exports = {
 	pickup: function (req, res) {
         let socketId = sails.sockets.getId(req);
-		let gameId = req.param('game');
+		let gameId = req.param('gameId');
 		let dropKey = req.param('dropKey');
         let noteId = req.param('noteId');
         let playerId = req.param('playerId');
+
+        console.log(socketId,gameId,dropKey,noteId,playerId);
         //search by game/dropKey combo and get the item id only on result
 		Stuff.findOne({game: gameId,dropKey: dropKey}).exec(function(err, result){
             if (err) {return res.negotiate(err);}

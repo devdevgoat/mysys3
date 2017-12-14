@@ -30,11 +30,15 @@
 }
 
 </style>
+
 <script type="text/javascript">
   let gameId = "<%=session.game.id%>";
   let playerId = "<%=session.player.id%>";
   var inventoryId = '';
 </script>
+<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+<script type="text/javascript" src="/js/dependencies/jquery.min.js"></script>
+<script type="text/javascript" src="/js/charactersheet.js"></script>
 <script type="text/javascript">
   var rebuild = function () {
   var

@@ -31,8 +31,6 @@ module.exports = {
 		Notification.count({game:newlyCreatedRecord.game}, function (err, count) {
 			if(count>15){
 				Notification.findOne({game:newlyCreatedRecord.game}).sort('createdAt ASC').exec(function (err, toBeDeleted) {
-						console.log('Found:');
-						console.log(toBeDeleted);
 						if(toBeDeleted){
 							Notification.destroy(toBeDeleted).exec(function (err) {
 								if(err){return res.serverError(err);} 

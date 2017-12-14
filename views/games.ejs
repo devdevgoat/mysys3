@@ -19,11 +19,16 @@
          <% } %>
           
           <p><%=game.about %></p>
-
+            <!--not quite working, need to detect inbound link or create a seperate page-->
           <% if(game.streamlink) {%>
           <p>Spectator Link: <a href="<%=game.streamlink %>"</p>
           <% } %>
-          <a href="/g/<%=game.id%>" class="btn btn-primary">Join Game with <%=session.player.name%></a>
+          <% if(session.player) {%>
+            <a href="/g/<%=game.id%>" class="btn btn-primary">Join Game with <%=session.player.name%></a>
+          <% } else { %>
+            <a href="/gm/<%=game.id%>" class="btn btn-primary">Join Game </a>
+            <% } %>
+          
           <p class="text-muted">GM'd By the amazing <a href="#"><%= game.gm.firstname + ' ' + game.gm.lastname%></a></p>          
         </div>
       </div>

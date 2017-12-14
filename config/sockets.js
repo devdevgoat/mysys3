@@ -124,6 +124,21 @@ module.exports.sockets = {
   ***************************************************************************/
   // afterDisconnect: function(session, socket, cb) {
   //   // By default: do nothing.
+  //   console.log('player disconnected:');
+  //   console.log(session);
+  //   if(session.gameId && session.player){
+  //     Game.findOne(session.gameId).exec(function (err,selGame) {
+  //       if(err){return res.serverError('Error on game.findone:'+err);}
+  //       Player.findOne(session.player.id).populate('inventory').exec(function (err, selPlayer) {
+  //         selGame.players.remove(selPlayer.id);
+  //         selGame.save();
+  //         Game.publishRemove(selGame.id,'players',selPlayer.id);
+  //         Notification.create({game:session.gameId, text: selPlayer.name + ' disconnected.'}).exec(function (err,records) {
+  //           if (err) { return res.serverError(err); }
+  //         });
+  //       });
+  //     });
+  //   }
   //   return cb();
   // },
 
