@@ -33,8 +33,9 @@ module.exports = {
 			  	if (err) {return res.negotiate(err);}
 			  	var filename= 'unknown.png'
 				  if(uploadedFiles.length != 0){ // Check the number of files uploaded.
-					console.log('filename:' + uploadedFiles[0].fd);
-					filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
+					//account for mac/windows
+					let lastSlasth=(uploadedFiles[0].fd.lastIndexOf('/') === -1 ) ? uploadedFiles[0].fd.lastIndexOf('\\') : uploadedFiles[0].fd.lastIndexOf('/');
+					filename = uploadedFiles[0].fd.substring(lastSlasth + 1);
 				} 
 				Player.create({
 					name: req.param('playername'),
