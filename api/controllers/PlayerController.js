@@ -32,7 +32,8 @@ module.exports = {
 			},function (err, uploadedFiles) {
 			  	if (err) {return res.negotiate(err);}
 			  	var filename= 'unknown.png'
-			  	if(uploadedFiles.length != 0){ // Check the number of files uploaded.
+				  if(uploadedFiles.length != 0){ // Check the number of files uploaded.
+					console.log('filename:' + uploadedFiles[0].fd);
 					filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
 				} 
 				Player.create({
