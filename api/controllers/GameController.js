@@ -19,7 +19,6 @@ module.exports = {
 			//if not, then let them choose one
 			Game.find().populate('gm',{id:req.user.id}).exec(function (err, games) {
 				if(err){return res.serverError(err);} 
-				console.log(games);
 				return res.view('games',{games:games});
 			});
 	},
@@ -30,7 +29,7 @@ module.exports = {
 		let entranceText = (typeof req.param('entranceText') === 'undefined') ? ' joined the party!' : req.param('entranceText');
 		
 		if(req.session.player){
-			Player.findOne(req.session.player.id).populate('inventory').exec(function (err, selPlayer) {
+			Player.findOne(req.session.player.id).populate('inventory').populate('currentstats').exec(function (err, selPlayer) {
 		    	Game.findOne(gameId).populate('notifications').populate('players').exec(function (err,selGame) {
 		    		if(err){return res.serverError(err);}
 		    		req.session.game=selGame;
@@ -43,7 +42,7 @@ module.exports = {
 							if (err) { return res.serverError(err); }
 						});
 					}
-			    		return res.view('charactersheet');
+			    		return res.view('charactersheet',{data:selPlayer});
 		    		//});
 		    	});
 			});
@@ -111,8 +110,6 @@ module.exports = {
 			  	if (err) {return res.negotiate(err);}
 			  	if(uploadedFiles[0]){
 			  		var filename = '/images/gameimages/'+ uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/') + 1);
-					console.log(filename);
-					sails.log('**** ', uploadedFiles);
 			  	} else {
 			  		var filename = '#';
 			  	}
@@ -123,7 +120,6 @@ module.exports = {
 					gm: req.user
 					}).exec(function (err, newgame) {
 						if(err){return res.serverError(err);}
-						sails.log('New game create with id',newgame.id);
 						newgame.save();
 						return res.redirect('/readyplayer1'); //should take you straigh to gm board really
 					});

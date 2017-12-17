@@ -35,6 +35,7 @@
   let gameId = "<%=session.game.id%>";
   let playerId = "<%=session.player.id%>";
   var inventoryId = '';
+  let statsId = "<%=data.currentstats[0].id%>";
 </script>
 <script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
 <script type="text/javascript" src="/js/dependencies/jquery.min.js"></script>
@@ -85,7 +86,7 @@ window.onload = function () {
             <div class="details">
               <h3><%= session.player.name %></h3>
               <p><%= session.player.backstory %></p>
-                <progress id="health" value="0" max="100" style="width:100%;"></progress>
+                <progress id="le" value="<%= data.currentstats[0].le %>" max="100" style="width:100%;"></progress>
             </div> 
           </div>        
         </div>

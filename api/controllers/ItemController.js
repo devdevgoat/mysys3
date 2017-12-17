@@ -16,41 +16,52 @@ module.exports = {
     let itemId = req.param('itemId');
     let gameId = req.param('gameId');
     let playerId = req.param('playerId');
-    
     //search the inventory, despite the item id being given to prevent false calls
     Inventory.findOne(inventoryId).populate('player').populate('item', itemId).exec(function(err, inv){
       if (err) {return res.negotiate(err);}
-      if(inv.item[0]){
-        let val = inv.item[0].amount;
-        let stat = inv.item[0].target;
-        let desc1 = ' used ';
-        let desc2 = ' on ';
-        let oneTimeUse = true;
-
-        if(inv.item[0].type=='equipment'){
-          desc1 = ' hit ';
-          desc2 = ' with ';
-          oneTimeUse = false;
-        }
-        //lookup target player statsid
-        Stats.findOne({player:targets}).populate('player').exec(function(err, stats){
-          if (err) {return res.negotiate(err);}
-          //remove the used item from the players inventory
-            if(oneTimeUse){
-              inv.item.remove(itemId);
-              inv.save();
-              Inventory.publishRemove(inv.id,'item',itemId);
+      Stats.findOne({player:playerId}).exec(function (err,attackerStats){
+        if (err) {return res.negotiate(err);}
+        if(inv){
+          if(inv.item[0]){
+          let stat = inv.item[0].target.toLowerCase();
+          let val = (stat!='ail') ? inv.item[0].amount :inv.item[0].ailment ;
+          let desc1 = ' applied ';
+          let desc2 = ' with ';
+          let oneTimeUse = true;
+          if(inv.item[0].type=='equipment'){
+            desc1 = ' hit ';
+            desc2 = ' with ';
+            oneTimeUse = false;
+            val = parseInt(val) + parseInt(attackerStats[stat]);
+          }
+          //lookup target player statsid
+          Stats.findOne({player:targets}).populate('player').exec(function(err, stats){
+            if (err) {return res.negotiate(err);}
+            if(stats){
+              //remove the used item from the players inventory
+              if(oneTimeUse){
+                inv.item.remove(itemId);
+                inv.save();
+                Inventory.publishRemove(inv.id,'item',itemId);
+              }
+              sails.controllers.stats.updateStatsAuto(stats.id, inv.item[0].action,stat, val);
+              let note = inv.player.name + desc1 + stats.player.name + desc2 + inv.item[0].name;
+              Notification.create({game:gameId,text:note}).exec(function (err,records) {
+                if (err) { return res.serverError(err); }
+              });
+            } else {
+              console.log('Unable to find stats for player:'+targets);
             }
-            sails.controllers.stats.updateStatsAuto(stats.id, inv.item[0].action,stat, val);
-            let note = inv.player.name + desc1 + stats.player.name + desc2 + inv.item[0].name;
-            Notification.create({game:gameId,text:note}).exec(function (err,records) {
-              if (err) { return res.serverError(err); }
+            
             });
-          });
-       
+         
+        } else {
+          console.log('That item is not in your inventory... hmmm, what are you trying to do, exactly? I\'m just going to log that...');
+        }
       } else {
-        console.log('That item is not in your inventory... hmmm, what are you trying to do, exactly? I\'m just going to log that...');
+        console.log('Inventory not returned for id:'+inventoryId +' and item:'+ itemId);
       }
+      });
     });
 
   },
@@ -73,10 +84,10 @@ module.exports = {
           type: req.param('type'),
           target: req.param('target'),
           action: req.param('action'),
-          image: ''//filename
+          ailment: req.param('ailment'),
+          createdBy: req.param('createdBy')
           }).exec(function (err, newitem) {
             if(err){return res.serverError(err);}
-            sails.log('New item created with id',newitem.id);
             //res.view('createitem'); //should take you straigh to gm board really
             res.json(newitem);
           });

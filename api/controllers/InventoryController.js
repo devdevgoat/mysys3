@@ -36,6 +36,31 @@ module.exports = {
 		
 	},
 
+	autoAddToInventory: function (itemId, playerId) {
+		Player.findOne(playerId).populate('inventory').populate('currentstats').exec(function (err, player) {
+			Inventory.findOne(player.inventory[0].id).exec(function (err,inv) {
+				inv.item.add(itemId);
+				inv.save();
+				//have to lookup the item to send it to the player
+				Item.findOne(itemId).exec(function (err, item) {
+					//tacking on player info to item for gm purposes
+					item['player'] = player;
+					//if equipment, add the modifier to the stats
+					if(item.type =='equipment'){
+						let updateTo = {};
+						let stat = item.target.toLowerCase().replace('e','m'); 
+						updateTo[stat] = parseInt(player.currentstats[0][stat]) + parseInt(item.amount);
+						Stats.update(player.currentstats[0].id,updateTo).exec(function (err, updated) {
+							console.log('Player stats increased by '+parseInt(item.amount));
+						});
+					}
+					Inventory.publishAdd(inv.id,'item',item);
+				});
+			});
+		})
+		
+	},
+
 	dropFromInventory: function (req, res) {
 		let itemId = req.param('itemId');
 		let playerId = req.param('playerId');
@@ -70,11 +95,11 @@ module.exports = {
 
 					Stuff.create(addToThePile).exec(function (err,created) {
 						if (err) { return res.serverError(err); }
-						console.log(player.name + ' added '+ item.name +' to the pile of stuff');
 						Notification.create(dropNote).exec(function (err,records) {
 							if (err) { return res.serverError(err); }
+
+							return res.ok();
 						});
-						return res.ok();
 					});
 						
 				});
@@ -116,7 +141,6 @@ module.exports = {
 
 					Stuff.create(addToThePile).exec(function (err,created) {
 						if (err) { return res.serverError(err); }
-						console.log(player.name + ' added '+ item.name +' to the pile of stuff');
 						Notification.create(dropNote).exec(function (err,records) {
 							if (err) { return res.serverError(err); }
 						});

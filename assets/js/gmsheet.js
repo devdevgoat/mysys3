@@ -1,6 +1,5 @@
 /****************** BEG DRAGDROP ******************/
 function dragstart_handler(ev) {
-    console.log("dragStart");
     // Add the target element's id to the data transfer object
     ev.dataTransfer.setData("text/plain", ev.target.id);
 }
@@ -61,7 +60,7 @@ let where = {
     type:  'npc'
 };
 io.socket.on('connect', function () {
-    io.socket.get('/game/' + gameId, function (resData, jwres) {
+    io.socket.get('/game/' + gameId+'?notifications?sort=createdAt%20ASC', function (resData, jwres) {
         let players = resData.players;
         let notifications = resData.notifications;
         $.each(players, function (k, v) {
@@ -226,27 +225,28 @@ function addNotification(id, text) {
 }
 
 function addItem(item, div) {
-    let playerId = '';
-    let inventoryId = '';
+    let playerId = 'null_player_id';
+    let inventoryId = 'null_inv_id';
+    let type = 'give';
     let isNpc = true;
-    if (typeof item.player === 'undefined') {
-        playerId = 'null_player_id';
-        inventoryId = 'null_inv_id';
-    } else {
+    if(div =='npc-inventory'){
+    }
+    if (typeof item.player != 'undefined') {
         playerId = item.player.id;
         inventoryId = item.player.inventory[0].id;
+        type = 'use';
         div = div + '-' + playerId;
         if (item.player.type == 'pc') {
             isNpc = false; //only changes if a player is involved, so item list updates arnt effected
         }
     }
 
-    if (isNpc) {
-        let html = '<li draggable="true" ondragstart="dragstart_handler(event);" id="give-'
+    // if (isNpc) {
+        let html = '<li draggable="true" ondragstart="dragstart_handler(event);" id="'+type+'-'
             + item.id + '-' + playerId + '-' + inventoryId + '">' + item.name +
             '<span>[' + item.action + '][' + item.amount + item.target + ']</span></li>';
         $(html).prependTo('#' + div).hide().slideDown();
-    }
+    //}
 }
 
 function addToNPCList(npc) {
@@ -281,10 +281,19 @@ function addNpc(npcId){
       });
 
 }
-
+function setAilment(statsid,ailment) {
+    let data = {
+        statsid:statsid,
+        stat:'ail',
+        val:ailment};
+     editStats(data);
+}
 function editStats(data){
+    // {statsid:A#,
+    // stat:ail,
+    // val:#}
     io.socket.post('/editstats', data, function (resData, jwres) {
-      
+
     });
 } 
 function createItem(data){
@@ -312,8 +321,10 @@ function addPlayer(player) {
             pe: parseInt(stats.pe) + parseInt(stats.pm),
             me: parseInt(stats.me) + parseInt(stats.mm),
             se: parseInt(stats.se) + parseInt(stats.sm),
-            le: parseInt(stats.le)
-        }
+            le: parseInt(stats.le),
+            gold: stats.gold,
+            ail:stats.ail
+        };
         //updateStat(statData);
 
         let editStatHtml = '<option value="'+stats.id+'">'+player.name+'</option>';
@@ -343,13 +354,13 @@ function addPlayer(player) {
                     + player.name +
                     '</h3><div id="npc-stats" class="'+stats.id+'"><div>' +
                     '<img id=' + player.id + ' src="/images/like.png" alt="LE">'
-                    + statData.le +
+                    +  '<span id="le-'+stats.id+'" value="" max="100">'+ statData.le + '</span>' +
                     '</div><div><img src="/images/body-building.png" alt="PE">'
-                    + statData.pe +
+                    +  '<span id="pe-'+stats.id+'" value="" max="100">'+ statData.pe + '</span>' +
                     '</div><div><img src="/images/management.png" alt="ME">'
-                    + statData.me +
+                    +  '<span id="me-'+stats.id+'" value="" max="100">'+ statData.me + '</span>' +
                     '</div><div><img src="/images/hold.png" alt="SE">'
-                    + statData.se +
+                    +  '<span id="se-'+stats.id+'" value="" max="100">'+ statData.se + '</span>' +
                     '</div></div><div id="npc-inventory" ><ul id=npc-inventory-'
                     + player.id + '>'
                     + itemHTML +
@@ -360,23 +371,20 @@ function addPlayer(player) {
             let html = '<div id=' + player.id + ' class="strip" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">\
         <img id='+ player.id + ' src=' + player.image + ' class="img-circle">\
         <div  id='+ player.id + ' class="details">\
-        <h3  id='+ player.id + ' >' + player.name + '</h3><div id="pc-stats">\
-            <div>\
-                <img src="/images/like.png" alt="LE">\
-                <progress id="le-'+stats.id+'" value="'+ statData.le + '" max="100"></progress>\
-            </div>\
-            <div>\
-                <img src="/images/body-building.png" alt="PE">\
-                <progress id="pe-'+stats.id+'" value="'+ statData.pe + '" max="100"></progress>\
-            </div>\
-            <div>\
-                <img src="/images/management.png" alt="ME">\
-                <progress id="me-'+stats.id+'" value="'+ statData.me + '" max="100"></progress>\
-            </div>\
-            <div>\
-                <img src="/images/hold.png" alt="SE">\
-                <progress id="se-'+stats.id+'" value="'+ statData.se + '" max="100"></progress>\
-            </div></div>';
+        <h3  id='+ player.id + ' >' + player.name + '</h3><div id="pc-stats">'+
+        '<div><img id=' + player.id + ' src="/images/like.png" alt="LE">'
+        +  '<span id="le-'+stats.id+'" value="" max="100">'+ statData.le + '</span>' +
+        '</div><div><img src="/images/body-building.png" alt="PE">'
+        +  '<span id="pe-'+stats.id+'" value="" max="100">'+ statData.pe + '</span>' +
+        '</div><div><img src="/images/management.png" alt="ME">'
+        +  '<span id="me-'+stats.id+'" value="" max="100">'+ statData.me + '</span>' +
+        '</div><div><img src="/images/hold.png" alt="SE">'
+        +  '<span id="se-'+stats.id+'" value="" max="100">'+ statData.se + '</span>\
+        </div></div><div id=pc-ails>\
+            <img class=ailimg src="/images/blind.png" onclick=\'setAilment("'+stats.id+'","blind")\' >\
+            <img class=ailimg src="/images/frozen.png" onclick=\'setAilment("'+stats.id+'","frozen")\' >\
+            <img class=ailimg src="/images/cancel.png" onclick=\'setAilment("'+stats.id+'","")\' >\
+            </div>';
 
             // '<div id='+player.id+' class="strip" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">\
             // <img id='+player.id+' src='+ player.image +' class="img-circle">\
@@ -388,6 +396,8 @@ function addPlayer(player) {
             // </div>';
             $(html).prependTo('#players-section').hide().slideDown();
             $(editStatHtml).prependTo('#statsid').hide().slideDown();
+
+            applyAilmentOverlay(player.id,stats.ail);
         }
 
 
@@ -404,10 +414,32 @@ function updateStat(data) {
         //     $('#le-'+data.id).val(v);
         // } else
          if (k!='id'){
-            $('#'+k+'-'+data.id).val(v);
+             if(k!='ail'){
+                $('#'+k+'-'+data.id).val(v);
+                $('#'+k+'-'+data.id).html(v);
+             } else {
+                applyAilmentOverlay(data.playerId,v);
+             }
         }
     })
 }
+
+function applyAilmentOverlay(playerId,ail) {
+    let color;
+ switch (ail) {
+     case  'dead': 	color = 'gray';
+         break;
+     case  'frozen': color = 'lightblue';
+         break;
+     case  'blind': 	color = 'darkgray';
+         break;
+     case '': 		color = '';
+     default:
+         break;
+ }
+ $( "[id='"+playerId+"']" ).css("background-color", color);
+}
+
 
 function removeNPC(npcId) {
     let data = {
@@ -419,6 +451,16 @@ function removeNPC(npcId) {
             });
 }
 
+function pickup(noteId,dropKey) {
+	let data = {
+		gameId: gameId,
+		dropKey: dropKey,
+		noteId: noteId
+	};
+	io.socket.post('/Stuff/trash/',data,function (resData,jwres) {
+		//alert(JSON.stringify(resData));
+	});
+}
 
 
 $(document).ready(function () {

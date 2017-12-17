@@ -29,7 +29,6 @@ io.socket.on('connect', function(){
     };
                     
 		io.socket.get('/player?where='+JSON.stringify(where), function(resData, jwres) {
-            console.log(JSON.stringify(resData));
             $.each(resData, function (k,v) {
                     let option = '<option value="'+ v.id +'">'+v.name+'</option>';
                     $(option).appendTo('#npclist');

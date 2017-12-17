@@ -11,14 +11,11 @@ module.exports = {
   	name: {
   			type: 'string',
   			size: 255, //lengith
-  			required: true,
-  			defaultsTo: 'Potion of Life'
+  			required: true
   		},
   	desc: {
   			type: 'string',
-  			size: 255, //lengith
-  			required: true,
-  			defaultsTo: 'Restores 1 LE'
+  			size: 255 //lengith
   		},
   	ailment:{
         type: 'string',
@@ -40,19 +37,15 @@ module.exports = {
   		required: true,
   		defaultsTo: 1
   	},
-    img: {
-      type: 'string'
-    },
     type: {
       string: 'string',
       enum: 'equipment,item',
       required: true,
       defaultsTo: 'item'
-		},
+	},
 	createdBy: {
 		string: ''
 	}
-
 	}
 };
 

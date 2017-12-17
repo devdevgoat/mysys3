@@ -17,7 +17,6 @@ module.exports = {
     		if(err){
     			return res.serverError(err);
     		}
-    		sails.log('New player create with id',newuser.id);
     		newuser.save();
     		return res.redirect('/readyplayer1');
     	});

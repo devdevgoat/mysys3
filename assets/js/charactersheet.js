@@ -14,7 +14,6 @@ let dFormated = '"' + d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate
 */
 
 function dragstart_handler(ev) {
-	console.log("dragStart");
 	// Add the target element's id to the data transfer object
 	ev.dataTransfer.setData("text/plain", ev.target.id);
    }
@@ -46,8 +45,24 @@ function drop_handler(ev) {
 	//alert(JSON.stringify(data));
    }
 
+   function applyPartyMemberAilmentOverlay(statsId,ail) {
+	   let color;
+	switch (ail) {
+		case  'dead': 	color = 'gray';
+			break;
+		case  'frozen': color = 'lightblue';
+			break;
+		case  'blind': 	color = 'darkgray';
+            break;
+        case '': 		color = '';
+		default:
+			break;
+	}
+	$( "[id='"+statsId+"']" ).css("background-color", color);
+   }
+
    function applyAilmentOverlay(ail) {
-	
+	$("[id$='-overlay']").remove();
 	let html = '';
 	switch (ail) {
 		case  'dead':
@@ -99,7 +114,10 @@ function drop_handler(ev) {
 				pe: parseInt(stats.pe) + parseInt(stats.pm),
 				me: parseInt(stats.me) + parseInt(stats.mm),
 				se: parseInt(stats.se) + parseInt(stats.sm),
-				le: parseInt(stats.le)
+				le: parseInt(stats.le),
+				gold:stats.gold,
+				ail:stats.ail,
+				id: stats.id
 			}
 			updateStat(statData);
 			
@@ -112,7 +130,7 @@ function drop_handler(ev) {
 		});
 		
 
-		io.socket.get('/game/'+gameId, function(resData, jwres) {
+		io.socket.get('/game/'+gameId+'?notifications?sort=createdAt%20ASC', function(resData, jwres) {
 			let players = resData.players;
 			let notifications = resData.notifications;
 			$.each(players, function (k,v) {
@@ -151,7 +169,6 @@ io.socket.on('notification', function (event) {//not sure why this is working
 });
 
 io.socket.on('inventory', function (event) {
-	console.log(event);
 	switch (event.verb) {
 		case 'addedTo':
 			addItem(event.added);
@@ -164,14 +181,7 @@ io.socket.on('inventory', function (event) {
 	  }
 		
 });
-/*
-{"verb":"updated","data":{"pe":"32"},"id":"59fe6720ce5ea5d02791ae43"}
-*/
-io.socket.on('stats', function (event) {
-	if(event.verb == 'updated'){
-		updateStat(event.data);
-	}
-});
+
 
 
 io.socket.on('game', function (event) { //need to decifer between player adds and notifications?
@@ -214,6 +224,17 @@ io.socket.on('game', function (event) { //need to decifer between player adds an
 	  }
 });
 
+
+   /*
+{"verb":"updated","data":{"pe":"32"},"id":"59fe6720ce5ea5d02791ae43"}
+*/
+
+io.socket.on('stats', function (event) {
+	if (event.verb == 'updated') {
+		updateStat(event.data);
+	}
+});
+
 }); //end on connect
 
 
@@ -229,7 +250,13 @@ function addNotification(id, text) {
 }
 
 function addPlayer(player) {
-	
+	io.socket.get('/player/' + player.id, function (resData, jwres) {
+       let stats = resData.currentstats[0];
+        let inventoryId = resData.inventory[0].id;
+        let statData = {
+            le: parseInt(stats.le),
+            ail:stats.ail
+        };
 	if(player.type == 'npc'){
 		let html = 
 		'<div  id='+player.id+' class="card" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">\
@@ -242,12 +269,14 @@ function addPlayer(player) {
 		<img id='+player.id+' src='+ player.image +' class="img-circle">\
 		<div  id='+player.id+' class="details">\
 			<h3  id='+player.id+' >'+player.name+'</h3>\
-			<progress id="health" value="'+player.le+'" max="100"></progress>\
+			<progress id="'+stats.id+'" value="'+statData.le+'" max="100"></progress>\
 		</div>\
 		</div> \
 		</div>';
 		$(html).prependTo('#players-section').hide().slideDown();
+		applyPartyMemberAilmentOverlay(player.id,statData.ail);
 	}
+});//end socketgetplayer
 }
 
 
@@ -294,12 +323,24 @@ function removePartyMember(playerId) {
 
 function updateStat(data) {
 	$.each(data, function (k,v) {
-		if(k=="le"){
-			$('#health').val(v);
-		} else{
-			$('#'+k).html(v);
+		if(data.id == statsId){
+			//update my stats
+			if(k!='ail'){
+				$("[id="+k+"]").html(v);
+			} else {
+				applyAilmentOverlay(v);
+			}
+		} else {
+			//update member stats
+			if(k!='ail'){
+				if(k=='le'){
+					$("[id="+data.id+"]").val(v);
+				}
+			} else {
+				applyPartyMemberAilmentOverlay(data.playerId,v);
+			}
 		}
-	} )
+	} );
 }
 
 

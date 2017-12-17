@@ -42,14 +42,14 @@ module.exports = {
   },
   afterUpdate: function (values,cb){
     newStats = {
-      player: values.player.id,
       id: values.id,
       pe: parseInt(values.pe) + parseInt(values.pm),
       se: parseInt(values.se) + parseInt(values.sm),
       me: parseInt(values.me) + parseInt(values.mm),
       le: parseInt(values.le),
       ail: values.ail,
-      gold: values.gold
+      gold: values.gold,
+      playerId: values.player,
     };
     Stats.publishUpdate(values.id, newStats);
     cb();

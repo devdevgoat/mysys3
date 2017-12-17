@@ -15,7 +15,6 @@ module.exports = {
 				}
 			}).exec(function (err, players) {
 				if(err){return res.serverError(err);} 
-					sails.log(players);
 					return res.view('playerlist',{players:players});
 			});
 		} else {
@@ -34,8 +33,8 @@ module.exports = {
 			  	var filename= 'unknown.png'
 				  if(uploadedFiles.length != 0){ // Check the number of files uploaded.
 					//account for mac/windows
-					let lastSlasth=(uploadedFiles[0].fd.lastIndexOf('/') === -1 ) ? uploadedFiles[0].fd.lastIndexOf('\\') : uploadedFiles[0].fd.lastIndexOf('/');
-					filename = uploadedFiles[0].fd.substring(lastSlasth + 1);
+					let lastSlash=(uploadedFiles[0].fd.lastIndexOf('/') === -1 ) ? uploadedFiles[0].fd.lastIndexOf('\\') : uploadedFiles[0].fd.lastIndexOf('/');
+					filename = uploadedFiles[0].fd.substring(lastSlash + 1);
 				} 
 				Player.create({
 					name: req.param('playername'),
@@ -49,7 +48,6 @@ module.exports = {
 					game: '59f6350a7272ba8104caef4b'
 					}).exec(function (err, newplayer) {
 						if(err){return res.serverError(err);}
-						sails.log('New player create with id',newplayer.id);
 						if(type=='pc'){
 							return res.redirect('/readyplayer1');
 						} 
@@ -71,12 +69,9 @@ module.exports = {
 	killPlayer: function (player) {
 		//drop all their shit
 		Inventory.find().populate('player',player.id).populate('item').limit(1).exec(function(err, inv){
-		console.log(inv);
 			if (err) { console.log('failed to find Inventory:'+ err); }
 			//not working
 		   inv[0].item.forEach(function(item){
-			console.log('dropping item:');
-			console.log(item.id);
 			sails.controllers.inventory.autoDrop(item.id, player.id, '0.0');
 		   }); //end for loop
 		  });
