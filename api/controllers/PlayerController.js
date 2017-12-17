@@ -68,10 +68,10 @@ module.exports = {
 	
 	killPlayer: function (player) {
 		//drop all their shit
-		Inventory.find().populate('player',player.id).populate('item').limit(1).exec(function(err, inv){
+		Inventory.findOne({player:player.id}).populate('player').populate('item').limit(1).exec(function(err, inv){
 			if (err) { console.log('failed to find Inventory:'+ err); }
 			//not working
-		   inv[0].item.forEach(function(item){
+		   inv.item.forEach(function(item){
 			sails.controllers.inventory.autoDrop(item.id, player.id, '0.0');
 		   }); //end for loop
 		  });

@@ -169,17 +169,18 @@ io.socket.on('notification', function (event) {//not sure why this is working
 });
 
 io.socket.on('inventory', function (event) {
-	switch (event.verb) {
-		case 'addedTo':
-			addItem(event.added);
-		  break;
-		case 'removedFrom':
-			removeItem(event.removedId);
-		break;
-		default:
-		  console.warn('Unrecognized socket event (`%s`) from server:',event.verb, event);
-	  }
-		
+	if(event.id == inventoryId){
+		switch (event.verb) {
+			case 'addedTo':
+				addItem(event.added);
+			  break;
+			case 'removedFrom':
+				removeItem(event.removedId);
+			break;
+			default:
+			  console.warn('Unrecognized socket event (`%s`) from server:',event.verb, event);
+		  }
+	}
 });
 
 

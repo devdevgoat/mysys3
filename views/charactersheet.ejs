@@ -34,7 +34,7 @@
 <script type="text/javascript">
   let gameId = "<%=session.game.id%>";
   let playerId = "<%=session.player.id%>";
-  var inventoryId = '';
+  var inventoryId = '<%=data.inventory[0].id%>';
   let statsId = "<%=data.currentstats[0].id%>";
 </script>
 <script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
