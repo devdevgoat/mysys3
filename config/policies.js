@@ -38,14 +38,15 @@ module.exports.policies = {
    },'NotificationController': {
      '*': true //allowing bc request made by io doesn't seem to be allowed through
    },'PlayeritemController': {
-     '*': 'isAuthenticated'
-   },'StatsController': {
+    '*': 'isAuthenticated'
+  },'StatsController': {
      '*': true
    },
    'GameController': {
      'getGames': ['isAuthenticated','isReadyToPlay'],
      'joinGame': ['paramaterCheck','storeGameId','isAuthenticated'],
      'createGame': ['isAuthenticated'],
+     'gmGame': ['isAuthenticated']
 
    }
   //  '*' :  'isAuthenticated'

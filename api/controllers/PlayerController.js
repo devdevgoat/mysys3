@@ -66,7 +66,7 @@ module.exports = {
     	res.view('createplayer');
 	},
 	
-	killPlayer: function (player) {
+	killPlayer: function (player,statsId) {
 		//drop all their shit
 		Inventory.findOne({player:player.id}).populate('player').populate('item').limit(1).exec(function(err, inv){
 			if (err) { console.log('failed to find Inventory:'+ err); }
@@ -78,6 +78,10 @@ module.exports = {
 
 		//change their status to dead
 		Player.update(player.id,{state:'dead'}).exec(function (err, updated) {
+            if (err) { console.log('failed updating player state:'+ err); }
+            console.log('Player state updated to dead');
+		  });
+		Stats.update(statsid,{le:0}).exec(function (err, updated) {
             if (err) { console.log('failed updating player state:'+ err); }
             console.log('Player state updated to dead');
 		  });

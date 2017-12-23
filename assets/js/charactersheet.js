@@ -271,6 +271,7 @@ function addPlayer(player) {
 		<div  id='+player.id+' class="details">\
 			<h3  id='+player.id+' >'+player.name+'</h3>\
 			<progress id="'+stats.id+'" value="'+statData.le+'" max="100"></progress>\
+			<span id='+stats.id+'>'+statData.le+'</span>/'+player.le+'\
 		</div>\
 		</div> \
 		</div>';
@@ -286,6 +287,7 @@ function addItem(item) {
 	//type eqi or item
 	let classType = item.type;
 	let div = '';
+	let badge = '<p>+'+item.amount+''+item.target+'</p>';
 	switch (item.type) {
 		case 'equipment':
 			div = 'equipment';
@@ -295,6 +297,7 @@ function addItem(item) {
 			break;
 		case 'spell':
 			div = 'spells';
+			badge = '<p>'+item.action+' '+item.ailment+'</p>';
 			break;
 		default:
 			break;
@@ -302,12 +305,11 @@ function addItem(item) {
 	let html = 
 			'<div id="'+item.id+'" class="'+classType+'-strip">\
 			<div class="info">\
-			<div class="badge badge-default">\
-			  <p>+'+item.amount+''+item.target+'</p>\
-			</div></div>\
+			<div class="badge badge-default">'
+			+badge+
+			'</div></div>\
               <div  id="'+item.id+'"  class="details" draggable="true" ondragstart="dragstart_handler(event);">\
                 <h3 id="'+item.id+'" >'+item.name+'</h3>'+
-				//<h4 id="'+item.id+'" >'+item.desc+'</h4>\
 				'<div class=remove onclick="drop(\''+item.id+'\');"\
 				\');">x</div>\
               </div>\
@@ -327,7 +329,12 @@ function updateStat(data) {
 		if(data.id == statsId){
 			//update my stats
 			if(k!='ail'){
-				$("[id="+k+"]").html(v);
+				if(k=='le'){
+					$("[id="+data.id+"]").val(v);
+				} else {
+					$("[id="+k+"]").html(v);
+				}
+				
 			} else {
 				applyAilmentOverlay(v);
 			}

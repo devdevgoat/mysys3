@@ -244,7 +244,7 @@ function addItem(item, div) {
     // if (isNpc) {
         let html = '<li draggable="true" ondragstart="dragstart_handler(event);" id="'+type+'-'
             + item.id + '-' + playerId + '-' + inventoryId + '">' + item.name +
-            '<span>[' + item.action + '][' + item.amount + item.target + ']</span></li>';
+            '<span>[' + item.action + '][' + item.amount +']['+ item.target + ']['+item.ailment+']</span></li>';
         $(html).prependTo('#' + div).hide().slideDown();
     //}
 }
@@ -341,7 +341,7 @@ function addPlayer(player) {
                         + item.id + '-' + player.id + '-' + inventoryId + '">' + item.name +
                         '<span>' +
                         // '['+item.action+']'+
-                        '[' + item.amount + item.target + ']</span></li>';
+                        '[' + item.amount +']['+ item.target + ']['+item.ailment+']</span></li>';
                 });
                 let html =
                     '<div class="strip" id='

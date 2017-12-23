@@ -31,35 +31,63 @@ module.exports = {
 		//return res.redirect('/editstats');
 		
    },
+   updateStatsAutoSimple: function (statsid,stat,val) {
+		let updateTo = {};
+		Stats.findOne(statsid).populate('player').exec(function (err, currStats) {
+			if (err) return res.serverError(err);
+			if(stat == 'ail'){
+				updateTo[stat] = val;
+			} else {
+				updateTo[stat] =parseInt(currStats[stat]) + parseInt(val);
+			}
+			
+			Stats.update(statsid, updateTo).exec(function (err, updated) {
+				if (err) console.log('Something went wrong: '+err);
+			});
+
+		});
+	},
 
    //c2c stats adjustment
    updateStatsAuto: function (statsid, action,stat, val) {
 	stat = stat.toLowerCase();
 	action = action.toLowerCase();
+	let summary = '';
+	let updateToSimple = {};
 		 Stats.findOne(statsid).populate('player').exec(function (err, currStats) {
 		 	if (err) return res.serverError(err);
 			 if(action =='inflict'){
-				sails.controllers.stats.calculateDamage(currStats,stat,val, function (err, updateTo,summary) {
-					Stats.update(statsid, updateTo).exec(function (err, updated) {
-						if (err) return res.serverError(err);
-						if(summary!='dead'){
-							if(summary == 'missed'){
-								Notification.create({game:currStats.player.game,text:'... but missed!'}).exec(function (err,records) {
-									if (err) { return res.serverError(err); }
-								});
-							} else {
+
+				if(stat=='ail'){
+						summary = ' is ' + val;
+						updateToSimple[stat] = val; //should be cumulative, can be frozen AND blind
+						Stats.update(statsid, updateToSimple).exec(function (err, updated) {
+							if (err) return res.serverError(err);
 								Notification.create({game:currStats.player.game,text:currStats.player.name+summary}).exec(function (err,records) {
 									if (err) { return res.serverError(err); }
-								});
-							}
-						} else {
-							sails.controllers.player.killPlayer(currStats.player);
-						}
-					});
-				}); 
+									});
+							});
+					} else {
+						sails.controllers.stats.calculateDamage(currStats,stat,val, function (err, updateTo,summary) {
+							Stats.update(statsid, updateTo).exec(function (err, updated) {
+								if (err) return res.serverError(err);
+								if(summary!='dead'){
+									if(summary == 'missed'){
+										Notification.create({game:currStats.player.game,text:'... but missed!'}).exec(function (err,records) {
+											if (err) { return res.serverError(err); }
+										});
+									} else {
+										Notification.create({game:currStats.player.game,text:currStats.player.name+summary}).exec(function (err,records) {
+											if (err) { return res.serverError(err); }
+										});
+									}
+								} else {
+									sails.controllers.player.killPlayer(currStats.player,currStats.id);
+								}
+							});
+						}); 
+					}
 			 } else {
-				let summary = '';
-				let updateToSimple = {};
 				 if(stat=='ail'){
 					if(currStats[stat]==val){
 						summary = ' is cured of ' + val;
@@ -80,10 +108,6 @@ module.exports = {
 							});
 					});
 			 }
-			
-			
-			
-			
 		});
    },
 
@@ -132,12 +156,9 @@ module.exports = {
 		summary = 'missed';
 		callback(null,'',summary);
 	} else {
-		// commented out because armor determines hit/miss above
-		// val = parseInt(val) - parseInt(currStats[targetModifier]); //deduct the armor value
-		// if (val <0){
-		// 	//too much armor?
-		// }
-		// console.log('Reduced val by armor to ' + val);
+		if(currStats[targetStat]<=0){
+			currStats[targetStat] = 0;
+		}
 		if(currStats[targetStat]> val){
 			//reduce energy
 			console.log('Defender has enough '+targetStat+ '('+currStats[targetStat]+') to absorbe the new val.');

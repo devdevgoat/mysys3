@@ -87,6 +87,7 @@ window.onload = function () {
               <h3><%= session.player.name %></h3>
               <p><%= session.player.backstory %></p>
                 <progress id="le" value="<%= data.currentstats[0].le %>" max="100" style="width:100%;"></progress>
+                <span id="<%= data.currentstats[0].id %>" ><%=data.currentstats[0].le%></span>/<%=data.le%>
             </div> 
           </div>        
         </div>
@@ -140,16 +141,27 @@ window.onload = function () {
         </div>
     </div>
     <div class="col-md-3" id="right-sidebar">
-        <div id="equipment" class="row">
-          <h4>Equipment</h4>
-      
-        </div>
-        <div id="items" class="row">
-          <h4>Items</h4>
+      <h4 onclick="rollup('equipment')">Equipment</h4>
+      <div id="equipment" class="row">
     
-        </div>
+      </div>
+
+      <h4 onclick="rollup('spells')">Spells</h4>
+      <div id="spells" class="row">
+    
+      </div>
+      <h4 onclick="rollup('items')">Items</h4>
+      <div id="items" class="row">
+  
+      </div>
     </div>
   </div>
 
 
 </div>
+<script type="text/javascript">
+  function rollup(id) {
+          $( "#"+id ).slideToggle( "slow", function() {
+          });
+        }
+</script>

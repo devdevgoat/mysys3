@@ -27,6 +27,7 @@
     "sails": "~0.12.14",
     "sails-disk": "~0.10.9",
     "sails-hook-autoreload": "^0.14.3",
+    "sails-hook-cron": "^2.2.2",
     "sails-mongo": "latest"
   },
   "scripts": {

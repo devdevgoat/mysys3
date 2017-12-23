@@ -39,7 +39,7 @@ module.exports = {
   	},
     type: {
       string: 'string',
-      enum: 'equipment,item',
+      enum: 'equipment,item,spell',
       required: true,
       defaultsTo: 'item'
 	},

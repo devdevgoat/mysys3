@@ -98,17 +98,18 @@ body {
           border-radius: 40px; }
 
 #right-sidebar {
-  background: #fff; }
+  background: #fff; 
+max-height: 800px;}
+#right-sidebar h4 {
+  text-align: left;
+  margin-left: 22px;
+  font-family: 'Roboto';
+  font-weight: bold;
+  font-size: 22px; }
   #equipment {
-    height: 400px;
+    max-height: 300px;
     background: #fff;
     padding: 10px;}
-    #equipment h4 {
-      text-align: left;
-      margin-left: 22px;
-      font-family: 'Roboto';
-      font-weight: bold;
-      font-size: 22px; }
     #equipment .equipment-strip {
       display: block; position:relative;}
       #equipment .equipment-strip .details {
@@ -193,16 +194,10 @@ body {
                 border: 3px solid rgba(0, 0, 0, 0.72);
                 box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.39); }
   #items {
-    height: 797px;
+    max-height: 300px;
     background: #fff;
     padding: 10px; 
   }
-    #items h4 {
-      text-align: left;
-      margin-left: 22px;
-      font-family: 'Roboto';
-      font-weight: bold;
-      font-size: 22px; }
     #items .item-strip {
       display: block;
       position:relative; }
@@ -288,7 +283,96 @@ body {
               #items .selectbox .selected {
                 border: 3px solid rgba(0, 0, 0, 0.72);
                 box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.39); }
-          
+#spells {
+  max-height: 300px;
+background: #fff;
+padding: 10px; 
+}
+#spells .spell-strip {
+  display: block;
+  position:relative; }
+  
+  #spells .spell-strip .details {
+    margin-left: 10px;
+    display: inline-block; }
+    #spells .spell-strip .details h3 {
+      font-family: 'Roboto';
+      color: #000000;
+      font-weight: 400;
+      font-size: 22px; }
+    #spells .spell-strip .details h4 {
+      font-family: 'Roboto';
+      color: #cdced0;
+      font-size: 16px; }
+  #spells .spell-strip .info {
+    margin-left: 10px;
+    display: inline-block;
+    position: relative; }
+    #spells .spell-strip .info .badge {
+      float:left;
+      background: black;
+      padding: 7px; }
+      #spells .spell-strip .info .badge p {
+        margin-bottom: 0px; }
+        #spells .feature {
+          display: none;
+          width: 262px;
+          height: 100%;
+          position: absolute;
+          background: #2980b9;
+          top: 0px;
+          right: 0px;
+          z-index: 23;
+          padding-top: 11px; }
+          #spells .feature .img-circle {
+            height: 60px;
+            width: 60px;
+            border-radius: 100px;
+            background: #fff;
+            display: inline-block;
+            background-size: cover;
+            padding: 10px;
+            margin-left: 6px; }
+            #spells .feature .img-circle img {
+              width: 35px; }
+        #spells .selectbox {
+          display: none;
+          width: 262px;
+          height: 230px;
+          position: absolute;
+          background: #fff;
+          top: 0px;
+          right: 0px;
+          z-index: 43;
+          padding: 11px;
+          box-shadow: 0px 0px 17px rgba(0, 0, 0, 0.15); }
+          #spells .selectbox .img-circle {
+            border-radius: 100px;
+            background: #fff;
+            display: inline-block;
+            background-size: cover; }
+            #spells .selectbox .img-circle img {
+              width: 60px;
+              height: 60px; }
+          #spells .selectbox .tick {
+            position: absolute;
+            bottom: 10px;
+            right: 77px; }
+            #spells .selectbox .tick img {
+              background-color: #2ecc71;
+              padding: 11px;
+              color: white;
+              fill: white; }
+          #spells .selectbox .cross {
+            position: absolute;
+            bottom: 10px; }
+            #spells .selectbox .cross img {
+              background-color: #e74c3c;
+              padding: 11px;
+              color: white; }
+          #spells .selectbox .selected {
+            border: 3px solid rgba(0, 0, 0, 0.72);
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.39); }
 #top-section {
   background: #f7fafc;
   border: 1px solid #e2dada; }
@@ -371,6 +455,10 @@ body {
       font-family: 'Roboto'; }
 
 .items .equipment{
+  overflow:auto;
+}
+
+#right-sidebar {
   overflow:auto;
 }
 
@@ -465,3 +553,5 @@ body {
   font-size: 21pt;
   z-index: 11; /* 1px higher than the overlay layer */
 }
+.btn {
+margin-bottom: 5px;}

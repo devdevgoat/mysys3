@@ -19,25 +19,45 @@ module.exports = {
     //search the inventory, despite the item id being given to prevent false calls
     Inventory.findOne(inventoryId).populate('player').populate('item', itemId).exec(function(err, inv){
       if (err) {return res.negotiate(err);}
+      if(inv){
+        if(inv.item[0]){
+          //lookup attacker stats
       Stats.findOne({player:playerId}).exec(function (err,attackerStats){
         if (err) {return res.negotiate(err);}
-        if(inv){
-          if(inv.item[0]){
+        if(attackerStats){
           let stat = inv.item[0].target.toLowerCase();
-          let val = (stat!='ail') ? inv.item[0].amount :inv.item[0].ailment ;
-          let desc1 = ' applied ';
-          let desc2 = ' with ';
-          let oneTimeUse = true;
-          if(inv.item[0].type=='equipment'){
-            desc1 = ' hit ';
-            desc2 = ' with ';
-            oneTimeUse = false;
-            val = parseInt(val) + parseInt(attackerStats[stat]);
-          }
+          let val = (stat!='ail') ? parseInt(inv.item[0].amount) :inv.item[0].ailment ;
+          let oneTimeUse = false;
           //lookup target player statsid
           Stats.findOne({player:targets}).populate('player').exec(function(err, stats){
-            if (err) {return res.negotiate(err);}
             if(stats){
+            if (err) {return res.negotiate(err);}
+            let note = inv.player.name;
+            // let note = inv.player.name + desc1 + stats.player.name + desc2 + inv.item[0].name;
+            switch (inv.item[0].type) {
+              case 'equipment':
+                val = parseInt(val) + parseInt(attackerStats[stat]);
+                note += ' hit '+stats.player.name+' with '+ inv.item[0].name;
+              break;
+              case 'item':
+                oneTimeUse = true;
+                note += ' used '+stats.player.name+' on '+ inv.item[0].name;
+              break;
+              case 'spell':
+                note += ' cast '+ inv.item[0].name +' on '+ stats.player.name;
+              if(parseInt(attackerStats.se)>=parseInt(inv.item[0].amount)){
+                sails.controllers.stats.updateStatsAutoSimple(attackerStats.id,'se', parseInt(inv.item[0].amount)*-1);
+              } else {
+                note +=' but didn\'t have enough energy!';
+                Notification.create({game:gameId,text:note}).exec(function (err,records) {
+                  if (err) { return res.serverError(err); }
+                });
+                return;
+              }
+              break;
+              default:
+                break;
+            }
               //remove the used item from the players inventory
               if(oneTimeUse){
                 inv.item.remove(itemId);
@@ -45,25 +65,22 @@ module.exports = {
                 Inventory.publishRemove(inv.id,'item',itemId);
               }
               sails.controllers.stats.updateStatsAuto(stats.id, inv.item[0].action,stat, val);
-              let note = inv.player.name + desc1 + stats.player.name + desc2 + inv.item[0].name;
               Notification.create({game:gameId,text:note}).exec(function (err,records) {
                 if (err) { return res.serverError(err); }
               });
             } else {
               console.log('Unable to find stats for player:'+targets);
             }
-            
-            });
-         
-        } else {
-          console.log('That item is not in your inventory... hmmm, what are you trying to do, exactly? I\'m just going to log that...');
+          }); 
         }
+     }); //end stats lookup
       } else {
-        console.log('Inventory not returned for id:'+inventoryId +' and item:'+ itemId);
+        console.log('That item is not in your inventory... hmmm, what are you trying to do, exactly? I\'m just going to log that...');
       }
-      });
-    });
-
+    } else {
+      console.log('Inventory not returned for id:'+inventoryId +' and item:'+ itemId);
+    }
+  }); //end invetory lookup
   },
     createItem: function (req, res) {
       //   req.file('image').upload({
