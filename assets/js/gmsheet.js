@@ -77,6 +77,19 @@ io.socket.on('connect', function () {
             addItem(v, 'stuff-list');
         });
     });
+   
+
+    io.socket.get('/map', function (resData, jwres) {
+        let maps = resData;
+        $.each(maps, function (k, v) {
+            if(k==0){
+                getMapPages(v.id);
+            }
+            //addItem(v, 'stuff-list');
+            let html = '<option value="'+v.id+'">'+v.name+'</option>';
+            $(html).appendTo('#maps');
+        });
+    });
 
     io.socket.get('/player?where='+JSON.stringify(where), function(resData, jwres) {
         $.each(resData, function (k,v) {
@@ -462,6 +475,33 @@ function pickup(noteId,dropKey) {
 	});
 }
 
+function showMap(pageId,x,y) {
+    let data = {
+        id: pageId,
+        lines:[x,y]
+    };
+    io.socket.post('/appendlines', data, function (resData, jwres) {
+        
+    });
+}
+
+
+function getMapPages(mapId) {
+     // need to filter this down by game/map...but for now just get all pages
+     io.socket.get('/map/'+mapId+'/pages', function (resData, jwres) {
+        let pages = resData;
+        let html = '';
+        $('#pages').html(html);
+        $.each(pages, function (k, v) {
+            if(k==0){
+                pageId = v.id;
+                init(document.getElementById('map-gm'),v.image, 400, 400, 'rgba(0,0,0,.5)',v.lines);
+            }
+            let html = '<option value="'+v.id+'">'+v.name+'</option>';
+            $(html).prependTo('#pages');
+        });
+    });
+}
 
 $(document).ready(function () {
     // instanciate new modal

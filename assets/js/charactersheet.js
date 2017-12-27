@@ -133,6 +133,24 @@ function drop_handler(ev) {
 		io.socket.get('/game/'+gameId+'?notifications?sort=createdAt%20ASC', function(resData, jwres) {
 			let players = resData.players;
 			let notifications = resData.notifications;
+			//get active mapId
+			let mapId = resData.activemap;
+			//get pages
+			/*
+			io.socket.get('/map/'+mapId+'/pages', function (resData, jwres) {
+				let pages = resData;
+				let html = '';
+				$('#pages').html(html);
+				$.each(pages, function (k, v) {
+					if(k==0){
+						pageId = v.id;
+						init(document.getElementById('map-gm'),v.image, 400, 400, 'rgba(0,0,0,.5)',v.lines);
+					}
+					let html = '<option value="'+v.id+'">'+v.name+'</option>';
+					$(html).prependTo('#pages');
+				});
+			});*/
+			
 			$.each(players, function (k,v) {
 				if(v.id!=playerId){
 						addPlayer(v);
@@ -143,6 +161,7 @@ function drop_handler(ev) {
 			});
 		});
 
+		
 
 
 /*	
@@ -235,6 +254,27 @@ io.socket.on('stats', function (event) {
 		updateStat(event.data);
 	}
 });
+
+io.socket.on('pages', function (event) {
+	alert(JSON.stringify(event));
+	if (event.verb == 'updated') {
+		//just need these (and the custom fillCircle) to run on receive
+		for (const i in event.data) {
+				alert(event.data[i]);
+				// const element = event.data[i];
+				// let x = e.pageX - this.offsetLeft-(1690);
+				// let y = e.pageY - this.offsetTop;
+		}
+		let x = e.pageX - this.offsetLeft-(1690);
+		let y = e.pageY - this.offsetTop;
+		ctx.globalCompositeOperation = 'destination-out';
+		ctx.fillCircle(x, y, 30, '#ff0000');
+		console.log('{x:'+e.pageX+'/y:'+e.pageY+'}[x2:'+x+'/y2:'+y+']');
+
+	}
+});
+
+
 
 }); //end on connect
 

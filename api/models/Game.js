@@ -41,8 +41,11 @@ module.exports = {
     }
   },
   afterCreate: function (createdRecords, cb) {
-    Room.create({'game':createdRecords.id}).exec(function (err, created) {
-      console.log('Created a room:'+created.id);
+    Room.create({'game':createdRecords.id}).exec(function (err, room) {
+      console.log('Created a room:'+room.id);
+    });
+    Map.create({'game':createdRecords.id}).exec(function (err, map) {
+      console.log('Created a map:'+map.id);
     });
     cb();
   }

@@ -40,24 +40,6 @@
 <script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
 <script type="text/javascript" src="/js/dependencies/jquery.min.js"></script>
 <script type="text/javascript" src="/js/charactersheet.js"></script>
-<script type="text/javascript">
-  var rebuild = function () {
-  var
-    radius = 20, 
-    columns = 20, 
-    rows = 5, 
-    cssClass = 'hexfield';
-
-  $('#map').empty().hexGridWidget(radius, columns, rows, cssClass).on('hexclick', function (e) { 
-     $('#logger').text('clicked [' + e.column + ',' + e.row + '] hex with center at [' + e.center.x + ',' + e.center.y + '] px');
-  });
-  $('#map .hexfield').click(function () {
-    this.classList.toggle('clicked');
-  });
-};
-$('#rebuild').click(rebuild);
-
-</script>
 
 <script>
 window.onload = function () {
@@ -141,6 +123,8 @@ window.onload = function () {
         </div>
     </div>
     <div class="col-md-3" id="right-sidebar">
+
+        <div id="map"></div>
       <h4 onclick="rollup('equipment')">Equipment</h4>
       <div id="equipment" class="row">
     
@@ -159,7 +143,13 @@ window.onload = function () {
 
 
 </div>
+
+<script src="/js/draw.js"></script>
 <script type="text/javascript">
+   var container = document.getElementById('map');
+   var image = '/images/map.png';
+    init(container,image, 400, 400, 'rgba(0,0,0,.5)');
+
   function rollup(id) {
           $( "#"+id ).slideToggle( "slow", function() {
           });

@@ -3,7 +3,7 @@
         <script type="text/javascript">
             let gameId = "<%=game.id%>";
             let user =  "<%=session.user.id%>";
-
+            let pageId = '';
             
         </script>
         <script type="text/javascript" src="/js/dependencies/jquery.min.js"></script>
@@ -89,6 +89,39 @@
                     <textarea class="form-control" form="createplayer" name="backstory"></textarea><br/>\
                     <input type="file" name="avatar" /><br/>\
                 </form>');
+
+                /************* Create Map ***************/
+                var createMapModal = new tingle.modal({
+                footer: true,
+                stickyFooter: false,
+                closeMethods: ['overlay', 'button', 'escape'],
+                closeLabel: "Close",
+                cssClass: ['form-modal'],
+                onOpen: function() {
+                },
+                onClose: function() {
+                },
+                beforeClose: function() {
+                    // here's goes some logic
+                    // e.g. save content before closing the modal
+                    return true; // close the modal
+                    return false; // nothing happens
+                }
+            });
+            createMapModal.addFooterBtn('Create Map', 'tingle-btn tingle-btn--primary', function() {
+                document.getElementById("createMapForm").submit();
+                //$.post('/createplayer', $('#createMapForm').serialize()); //doesn't upload the image
+                createNPCModal.close();
+            });
+            createMapModal.setContent(
+                '<form id="createMapForm" enctype="multipart/form-data" method="post" action="/createmap">\
+                    <label for="mapname">Name</label>\
+                    <input class="form-control" type="text" name="mapname"><br/>\
+                    <input type=hidden name=gameId value='+gameId+' />\
+                    <label for="image">First Page</label>\
+                    <input type="file" name="image" /><br/>\
+                </form>');
+                 /************* /Create Map ***************/
             
             var createNoteModal = new tingle.modal({
                 footer: true,
@@ -271,13 +304,21 @@
             <div class="col-md-6" id="top-section">
                     <div id="cards-gm" class="row">
                         <div class="card-gm">
-                                <iframe frameborder="0"
+                                <!-- <iframe frameborder="0"
                                         scrolling="no"
                                         id="<channel>"
                                         src="http://www.twitch.tv/embed/glacier_chaser/chat"
                                         height="395"
                                         width="100%">
-                                </iframe>
+                                </iframe> -->
+                                <div id=map-gm></div>
+                            <br/>
+                            <select id=maps>
+                                    
+                            </select>
+                            <select id=pages>
+                                    
+                            </select>
                         </div>
                         <div class="card-gm">
                             <div id="items-gm">
@@ -307,6 +348,7 @@
                                 <button type="button" class="btn btn-primary" onclick="createItemModal.open();">Create Item</button>
                                 <button type="button" class="btn btn-primary" onclick="createNoteModal.open();">Create Note</button><br/>
                                 <button type="button" class="btn btn-primary" onclick="editStatsModal.open();">Edit Stats</button>
+                                <button type="button" class="btn btn-primary" onclick="createMapModal.open();">Create Map</button>
                                 <br/><br/>
                             </div>
                         </div>
@@ -359,6 +401,18 @@
 
     </div>
 </body>
+
+<script src="/js/draw-gm.js"></script>
+<script type="text/javascript">
+    //var container = document.getElementById('map-gm');
+    //var image = '/images/map.png';
+     $( "#maps" ).change(function() {
+        getMapPages($( "select option:selected" ).val());
+     });
+     $( "#pages" ).change(function() {
+       
+     });
+ </script>
 
 </html>
 

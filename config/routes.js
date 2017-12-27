@@ -69,6 +69,9 @@ module.exports.routes = {
 
   'get /editstats' :  'StatsController.listPlayersForGm',
   'post /editstats' : 'StatsController.updateStats',
+  'get /draw':  {view: 'draw'},
 
+  'post /createmap' : 'MapController.createMap',
+  'post /appendlines' : 'PagesController.appendLines'
 
 };

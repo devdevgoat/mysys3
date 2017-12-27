@@ -555,3 +555,10 @@ padding: 10px;
 }
 .btn {
 margin-bottom: 5px;}
+
+#map{
+  width: 400px;
+  height: 400px;
+  margin: 40px;
+  display: inline-block;
+}

@@ -1,0 +1,30 @@
+<style>
+    #canvas {
+    background:url(https://i.pinimg.com/736x/07/84/b6/0784b66ecd80aeb51c47fef42ca6feb0--rpg-map-dungeon-maps.jpg);
+       
+    width: 736px;
+    height: 960px;
+}
+#r {
+    position: relative;
+    width:40px;
+}
+</style>
+<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+<script type="text/javascript" src="/js/dependencies/jquery.min.js"></script>
+<div id=r>
+
+        <div id="map"></div>
+</div>
+
+<script src="/js/draw.js"></script>
+<script type="text/javascript">
+    var container = document.getElementById('map');
+    var image = '/images/map.png';
+     init(container,image, 400, 400, 'rgba(0,0,0,.5)');
+ 
+   function rollup(id) {
+           $( "#"+id ).slideToggle( "slow", function() {
+           });
+         }
+ </script>

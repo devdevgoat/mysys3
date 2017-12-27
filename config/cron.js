@@ -1,6 +1,6 @@
 module.exports.cron = {
     myFirstJob: {
-      schedule: '*/1 * * * * *',
+      schedule: '1 * * * * *', //every fist second  ='1 * * * * *' ever second = '*/1 * * * * *'
       onTick: function () {
         console.log('Updating stats...');
         Player.find().populate('currentstats').exec(function(err, players){
