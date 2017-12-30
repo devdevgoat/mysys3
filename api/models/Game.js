@@ -38,6 +38,13 @@ module.exports = {
     rooms: {
       collection: 'room',
       via: 'game'
+    },
+    maps: {
+      collection: 'map',
+      via: 'game'
+    },
+    activemap: {
+      model: 'map'
     }
   },
   afterCreate: function (createdRecords, cb) {
@@ -46,6 +53,9 @@ module.exports = {
     });
     Map.create({'game':createdRecords.id}).exec(function (err, map) {
       console.log('Created a map:'+map.id);
+      Game.update(createdRecords.id,{activemap:map.id}).exec(function (err, game) {
+        console.log('Assigned active map:'+map.id+' to game:'+createdRecords.id);
+      });
     });
     cb();
   }

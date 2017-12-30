@@ -63,6 +63,7 @@ io.socket.on('connect', function () {
     io.socket.get('/game/' + gameId+'?notifications?sort=createdAt%20ASC', function (resData, jwres) {
         let players = resData.players;
         let notifications = resData.notifications;
+        mapId = resData.activemap.id; //global assignment
         $.each(players, function (k, v) {
             addPlayer(v);
         });
@@ -79,15 +80,19 @@ io.socket.on('connect', function () {
     });
    
 
-    io.socket.get('/map', function (resData, jwres) {
+    io.socket.get('/map?game='+gameId, function (resData, jwres) {
         let maps = resData;
+        $('#map-gm').html('<div id="dungeonmap" style="width:400px;height:400px"><p>Use the Create Map button to add a map</p></div>');
         $.each(maps, function (k, v) {
-            if(k==0){
-                getMapPages(v.id);
+            if(v.id==mapId){
+                $('#map-gm').html('');
+                let activepage = (typeof maps[k].activepage === 'undefined') ? null : maps[k].activepage.id;
+                getMapPages(v.id,activepage);
             }
             //addItem(v, 'stuff-list');
             let html = '<option value="'+v.id+'">'+v.name+'</option>';
             $(html).appendTo('#maps');
+            $(html).appendTo('#maps-modal');
         });
     });
 
@@ -294,6 +299,9 @@ function addNpc(npcId){
       });
 
 }
+
+
+
 function setAilment(statsid,ailment) {
     let data = {
         statsid:statsid,
@@ -486,25 +494,73 @@ function showMap(pageId,x,y) {
 }
 
 
-function getMapPages(mapId) {
+function getMapPages(newMapId,activePage) {
      // need to filter this down by game/map...but for now just get all pages
-     io.socket.get('/map/'+mapId+'/pages', function (resData, jwres) {
+     io.socket.get('/map/'+newMapId+'/pages', function (resData, jwres) {
+        mapId = newMapId; //global assignment
         let pages = resData;
         let html = '';
         $('#pages').html(html);
         $.each(pages, function (k, v) {
-            if(k==0){
-                pageId = v.id;
-                init(document.getElementById('map-gm'),v.image, 400, 400, 'rgba(0,0,0,.5)',v.lines);
-            }
             let html = '<option value="'+v.id+'">'+v.name+'</option>';
-            $(html).prependTo('#pages');
+            if(!activePage){ //null active page
+                if(k==0){   //use the first one as the active
+                    alert('no active page, using '+v.id);
+                    $(html).prepend('#pages'); //set it to first
+                    setActivePage(newMapId,v.id); //update active
+                } else { 
+                    $(html).append('#pages'); //else tack it on the the end
+                }
+            } else { //got an active page
+                if(v.id == activePage){ //is this the actie page?
+                    $(html).prepend('#pages'); //yes? then put it first
+                    setActivePage(newMapId,activePage); //and make sure everyone knows
+                } else {
+                    $(html).append('#pages'); //else tack it on the the end
+                }
+            }
         });
     });
 }
 
+function setActiveMap(gameId,newMapId){
+    mapId = newMapId
+    data = {
+        gameId: gameId,
+        mapId:newMapId
+    };
+    io.socket.post('/game-assignActive', data, function (resData, jwres) {
+        alert('got active page data:'+JSON.stringify(resData));
+        getMapPages($( "#maps" ).val(),resData.id);
+      });
+
+}
+
+function setActivePage(mapId,newPageId){
+    pageId = newPageId;
+    data = {
+        mapId:mapId,
+        pageId: newPageId
+    };
+    io.socket.post('/assignActive', data, function (resData, jwres) {
+        let lines = [];
+        if(resData.lines){
+            for (const i in resData.lines) {
+                    lines.push(resData.lines[i]);
+            }
+        }
+        init(document.getElementById('map-gm'),resData.image, 400, 400, 'rgba(0,0,0,.5)',resData.lines);
+      });
+
+}
+
 $(document).ready(function () {
     // instanciate new modal
-
+    $( "#maps" ).change(function() {
+        setActiveMap(gameId,$( "#maps" ).val());
+     });
+     $( "#pages" ).change(function() {
+        setActivePage($( "#maps" ).val(),$( "#pages" ).val());
+     });
 });
 

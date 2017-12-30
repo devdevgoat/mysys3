@@ -72,6 +72,9 @@ module.exports.routes = {
   'get /draw':  {view: 'draw'},
 
   'post /createmap' : 'MapController.createMap',
-  'post /appendlines' : 'PagesController.appendLines'
+  'post /createpage' : 'PagesController.createPage',
+  'post /appendlines' : 'PagesController.appendLines',
+  'post /assignActive' : 'MapController.assignActive',
+  'post /game-assignActive' : 'GameController.assignActive'
 
 };

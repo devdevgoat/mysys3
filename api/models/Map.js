@@ -25,6 +25,9 @@ module.exports = {
   afterCreate: function (createdRecords, cb) {
     Pages.create({'map':createdRecords.id,'name':'Page 1'}).exec(function (err, page) {
       console.log('Created initial page:'+page.id);
+      Map.update(createdRecords.id,{activepage:page.id}).exec(function (err, map) {
+        console.log('Assigned active page:'+page.id);
+      });
     });
     cb();
   }

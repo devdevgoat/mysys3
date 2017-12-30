@@ -35,7 +35,6 @@
         //update past lines
 
         for (var i in lines){
-            console.log(lines[i][0]);
             var x = lines[i][0] - container.offsetLeft-470;
             var y = lines[i][1] - container.offsetTop;
             ctx.globalCompositeOperation = 'destination-out';

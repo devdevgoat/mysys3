@@ -34,8 +34,20 @@
 <script type="text/javascript">
   let gameId = "<%=session.game.id%>";
   let playerId = "<%=session.player.id%>";
-  var inventoryId = '<%=data.inventory[0].id%>';
+  let inventoryId = '<%=data.inventory[0].id%>';
   let statsId = "<%=data.currentstats[0].id%>";
+  var canvas = {};
+  var ctx={};
+  ctx.fillCircle = function(x, y, radius, fillColor) {
+    console.log('PrintMe');
+      this.fillStyle = fillColor;
+      this.beginPath();
+      this.moveTo(x, y);
+			this.arc(x, y, radius, 0, Math.PI * 2, false);
+      this.fill();
+  };
+         
+         
 </script>
 <script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
 <script type="text/javascript" src="/js/dependencies/jquery.min.js"></script>

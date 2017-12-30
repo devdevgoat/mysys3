@@ -30,7 +30,7 @@ function drop_handler(ev) {
 	ev.preventDefault();
 	// Get the id of the target and add the moved element to the target's DOM
 	var item = ev.dataTransfer.getData("text");
-	//alert('Used '+item+' on '+ev.target.id);
+	
 	data = {
 		gameId: gameId,
 		playerId: playerId,
@@ -42,7 +42,7 @@ function drop_handler(ev) {
 	io.socket.post('/useItem',data,function (resData,jwres) {
 
 	});
-	//alert(JSON.stringify(data));
+	
    }
 
    function applyPartyMemberAilmentOverlay(statsId,ail) {
@@ -134,22 +134,19 @@ function drop_handler(ev) {
 			let players = resData.players;
 			let notifications = resData.notifications;
 			//get active mapId
-			let mapId = resData.activemap;
+			let mapId = resData.activemap.id;
 			//get pages
-			/*
-			io.socket.get('/map/'+mapId+'/pages', function (resData, jwres) {
-				let pages = resData;
-				let html = '';
-				$('#pages').html(html);
-				$.each(pages, function (k, v) {
-					if(k==0){
-						pageId = v.id;
-						init(document.getElementById('map-gm'),v.image, 400, 400, 'rgba(0,0,0,.5)',v.lines);
+			io.socket.get('/map/'+mapId+'/activepage', function (resData, jwres) {
+				pageId =resData.id;
+				io.socket.get('/pages/'+pageId, function (resData, jwres) {
+					let linesArr = [];
+					for (var i in resData.lines){
+						linesArr.push(resData.lines[i]);
 					}
-					let html = '<option value="'+v.id+'">'+v.name+'</option>';
-					$(html).prependTo('#pages');
+					updateMap(resData,linesArr);
 				});
-			});*/
+				
+			});
 			
 			$.each(players, function (k,v) {
 				if(v.id!=playerId){
@@ -202,9 +199,8 @@ io.socket.on('inventory', function (event) {
 	}
 });
 
-
-
 io.socket.on('game', function (event) { //need to decifer between player adds and notifications?
+
 	// {"id":"59fdd1439aee4e031e61f91f",
 	// "verb":"addedTo",
 	//"attribute" :"notifications",
@@ -239,6 +235,20 @@ io.socket.on('game', function (event) { //need to decifer between player adds an
 				console.warn('Unrecognized socket event (`%s`) from server:',event.verb, event);
 			}
 		break;
+		case 'updated'://need a way to filter this out and not run on EVERY game update...
+					io.socket.get('/map/'+event.data[0].activemap+'/activepage', function (resData, jwres) {
+						pageId =resData.id;
+						io.socket.get('/pages/'+pageId, function (resData, jwres) {
+							let linesArr = [];
+							for (var i in resData.lines){
+								linesArr.push(resData.lines[i]);
+							}
+							updateMap(resData,linesArr);
+						});
+						
+					});
+					//updateMap(data,data.lines);
+		  break;
 		default:
 		  console.warn('Unrecognized socket event (`%s`) from server:',event.verb, event);
 	  }
@@ -256,20 +266,14 @@ io.socket.on('stats', function (event) {
 });
 
 io.socket.on('pages', function (event) {
-	alert(JSON.stringify(event));
+	//alert(JSON.stringify(event));
 	if (event.verb == 'updated') {
 		//just need these (and the custom fillCircle) to run on receive
-		for (const i in event.data) {
-				alert(event.data[i]);
-				// const element = event.data[i];
-				// let x = e.pageX - this.offsetLeft-(1690);
-				// let y = e.pageY - this.offsetTop;
-		}
-		let x = e.pageX - this.offsetLeft-(1690);
-		let y = e.pageY - this.offsetTop;
+		var x = event.data[0] - document.getElementById('dungeonmap').offsetLeft-(470);
+        var y = event.data[1] - document.getElementById('dungeonmap').offsetTop-20;
 		ctx.globalCompositeOperation = 'destination-out';
-		ctx.fillCircle(x, y, 30, '#ff0000');
-		console.log('{x:'+e.pageX+'/y:'+e.pageY+'}[x2:'+x+'/y2:'+y+']');
+		console.log('calling ctx fill:'+x+','+y);
+        ctx.fillCircle(x, y, 30, '#ff0000');
 
 	}
 });
@@ -411,10 +415,13 @@ function pickup(noteId,dropKey) {
 		noteId: noteId
 	};
 	io.socket.post('/Stuff/pickup/',data,function (resData,jwres) {
-		//alert(JSON.stringify(resData));
+		
 	});
 }
 
+function updateMap(map,lines) {
+	init(document.getElementById('map'),map.image, 400, 400,lines);
+}
 
 $(document).ready(function() {
 

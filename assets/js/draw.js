@@ -5,8 +5,10 @@
 
 
     function createCanvas(parent, width, height) {
+        $( "canvas" ).remove();
         var canvas = {};
         canvas.node = document.createElement('canvas');
+        canvas.node.setAttribute("id", "dungeonmap");
         canvas.context = canvas.node.getContext('2d');
         canvas.node.width = width || 100;
         canvas.node.height = height || 100;
@@ -14,10 +16,11 @@
         return canvas;
     }
 
-    function init(container,image, width, height, fillColor) {
+    function init(container,image, width, height,lines) {
+        let fillColor = 'rgba(0,0,0)';
         $('#map').css("background", "url("+image+")");
-        var canvas = createCanvas(container, width, height);
-        var ctx = canvas.context;
+        canvas = createCanvas(container, width, height);
+        ctx = canvas.context;
         // define a custom fillCircle method
         ctx.fillCircle = function(x, y, radius, fillColor) {
             this.fillStyle = fillColor;
@@ -31,7 +34,12 @@
             ctx.fillRect(0, 0, width, height);
         };
         ctx.clearTo(fillColor || "#ddd");
-        
+        for (var i in lines){
+            var x = lines[i][0] - container.offsetLeft-470;
+            var y = lines[i][1] - container.offsetTop-20;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fillCircle(x, y, 20, '#ff0000');
+        }
         // bind mouse events
         // canvas.node.onmousemove = function(e) {
         //     if (!canvas.isDrawing) {

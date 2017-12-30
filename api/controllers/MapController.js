@@ -8,7 +8,6 @@
 module.exports = {
     createMap: function (req, res) {
 		let gameId = (typeof req.param('gameId') === 'undefined') ? '59f6350a7272ba8104caef4b' : req.param('gameId');
-        let type = (typeof req.param('type') === 'undefined') ? 'pc' : req.param('type');
     		req.file('image').upload({
 			  dirname: require('path').resolve(sails.config.appPath, 'assets/images/mapimages/')
 			},function (err, uploadedFiles) {
@@ -31,13 +30,31 @@ module.exports = {
                             console.log(result);
                                 Pages.update(result.pages.id,{image:'/images/mapimages/'+filename}).exec(function(err, result){
                                 if (err) {return res.negotiate(err);}
-                                    return res.redirect('/gm/'+gameId);
+                                //set the active map to game
+                                Game.update(gameId,{activemap:newmap.id}).exec(function(err, result){
+                                    if (err) {return res.negotiate(err);}
+                                    //set the active map to game
+                                        return res.redirect('/gm/'+gameId);
+                                    }); 
                                 }); 
                             });
                             
 					});
 			});
 
-	},
+    },
+    
+    assignActive: function (req,res) {
+        let mapId =  (typeof req.param('mapId') === 'undefined') ? null : req.param('mapId');
+        let pageId =  (typeof req.param('pageId') === 'undefined') ? null : req.param('pageId');
+            Map.update(mapId,{activepage:pageId}).exec(function(err, result){
+            if (err) {return res.negotiate(err);}
+                console.log('New active page:'+pageId +' set for map:'+mapId);
+                Map.findOne(mapId).populate('activepage').exec(function(err, map){
+                if (err) {return res.negotiate(err);}
+                    return res.send(map.activepage);
+                });
+            });
+    }
 };
 

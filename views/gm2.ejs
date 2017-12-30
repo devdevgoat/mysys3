@@ -3,7 +3,8 @@
         <script type="text/javascript">
             let gameId = "<%=game.id%>";
             let user =  "<%=session.user.id%>";
-            let pageId = '';
+            var pageId = '';
+            var mapId = '';
             
         </script>
         <script type="text/javascript" src="/js/dependencies/jquery.min.js"></script>
@@ -111,7 +112,7 @@
             createMapModal.addFooterBtn('Create Map', 'tingle-btn tingle-btn--primary', function() {
                 document.getElementById("createMapForm").submit();
                 //$.post('/createplayer', $('#createMapForm').serialize()); //doesn't upload the image
-                createNPCModal.close();
+                createMapModal.close();
             });
             createMapModal.setContent(
                 '<form id="createMapForm" enctype="multipart/form-data" method="post" action="/createmap">\
@@ -122,6 +123,40 @@
                     <input type="file" name="image" /><br/>\
                 </form>');
                  /************* /Create Map ***************/
+
+                 /************* Create Page ***************/
+                var createPageModal = new tingle.modal({
+                footer: true,
+                stickyFooter: false,
+                closeMethods: ['overlay', 'button', 'escape'],
+                closeLabel: "Close",
+                cssClass: ['form-modal'],
+                onOpen: function() {
+                },
+                onClose: function() {
+                },
+                beforeClose: function() {
+                    // here's goes some logic
+                    // e.g. save content before closing the modal
+                    return true; // close the modal
+                    return false; // nothing happens
+                }
+            });
+            createPageModal.addFooterBtn('Create Map', 'tingle-btn tingle-btn--primary', function() {
+                document.getElementById("createPageForm").submit();
+                //$.post('/createplayer', $('#createMapForm').serialize()); //doesn't upload the image
+                createPageModal.close();
+            });
+            createPageModal.setContent(
+                '<form id="createPageForm" enctype="multipart/form-data" method="post" action="/createpage">\
+                    <label for="pagename">Name</label>\
+                    <input class="form-control" type="text" name="pagename"><br/>\
+                    <input type=hidden name=gameId value="'+gameId+'" />\
+                    <select id=maps-modal name=mapId></select>\
+                    <label for="image">Image</label>\
+                    <input type="file" name="image" /><br/>\
+                </form>');
+                 /************* /Create Page ***************/
             
             var createNoteModal = new tingle.modal({
                 footer: true,
@@ -349,6 +384,7 @@
                                 <button type="button" class="btn btn-primary" onclick="createNoteModal.open();">Create Note</button><br/>
                                 <button type="button" class="btn btn-primary" onclick="editStatsModal.open();">Edit Stats</button>
                                 <button type="button" class="btn btn-primary" onclick="createMapModal.open();">Create Map</button>
+                                <button type="button" class="btn btn-primary" onclick="createPageModal.open();">Create Page</button>
                                 <br/><br/>
                             </div>
                         </div>
@@ -406,12 +442,7 @@
 <script type="text/javascript">
     //var container = document.getElementById('map-gm');
     //var image = '/images/map.png';
-     $( "#maps" ).change(function() {
-        getMapPages($( "select option:selected" ).val());
-     });
-     $( "#pages" ).change(function() {
-       
-     });
+     
  </script>
 
 </html>

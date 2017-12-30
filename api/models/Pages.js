@@ -23,6 +23,5 @@ module.exports = {
       type: 'array'
     }
   }
-  
 };
 

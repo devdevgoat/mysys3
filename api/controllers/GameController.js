@@ -31,7 +31,10 @@ module.exports = {
 		if(req.session.player){
 			Player.findOne(req.session.player.id).populate('inventory').populate('currentstats').exec(function (err, selPlayer) {
 		    	Game.findOne(gameId).populate('notifications').populate('players').exec(function (err,selGame) {
-		    		if(err){return res.serverError(err);}
+					if(err){return res.serverError(err);}
+					if(!selGame){
+						return res.serverError('Failed to find game by id: '+gameId);
+					}
 		    		req.session.game=selGame;
 		    		//Player.findOne(req.session.player.id).populate('inventory').exec(function (err, selPlayer) {
 						if(selPlayer.game!=gameId){
@@ -124,6 +127,21 @@ module.exports = {
 						return res.redirect('/readyplayer1'); //should take you straigh to gm board really
 					});
 			});
-	 }
+	 },
+	 
+	 assignActive: function (req,res) {
+        let gameId =  (typeof req.param('gameId') === 'undefined') ? null : req.param('gameId');
+        let mapId =  (typeof req.param('mapId') === 'undefined') ? null : req.param('mapId');
+            Game.update(gameId,{activemap:mapId}).exec(function(err, result){
+            if (err) {return res.negotiate(err);}
+				console.log('New active map:'+mapId +' set for game:'+mapId);
+				Game.publishUpdate(gameId,result);
+				Map.findOne(mapId).populate('activepage').exec(function(err, result){
+				if (err) {return res.negotiate(err);}
+				return res.send(result.activepage);
+				});
+               
+            });
+    }
 };
 
