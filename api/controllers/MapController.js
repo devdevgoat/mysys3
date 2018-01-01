@@ -52,6 +52,7 @@ module.exports = {
                 console.log('New active page:'+pageId +' set for map:'+mapId);
                 Map.findOne(mapId).populate('activepage').exec(function(err, map){
                 if (err) {return res.negotiate(err);}
+				    Map.publishUpdate(mapId,map);
                     return res.send(map.activepage);
                 });
             });

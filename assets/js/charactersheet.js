@@ -265,6 +265,20 @@ io.socket.on('stats', function (event) {
 	}
 });
 
+
+io.socket.on('map', function (event) {
+	if (event.verb == 'updated') {
+		pageId =event.data.activepage.id;
+	io.socket.get('/pages/'+pageId, function (resData, jwres) {
+		let linesArr = [];
+		for (var i in event.data.activepage.lines){
+			linesArr.push(event.data.activepage.lines[i]);
+		}
+		updateMap(resData,linesArr);
+	});
+	}
+});
+
 io.socket.on('pages', function (event) {
 	//alert(JSON.stringify(event));
 	if (event.verb == 'updated') {
@@ -272,8 +286,7 @@ io.socket.on('pages', function (event) {
 		var x = event.data[0] - document.getElementById('dungeonmap').offsetLeft-(470);
         var y = event.data[1] - document.getElementById('dungeonmap').offsetTop-20;
 		ctx.globalCompositeOperation = 'destination-out';
-		console.log('calling ctx fill:'+x+','+y);
-        ctx.fillCircle(x, y, 30, '#ff0000');
+        ctx.fillCircle(x, y, 15, '#ff0000');
 
 	}
 });

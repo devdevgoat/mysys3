@@ -17,11 +17,18 @@
 
     function init(container,image, width, height, fillColor,lines) {
         $('#map-gm').css("background", "url("+image+")");
+        $('#map-gm').css("background-size", "contain");
+        $('#map-gm').css("background-repeat", "no-repeat"); 
+        $('#map-gm').css("background-position", "center"); 
         var canvas = createCanvas(container, width, height);
         var ctx = canvas.context;
         // define a custom fillCircle method
         ctx.fillCircle = function(x, y, radius, fillColor) {
-            this.fillStyle = fillColor;
+            var gradient = this.createRadialGradient(x, y, 0, x, y,radius);
+            gradient.addColorStop(0, 'rgba(0,0,0,.5)');
+            gradient.addColorStop(.6, 'rgba(0,0,0,.25)');
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            this.fillStyle = gradient;
             this.beginPath();
             this.moveTo(x, y);
             this.arc(x, y, radius, 0, Math.PI * 2, false);
@@ -38,7 +45,7 @@
             var x = lines[i][0] - container.offsetLeft-470;
             var y = lines[i][1] - container.offsetTop;
             ctx.globalCompositeOperation = 'destination-out';
-            ctx.fillCircle(x, y, 30, '#ff0000');
+            ctx.fillCircle(x, y, 15, '#ff0000');
         }
         //bind mouse events
         canvas.node.onmousemove = function(e) {
@@ -49,8 +56,8 @@
             var x = e.pageX - this.offsetLeft-470;
             var y = e.pageY - this.offsetTop;
             ctx.globalCompositeOperation = 'destination-out';
-            ctx.fillCircle(x, y, 30, '#ff0000');
-            showMap(pageId,e.pageX,e.pageY);
+            ctx.fillCircle(x, y, 15, '#ff0000');
+            exposeMapPortion(pageId,e.pageX,e.pageY);
         };
         canvas.node.onmousedown = function(e) {
             canvas.isDrawing = true;

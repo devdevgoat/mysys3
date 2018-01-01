@@ -74,7 +74,7 @@ module.exports.routes = {
   'post /createmap' : 'MapController.createMap',
   'post /createpage' : 'PagesController.createPage',
   'post /appendlines' : 'PagesController.appendLines',
-  'post /assignActive' : 'MapController.assignActive',
-  'post /game-assignActive' : 'GameController.assignActive'
+  'post /assignActive' : 'MapController.assignActive', //sets the page for a map
+  'post /game-assignActive' : 'GameController.assignActive' //sets the map for a game
 
 };

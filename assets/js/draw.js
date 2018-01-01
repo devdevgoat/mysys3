@@ -17,13 +17,20 @@
     }
 
     function init(container,image, width, height,lines) {
-        let fillColor = 'rgba(0,0,0)';
         $('#map').css("background", "url("+image+")");
+        $('#map').css("background-size", "contain");
+        $('#map').css("background-repeat", "no-repeat"); 
+        $('#map').css("background-position", "center"); 
+        let fillColor = 'rgba(0,0,0)';
         canvas = createCanvas(container, width, height);
         ctx = canvas.context;
         // define a custom fillCircle method
         ctx.fillCircle = function(x, y, radius, fillColor) {
-            this.fillStyle = fillColor;
+            var gradient = this.createRadialGradient(x, y, 0, x, y,radius);
+            gradient.addColorStop(0, 'rgba(0,0,0,.5)');
+            gradient.addColorStop(.6, 'rgba(0,0,0,.25)');
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            this.fillStyle = gradient;
             this.beginPath();
             this.moveTo(x, y);
             this.arc(x, y, radius, 0, Math.PI * 2, false);
@@ -38,26 +45,8 @@
             var x = lines[i][0] - container.offsetLeft-470;
             var y = lines[i][1] - container.offsetTop-20;
             ctx.globalCompositeOperation = 'destination-out';
-            ctx.fillCircle(x, y, 20, '#ff0000');
+            ctx.fillCircle(x, y, 15, '#ff0000');
         }
-        // bind mouse events
-        // canvas.node.onmousemove = function(e) {
-        //     if (!canvas.isDrawing) {
-        //        return;
-        //     }
-        //     //just need these (and the custom fillCircle) to run on receive
-        //     var x = e.pageX - this.offsetLeft-(1690);
-        //     var y = e.pageY - this.offsetTop;
-        //     ctx.globalCompositeOperation = 'destination-out';
-        //     ctx.fillCircle(x, y, 30, '#ff0000');
-        //     console.log('{x:'+e.pageX+'/y:'+e.pageY+'}[x2:'+x+'/y2:'+y+']')
-        // };
-        // canvas.node.onmousedown = function(e) {
-        //     canvas.isDrawing = true;
-        // };
-        // canvas.node.onmouseup = function(e) {
-        //     canvas.isDrawing = false;
-        // };
 
 
     }

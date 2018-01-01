@@ -60,7 +60,7 @@ module.exports = {
 		let npcId = req.param('npcId');
 		let entranceText = (typeof req.param('entranceText') === 'undefined') ? ' joined the party!' : req.param('entranceText');
 		
-		Game.findOne(gameId).populate('notifications').populate('players').exec(function (err,selGame) {
+		Game.findOne(gameId).populate('notifications').populate('players').populate('activemap').exec(function (err,selGame) {
 			if(err){return res.serverError(err);}
 			req.session.game= selGame;
 			return res.view('gm2',{game:selGame});
@@ -137,8 +137,10 @@ module.exports = {
 				console.log('New active map:'+mapId +' set for game:'+mapId);
 				Game.publishUpdate(gameId,result);
 				Map.findOne(mapId).populate('activepage').exec(function(err, result){
-				if (err) {return res.negotiate(err);}
-				return res.send(result.activepage);
+					if (err) {return res.negotiate(err);}
+					console.log('results of map lookup:');
+					console.log(result);
+					return res.send(result.activepage);
 				});
                
             });

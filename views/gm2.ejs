@@ -3,8 +3,8 @@
         <script type="text/javascript">
             let gameId = "<%=game.id%>";
             let user =  "<%=session.user.id%>";
-            var pageId = '';
-            var mapId = '';
+            var pageId = "<% if(game.activemap){ %><%= game.activemap.activepage%><% }else{ %><% } %>";
+            var mapId = "<% if(game.activemap){ %><%= game.activemap.id%><% }else{ %>null<% } %>";
             
         </script>
         <script type="text/javascript" src="/js/dependencies/jquery.min.js"></script>
