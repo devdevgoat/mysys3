@@ -32,17 +32,14 @@ module.exports = {
 	},
 	maxpe: {
 		type: 'integer',
-		max: 99,
 		defaultsTo: 33
 	},
 	maxme: {
 		type: 'integer',
-		max: 99,
 		defaultsTo: 33
 	},
 	maxse: {
 		type: 'integer',
-		max: 99,
 		defaultsTo: 33
 	},
 	game: {
