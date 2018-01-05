@@ -55,7 +55,6 @@ module.exports = {
 	},
 	le: {
 		type: 'integer',
-		max: 100,
 		defaultsTo: 100,
 		min: 0
 	},
